@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "bump_help.hpp"
 #include "enable_control.hpp"
 #include "failure.hpp"
 #include "one.hpp"
@@ -60,7 +59,7 @@ namespace tao::pegtl::internal
       {
          if( const auto t = Peek::peek( in ) ) {
             if( test_one( t.data ) ) {
-               bump_help< ranges >( in, t.size );
+               in.template consume< ranges >( t.size );
                return true;
             }
          }

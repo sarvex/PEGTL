@@ -6,113 +6,82 @@
 #define TAO_PEGTL_PARSE_ERROR_HPP
 
 #include <cstddef>
-#include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <utility>
-#include <vector>
-
-#include "position.hpp"
 
 namespace tao::pegtl
 {
-   namespace internal
-   {
-      class parse_error
-      {
-      private:
-         std::string m_msg;
-         std::size_t m_prefix = 0;
-         std::vector< position > m_positions;
-
-      public:
-         explicit parse_error( const char* msg )
-            : m_msg( msg )
-         {}
-
-         [[nodiscard]] const char* what() const noexcept
-         {
-            return m_msg.c_str();
-         }
-
-         [[nodiscard]] std::string_view message() const noexcept
-         {
-            return { m_msg.data() + m_prefix, m_msg.size() - m_prefix };
-         }
-
-         [[nodiscard]] const std::vector< position >& positions() const noexcept
-         {
-            return m_positions;
-         }
-
-         void add_position( position&& p )
-         {
-            const auto prefix = to_string( p );
-            m_msg = prefix + ": " + m_msg;
-            m_prefix += prefix.size() + 2;
-            m_positions.emplace_back( std::move( p ) );
-         }
-      };
-
-   }  // namespace internal
-
-   class parse_error
+   class parse_error_base
       : public std::runtime_error
    {
-   private:
-      std::shared_ptr< internal::parse_error > m_impl;
-
    public:
-      parse_error( const char* msg, position p )
-         : std::runtime_error( msg ),
-           m_impl( std::make_shared< internal::parse_error >( msg ) )
+      [[nodiscard]] const char* message() const noexcept
       {
-         m_impl->add_position( std::move( p ) );
+         return std::runtime_error::what() + m_prefix;
       }
 
-      parse_error( const std::string& msg, position p )
-         : parse_error( msg.c_str(), std::move( p ) )
+   protected:
+      parse_error_base( const std::string& msg, const std::string& pos )
+         : parse_error_base( msg, pos, msg + ": " + pos )
       {}
 
-      template< typename ParseInput >
-      parse_error( const char* msg, const ParseInput& in )
-         : parse_error( msg, in.position() )
+   private:
+      parse_error_base( const std::string& /*unused*/, const std::string& pos, const std::string& cat )
+         : std::runtime_error( cat ),
+           m_prefix( pos.size() + 2 )
       {}
 
-      template< typename ParseInput >
-      parse_error( const std::string& msg, const ParseInput& in )
-         : parse_error( msg, in.position() )
+      std::size_t m_prefix;
+   };
+
+   template< typename Position >
+   class parse_error
+      : public parse_error_base
+   {
+   public:
+      using position_t = Position;
+
+      parse_error( const char* msg, Position pos )
+         : parse_error_base( msg, to_string( pos ) ),
+           m_position( std::move( pos ) )
       {}
 
-      [[nodiscard]] const char* what() const noexcept override
+      parse_error( const std::string& msg, Position pos )
+         : parse_error_base( msg, to_string( pos ) ),
+           m_position( std::move( pos ) )
+      {}
+
+      void position() & noexcept = delete;  // TODO?
+
+      [[nodiscard]] Position&& position() && noexcept
       {
-         return m_impl->what();
+         return std::move( m_position );
       }
 
-      [[nodiscard]] std::string_view message() const noexcept
+      [[nodiscard]] const Position& position() const& noexcept
       {
-         return m_impl->message();
+         return m_position;
       }
 
-      [[nodiscard]] const std::vector< position >& positions() const noexcept
-      {
-         return m_impl->positions();
-      }
+   private:
+      Position m_position;
 
-      void add_position( position&& p )
+      template< typename T >
+      [[nodiscard]] static std::string to_string( const T& t )
       {
-         if( m_impl.use_count() > 1 ) {
-            m_impl = std::make_shared< internal::parse_error >( *m_impl );
-         }
-         m_impl->add_position( std::move( p ) );
-      }
-
-      void add_position( const position& p )
-      {
-         add_position( position( p ) );
+         std::ostringstream oss;
+         oss << t;
+         return std::move( oss ).str();
       }
    };
+
+   template< typename Position >
+   parse_error( const char*, Position ) -> parse_error< Position >;
+
+   template< typename Position >
+   parse_error( const std::string, Position ) -> parse_error< Position >;
 
 }  // namespace tao::pegtl
 

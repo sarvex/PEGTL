@@ -12,7 +12,7 @@
 
 namespace tao::pegtl::internal
 {
-   template< unsigned Cnt >
+   template< unsigned Count >
    struct bytes
    {
       using rule_t = bytes;
@@ -21,8 +21,8 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( 0 ) ) )
       {
-         if( in.size( Cnt ) >= Cnt ) {
-            in.bump( Cnt );
+         if( in.size( Count ) >= Count ) {
+            in.template consume< bytes >( Count );
             return true;
          }
          return false;
@@ -34,8 +34,8 @@ namespace tao::pegtl::internal
       : success
    {};
 
-   template< unsigned Cnt >
-   inline constexpr bool enable_control< bytes< Cnt > > = false;
+   template< unsigned Count >
+   inline constexpr bool enable_control< bytes< Count > > = false;
 
 }  // namespace tao::pegtl::internal
 

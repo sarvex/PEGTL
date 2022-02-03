@@ -105,11 +105,6 @@ namespace tao::pegtl
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
    {};
 
-   template< typename Name >
-   struct analyze_traits< Name, internal::discard >
-      : analyze_opt_traits<>
-   {};
-
    template< typename Name, typename... Rules >
    struct analyze_traits< Name, internal::enable< Rules... > >
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
@@ -130,8 +125,8 @@ namespace tao::pegtl
       : analyze_opt_traits<>
    {};
 
-   template< typename Name, typename Size >
-   struct analyze_traits< Name, internal::everything< Size > >
+   template< typename Name >
+   struct analyze_traits< Name, internal::everything >
       : analyze_opt_traits<>
    {};
 

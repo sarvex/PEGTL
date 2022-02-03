@@ -20,14 +20,12 @@
 
 #include "../apply_mode.hpp"
 #include "../demangle.hpp"
-#include "../memory_input.hpp"
 #include "../normal.hpp"
 #include "../nothing.hpp"
 #include "../parse.hpp"
 #include "../rewind_mode.hpp"
 
 #include "../internal/enable_control.hpp"
-#include "../internal/frobnicator.hpp"
 #include "../internal/has_unwind.hpp"
 
 namespace tao::pegtl::parse_tree
@@ -104,12 +102,12 @@ namespace tao::pegtl::parse_tree
          return std::string( m_begin.data, m_end.data );
       }
 
-      template< tracking_mode P = tracking_mode::eager, typename Eol = eol::lf_crlf >
-      [[nodiscard]] memory_input< P, Eol > as_memory_input() const
-      {
-         assert( has_content() );
-         return { m_begin.data, m_end.data, source, m_begin.byte, m_begin.line, m_begin.column };
-      }
+      // template< tracking_mode P = tracking_mode::eager, typename Eol = eol::lf_crlf >
+      // [[nodiscard]] memory_input< P, Eol > as_memory_input() const
+      // {
+      //    assert( has_content() );
+      //    return { m_begin.data, m_end.data, source, m_begin.byte, m_begin.line, m_begin.column };
+      // }
 
       template< typename... States >
       void remove_content( States&&... /*unused*/ ) noexcept

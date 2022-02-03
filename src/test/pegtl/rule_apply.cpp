@@ -81,7 +81,7 @@ namespace tao::pegtl
       TAO_PEGTL_TEST_ASSERT( !parse< apply< test1::action2_a, test1::action2_b, test1::action2_c > >( memory_input( "", __FUNCTION__ ), state_b ) );
       TAO_PEGTL_TEST_ASSERT( state_b );
 
-      verify_meta< apply< test1::action_a, test1::action_b >, internal::apply< test1::action_a, test1::action_b > >();
+      verify_meta< apply< test1::action_a, test1::action_b >, internal::if_apply< internal::success, test1::action_a, test1::action_b >, internal::success >();
 
       verify_analyze< apply<> >( __LINE__, __FILE__, false, false );
 

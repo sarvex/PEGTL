@@ -5,32 +5,14 @@
 #ifndef TAO_PEGTL_PARSE_HPP
 #define TAO_PEGTL_PARSE_HPP
 
-#include <type_traits>
-
 #include "apply_mode.hpp"
 #include "normal.hpp"
 #include "nothing.hpp"
 #include "parse_error.hpp"
-#include "position.hpp"
 #include "rewind_mode.hpp"
 
 namespace tao::pegtl
 {
-   namespace internal
-   {
-      [[nodiscard]] inline auto get_position( const position& p ) noexcept( std::is_nothrow_copy_constructible_v< position > )
-      {
-         return p;
-      }
-
-      template< typename ParseInput >
-      [[nodiscard]] position get_position( const ParseInput& in ) noexcept( noexcept( position( in.position() ) ) )
-      {
-         return in.position();
-      }
-
-   }  // namespace internal
-
    template< typename Rule,
              template< typename... > class Action = nothing,
              template< typename... > class Control = normal,
@@ -48,21 +30,20 @@ namespace tao::pegtl
              template< typename... > class Control = normal,
              apply_mode A = apply_mode::action,
              rewind_mode M = rewind_mode::dontcare,
-             typename Outer,
+             typename Ambience,
              typename ParseInput,
              typename... States >
-   auto parse_nested( const Outer& o, ParseInput&& in, States&&... st )
+   auto parse_nested( const Ambience& am, ParseInput&& in, States&&... st )
    {
 #if defined( __cpp_exceptions )
       try {
          return parse< Rule, Action, Control, A, M >( in, st... );
       }
-      catch( parse_error& e ) {
-         e.add_position( internal::get_position( o ) );
-         throw;
+      catch( const parse_error_base& /*unused*/ ) {
+         Control< Ambience >::raise_nested( am, st... );
       }
 #else
-      (void)o;
+      (void)am;
       return parse< Rule, Action, Control, A, M >( in, st... );
 #endif
    }

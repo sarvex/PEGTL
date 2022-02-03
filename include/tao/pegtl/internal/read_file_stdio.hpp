@@ -55,7 +55,7 @@ namespace tao::pegtl::internal
 
    struct read_file_close
    {
-      void operator()( FILE* f ) const noexcept
+      void operator()( std::FILE* f ) const noexcept
       {
          std::fclose( f );
       }
@@ -68,7 +68,7 @@ namespace tao::pegtl::internal
          : read_file_stdio( read_file_open( path ), path )
       {}
 
-      read_file_stdio( FILE* file, const internal::filesystem::path& path )  // NOLINT(modernize-pass-by-value)
+      read_file_stdio( std::FILE* file, const internal::filesystem::path& path )  // NOLINT(modernize-pass-by-value)
          : m_path( path ),
            m_file( file )
       {}
@@ -153,6 +153,8 @@ namespace tao::pegtl::internal
          }
       }
    };
+
+   using read_file_impl = read_file_stdio;
 
 }  // namespace tao::pegtl::internal
 

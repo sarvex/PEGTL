@@ -113,7 +113,7 @@ namespace tao::pegtl
 #endif
 
       bool success = false;
-      const bool result = parse< until< my_rule, eof >, my_action >( memory_input<>( "", __FUNCTION__ ), success );
+      const bool result = parse< until< my_rule, eof >, my_action >( memory_input( "" ), success );
       TAO_PEGTL_TEST_ASSERT( result );
       TAO_PEGTL_TEST_ASSERT( success );
    }

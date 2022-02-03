@@ -15,7 +15,6 @@
 #include "bytes.hpp"
 #include "control.hpp"
 #include "disable.hpp"
-#include "discard.hpp"
 #include "enable.hpp"
 #include "enable_control.hpp"
 #include "eof.hpp"

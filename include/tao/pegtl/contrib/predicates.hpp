@@ -7,7 +7,6 @@
 
 #include "../type_list.hpp"
 
-#include "../internal/bump_help.hpp"
 #include "../internal/dependent_false.hpp"
 #include "../internal/enable_control.hpp"
 #include "../internal/failure.hpp"
@@ -83,7 +82,7 @@ namespace tao::pegtl
          {
             if( const auto t = Peek::peek( in ) ) {
                if( test_one( t.data ) ) {
-                  bump_help< predicates >( in, t.size );
+                  in.consume< predicates >( t.size );
                   return true;
                }
             }

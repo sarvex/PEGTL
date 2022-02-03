@@ -16,10 +16,17 @@ namespace tao::pegtl::internal
       using rule_t = eol;
       using subs_t = empty_list;
 
-      template< typename ParseInput >
-      [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( ParseInput::eol_t::eol_match( in ) ) )
+      template< apply_mode A,
+                rewind_mode M,
+                template< typename... >
+                class Action,
+                template< typename... >
+                class Control,
+                typename ParseInput,
+                typename... States >
+      [[nodiscard]] static bool match( ParseInput& in, States&&... st )
       {
-         return ParseInput::eol_t::eol_match( in ).data;
+         return in.template match_eol< A, M, Action, Control >( in, st... );
       }
    };
 

@@ -7,7 +7,6 @@
 
 #include <type_traits>
 
-#include "bump_help.hpp"
 #include "enable_control.hpp"
 #include "one.hpp"
 #include "result_on_found.hpp"
@@ -72,7 +71,7 @@ namespace tao::pegtl::internal
       {
          if( in.size( sizeof...( Cs ) ) >= sizeof...( Cs ) ) {
             if( istring_equal< Cs... >( in.current() ) ) {
-               bump_help< istring >( in, sizeof...( Cs ) );
+               in.template consume< istring >( sizeof...( Cs ) );
                return true;
             }
          }

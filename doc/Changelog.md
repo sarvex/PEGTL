@@ -12,6 +12,7 @@
 * Removed support for building an amalgamated header.
 * Changed default top-level `rewind_mode` to `dontcare`.
 * Moved depth counter to adapter class in contrib.
+* **Many small and large changes that are not documented yet.**
 
 ## 3.2.2
 

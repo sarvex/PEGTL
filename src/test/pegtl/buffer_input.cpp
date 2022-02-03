@@ -6,7 +6,8 @@
 
 #include "test.hpp"
 
-#include <tao/pegtl/internal/cstring_reader.hpp>
+#include <tao/pegtl/contrib/dynamic_buffer_input.hpp>
+#include <tao/pegtl/contrib/internal/cstring_reader.hpp>
 
 namespace tao::pegtl
 {

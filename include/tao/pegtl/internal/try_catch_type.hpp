@@ -47,7 +47,7 @@ namespace tao::pegtl::internal
                 typename... States >
       [[nodiscard]] static bool match( ParseInput& in, States&&... st )
       {
-         auto m = in.template auto_rewind< M >();
+         auto m = in.template make_rewind_guard< M >();
          using m_t = decltype( m );
 
          try {

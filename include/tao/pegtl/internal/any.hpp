@@ -38,7 +38,7 @@ namespace tao::pegtl::internal
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.empty() ) )
       {
          if( !in.empty() ) {
-            in.bump();
+            in.template consume< any >( 1 );
             return true;
          }
          return false;
@@ -68,7 +68,7 @@ namespace tao::pegtl::internal
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
       {
          if( const auto t = Peek::peek( in ) ) {
-            in.bump( t.size );
+            in.template consume< any >( t.size );
             return true;
          }
          return false;

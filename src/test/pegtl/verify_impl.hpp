@@ -10,9 +10,7 @@
 #include <iostream>
 #include <string>
 
-#include <tao/pegtl/apply_mode.hpp>
-#include <tao/pegtl/normal.hpp>
-#include <tao/pegtl/rewind_mode.hpp>
+#include <tao/pegtl.hpp>
 
 #include "result_type.hpp"
 #include "test.hpp"

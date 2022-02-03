@@ -27,7 +27,7 @@ namespace tao::pegtl::internal
       big = __ORDER_BIG_ENDIAN__,
       native = __BYTE_ORDER__
 #else
-#error Unknown endianness.
+#error Unknown byte order!
 #endif
    };
 

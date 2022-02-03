@@ -2,10 +2,9 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-// this include gives us _POSIX_MAPPED_FILES to test and mmap_input<> if it is set
-#include <tao/pegtl/file_input.hpp>
+#include <tao/pegtl.hpp>
 
-#if defined( _POSIX_MAPPED_FILES ) || defined( _WIN32 )
+#if defined( TAO_PEGTL_MMAP_AVAILABLE )
 
 #include "test.hpp"
 #include "verify_file.hpp"
@@ -14,7 +13,7 @@ namespace tao::pegtl
 {
    void unit_test()
    {
-      verify_file< mmap_input<> >();
+      verify_file< mmap_input >();
    }
 
 }  // namespace tao::pegtl

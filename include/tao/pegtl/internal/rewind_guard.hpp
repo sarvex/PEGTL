@@ -5,7 +5,6 @@
 #ifndef TAO_PEGTL_INTERNAL_REWIND_GUARD_HPP
 #define TAO_PEGTL_INTERNAL_REWIND_GUARD_HPP
 
-#include <type_traits>
 #include <utility>
 
 #include "../rewind_mode.hpp"
@@ -39,13 +38,16 @@ namespace tao::pegtl::internal
    class [[nodiscard]] rewind_guard< rewind_mode::required, ParseInput >
    {
    public:
-      static constexpr rewind_mode next_rewind_mode = rewind_mode::active;
+      using data_t = typename ParseInput::data_t;
+      using pointer_t = typename ParseInput::pointer_t;
 
-      using rewind_data = std::decay_t< decltype( std::declval< ParseInput >().rewind_save() ) >;
+      using rewind_position_t = typename ParseInput::rewind_position_t;
+
+      static constexpr rewind_mode next_rewind_mode = rewind_mode::active;
 
       explicit rewind_guard( ParseInput* in ) noexcept
          : m_input( in ),
-           m_saved( in->rewind_save() )
+           m_saved( in->rewind_position() )
       {}
 
       rewind_guard( const rewind_guard& ) = delete;
@@ -54,30 +56,45 @@ namespace tao::pegtl::internal
       ~rewind_guard()
       {
          if( m_input != nullptr ) {
-            m_input->rewind_restore( std::move( m_saved ) );
+            m_input->rewind_position( std::move( m_saved ) );
          }
       }
 
       rewind_guard& operator=( const rewind_guard& ) = delete;
       rewind_guard& operator=( rewind_guard&& ) = delete;
 
+      void cancel_rewind() noexcept
+      {
+         m_input = nullptr;
+      }
+
+      void repeatable_rewind() const
+      {
+         m_input->rewind_position( m_saved );
+      }
+
+      [[nodiscard]] pointer_t current() const noexcept
+      {
+         return m_saved.current;
+      }
+
+      [[nodiscard]] const rewind_position_t& saved() const noexcept
+      {
+         return m_saved;
+      }
+
       [[nodiscard]] bool operator()( const bool result ) noexcept
       {
          if( result ) {
-            m_input = nullptr;
+            cancel_rewind();
             return true;
          }
          return false;
       }
 
-      [[nodiscard]] const rewind_data& frobnicator() const noexcept
-      {
-         return m_saved;
-      }
-
    private:
       ParseInput* m_input;
-      rewind_data m_saved;
+      rewind_position_t m_saved;
    };
 
 }  // namespace tao::pegtl::internal

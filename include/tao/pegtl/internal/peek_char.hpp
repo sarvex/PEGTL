@@ -19,10 +19,12 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.empty() ) )
       {
+         static_assert( sizeof( typename ParseInput::data_t ) == 1 );
+
          if( in.empty() ) {
             return { 0, 0 };
          }
-         return { in.peek_char(), 1 };
+         return { *static_cast< const char* >( in.current() ), 1 };
       }
    };
 

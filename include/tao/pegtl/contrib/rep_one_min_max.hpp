@@ -10,7 +10,6 @@
 
 #include "../type_list.hpp"
 
-#include "../internal/bump_help.hpp"
 #include "../internal/bytes.hpp"
 #include "../internal/enable_control.hpp"
 #include "../internal/opt.hpp"
@@ -47,12 +46,12 @@ namespace tao::pegtl
             if( size < Min ) {
                return false;
             }
-            std::size_t i = 0;
+            unsigned i = 0;
             while( ( i < size ) && ( in.peek_char( i ) == C ) ) {
                ++i;
             }
             if( ( Min <= i ) && ( i <= Max ) ) {
-               bump_help< rep_one_min_max >( in, i );
+               in.consume< rep_one_min_max >( i );
                return true;
             }
             return false;
@@ -74,12 +73,12 @@ namespace tao::pegtl
          [[nodiscard]] static bool match( ParseInput& in )
          {
             const auto size = in.size( Max + 1 );
-            std::size_t i = 0;
+            unsigned i = 0;
             while( ( i < size ) && ( in.peek_char( i ) == C ) ) {
                ++i;
             }
             if( i <= Max ) {
-               bump_help< rep_one_min_max >( in, i );
+               in.consume< rep_one_min_max >( i );
                return true;
             }
             return false;

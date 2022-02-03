@@ -10,21 +10,19 @@
 #include <string>
 #include <string_view>
 
-#include "frobnicator.hpp"
-
-#include "../position.hpp"
-
 namespace tao::pegtl::internal
 {
    template< typename ParseInput >
    class action_input
    {
    public:
+      using data_t = typename ParseInput::data_t;
+      using pointer_t = const data_t*;
       using input_t = ParseInput;
-      using frobnicator_t = typename ParseInput::frobnicator_t;
+      using rewind_position_t = typename ParseInput::rewind_position_t;
 
-      action_input( const frobnicator_t& in_begin, const ParseInput& in_input ) noexcept
-         : m_begin( in_begin ),
+      action_input( const rewind_position_t& in_saved, const ParseInput& in_input ) noexcept
+         : m_saved( in_saved ),
            m_input( in_input )
       {}
 
@@ -36,27 +34,12 @@ namespace tao::pegtl::internal
       action_input& operator=( const action_input& ) = delete;
       action_input& operator=( action_input&& ) = delete;
 
-      [[nodiscard]] const frobnicator_t& frobnicator() const noexcept
+      [[nodiscard]] pointer_t begin() const noexcept
       {
-         return m_begin;
+         return m_saved.current;
       }
 
-      [[nodiscard]] const ParseInput& input() const noexcept
-      {
-         return m_input;
-      }
-
-      [[nodiscard]] const char* begin() const noexcept
-      {
-         if constexpr( std::is_same_v< frobnicator_t, const char* > ) {
-            return frobnicator();
-         }
-         else {
-            return frobnicator().data;
-         }
-      }
-
-      [[nodiscard]] const char* end() const noexcept
+      [[nodiscard]] pointer_t end() const noexcept
       {
          return input().current();
       }
@@ -81,23 +64,35 @@ namespace tao::pegtl::internal
          return std::string_view( begin(), size() );
       }
 
-      [[nodiscard]] char peek_char( const std::size_t offset = 0 ) const noexcept
+      [[nodiscard]] data_t peek( const std::size_t offset = 0 ) const noexcept
       {
          return begin()[ offset ];
       }
 
-      [[nodiscard]] std::uint8_t peek_uint8( const std::size_t offset = 0 ) const noexcept
+      [[nodiscard]] char peek_char( const std::size_t offset = 0 ) const noexcept
       {
-         return static_cast< std::uint8_t >( peek_char( offset ) );
+         static_assert( sizeof( data_t ) == 1 );
+         return reinterpret_cast< const char* >( begin() )[ offset ];
       }
 
-      [[nodiscard]] tao::pegtl::position position() const
+      [[nodiscard]] std::uint8_t peek_uint8( const std::size_t offset = 0 ) const noexcept
       {
-         return input().position( frobnicator() );  // NOTE: Not efficient with lazy inputs.
+         static_assert( sizeof( data_t ) == 1 );
+         return reinterpret_cast< const std::uint8_t* >( begin() )[ offset ];
+      }
+
+      [[nodiscard]] const ParseInput& input() const noexcept
+      {
+         return m_input;
+      }
+
+      [[nodiscard]] decltype( auto ) position() const
+      {
+         return m_input.previous_position( m_saved );  // NOTE: For lazy inputs this is O(n) where n is size of consumption since begin of parsing run.
       }
 
    protected:
-      const frobnicator_t m_begin;
+      const rewind_position_t m_saved;
       const ParseInput& m_input;
    };
 

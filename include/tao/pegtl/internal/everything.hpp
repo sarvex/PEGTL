@@ -5,13 +5,14 @@
 #ifndef TAO_PEGTL_INTERNAL_EVERYTHING_HPP
 #define TAO_PEGTL_INTERNAL_EVERYTHING_HPP
 
+#include <cstddef>
+
 #include "enable_control.hpp"
 
 #include "../type_list.hpp"
 
 namespace tao::pegtl::internal
 {
-   template< typename Size >
    struct everything
    {
       using rule_t = everything;
@@ -20,13 +21,13 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( 0 ) ) )
       {
-         in.bump( in.size( Size( -1 ) ) );
+         in.template consume< everything >( in.size( std::size_t( -1 ) ) );
          return true;
       }
    };
 
-   template< typename Size >
-   inline constexpr bool enable_control< everything< Size > > = false;
+   template<>
+   inline constexpr bool enable_control< everything > = false;
 
 }  // namespace tao::pegtl::internal
 

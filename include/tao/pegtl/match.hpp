@@ -107,9 +107,9 @@ namespace tao::pegtl
       else {
          constexpr bool enable_action = ( A == apply_mode::action );
 
-         using frobnicator_t = typename ParseInput::frobnicator_t;
-         constexpr bool has_apply_void = enable_action && internal::has_apply< Control< Rule >, void, Action, const frobnicator_t&, const ParseInput&, States... >;
-         constexpr bool has_apply_bool = enable_action && internal::has_apply< Control< Rule >, bool, Action, const frobnicator_t&, const ParseInput&, States... >;
+         using rewind_position_t = typename ParseInput::rewind_position_t;
+         constexpr bool has_apply_void = enable_action && internal::has_apply< Control< Rule >, void, Action, const rewind_position_t&, const ParseInput&, States... >;
+         constexpr bool has_apply_bool = enable_action && internal::has_apply< Control< Rule >, bool, Action, const rewind_position_t&, const ParseInput&, States... >;
          constexpr bool has_apply = has_apply_void || has_apply_bool;
 
          constexpr bool has_apply0_void = enable_action && internal::has_apply0< Control< Rule >, void, Action, const ParseInput&, States... >;
@@ -136,15 +136,15 @@ namespace tao::pegtl
 
          constexpr bool use_guard = has_apply || has_apply0_bool;
 
-         auto m = in.template auto_rewind< ( use_guard ? rewind_mode::required : rewind_mode::dontcare ) >();
+         auto m = in.template make_rewind_guard< ( use_guard ? rewind_mode::required : rewind_mode::dontcare ) >();
          Control< Rule >::start( static_cast< const ParseInput& >( in ), st... );
          auto result = internal::match_control_unwind< Rule, A, ( use_guard ? rewind_mode::active : M ), Action, Control >( in, st... );
          if( result ) {
             if constexpr( has_apply_void ) {
-               Control< Rule >::template apply< Action >( m.frobnicator(), static_cast< const ParseInput& >( in ), st... );
+               Control< Rule >::template apply< Action >( m.saved(), static_cast< const ParseInput& >( in ), st... );
             }
             else if constexpr( has_apply_bool ) {
-               result = Control< Rule >::template apply< Action >( m.frobnicator(), static_cast< const ParseInput& >( in ), st... );
+               result = Control< Rule >::template apply< Action >( m.saved(), static_cast< const ParseInput& >( in ), st... );
             }
             else if constexpr( has_apply0_void ) {
                Control< Rule >::template apply0< Action >( static_cast< const ParseInput& >( in ), st... );

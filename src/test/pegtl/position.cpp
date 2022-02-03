@@ -12,7 +12,7 @@ int main()
 
 #include "test.hpp"
 
-#include <tao/pegtl/internal/cstring_reader.hpp>
+#include <tao/pegtl/contrib/internal/cstring_reader.hpp>
 
 namespace tao::pegtl
 {

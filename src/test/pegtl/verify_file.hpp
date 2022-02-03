@@ -70,9 +70,9 @@ namespace tao::pegtl
 
       {
          T in( "src/test/pegtl/file_data.txt" );
-         TAO_PEGTL_TEST_ASSERT( in.source() == "src/test/pegtl/file_data.txt" );
+         // TODO         TAO_PEGTL_TEST_ASSERT( in.source() == "src/test/pegtl/file_data.txt" );
          TAO_PEGTL_TEST_ASSERT( parse< file_grammar >( in ) );
-         TAO_PEGTL_TEST_ASSERT( in.source() == "src/test/pegtl/file_data.txt" );
+         // TODO         TAO_PEGTL_TEST_ASSERT( in.source() == "src/test/pegtl/file_data.txt" );
       }
       {
          T in( TAO_PEGTL_TEST_FILENAME );
@@ -101,7 +101,7 @@ namespace tao::pegtl
          TAO_PEGTL_TEST_ASSERT( flag == true );
       }
       const char* foo = "foo";
-      const memory_input m( foo, foo + 3, foo );
+      const memory_input m( foo, foo + 3 );
       {
          T in( TAO_PEGTL_TEST_FILENAME );
          TAO_PEGTL_TEST_ASSERT( parse_nested< file_grammar >( m, in ) );

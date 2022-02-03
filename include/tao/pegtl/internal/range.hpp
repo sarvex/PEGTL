@@ -5,7 +5,6 @@
 #ifndef TAO_PEGTL_INTERNAL_RANGE_HPP
 #define TAO_PEGTL_INTERNAL_RANGE_HPP
 
-#include "bump_help.hpp"
 #include "enable_control.hpp"
 #include "one.hpp"
 #include "result_on_found.hpp"
@@ -40,7 +39,7 @@ namespace tao::pegtl::internal
       {
          if( const auto t = Peek::peek( in ) ) {
             if( test_one( t.data ) ) {
-               bump_help< range >( in, t.size );
+               in.template consume< range >( t.size );
                return true;
             }
          }

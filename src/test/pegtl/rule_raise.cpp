@@ -29,7 +29,7 @@ namespace tao::pegtl
       verify_analyze< raise< int > >( __LINE__, __FILE__, true, false );
       verify_analyze< raise< any > >( __LINE__, __FILE__, true, false );
 
-      memory_input in( "foo", __FUNCTION__ );
+      memory_input in( "foo" );
 
       TAO_PEGTL_TEST_THROWS( parse< raise< int > >( in ) );
       TAO_PEGTL_TEST_ASSERT( in.size( 4 ) == 3 );

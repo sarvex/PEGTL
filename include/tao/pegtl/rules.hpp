@@ -23,11 +23,11 @@ namespace tao::pegtl
    template< unsigned Num > struct bytes : internal::bytes< Num > {};
    template< template< typename... > class Control, typename... Rules > struct control : internal::control< Control, Rules... > {};
    template< typename... Rules > struct disable : internal::disable< Rules... > {};
-   struct discard : internal::discard {};
    template< typename... Rules > struct enable : internal::enable< Rules... > {};
    struct eof : internal::eof {};
+   struct eol : internal::eol {};
    struct eolf : internal::eolf {};
-   struct everything : internal::everything< std::size_t > {};
+   struct everything : internal::everything {};
    struct failure : internal::failure {};
    template< typename Rule, typename... Actions > struct if_apply : internal::if_apply< Rule, Actions... > {};
    template< typename Cond, typename Then, typename Else > struct if_then_else : internal::if_then_else< Cond, Then, Else > {};
@@ -67,7 +67,7 @@ namespace tao::pegtl
       static constexpr const char error_message[] = { Cs..., 0 };
    };
    template< typename Cond, typename... Rules > struct star_must : internal::star_must< Cond, Rules... > {};
-   template< typename... Rules > struct try_catch : internal::try_catch_type< parse_error, Rules... > {};
+   template< typename... Rules > struct try_catch : internal::try_catch_type< parse_error_base, Rules... > {};
    template< typename Exception, typename... Rules > struct try_catch_type : internal::seq< internal::try_catch_type< Exception, Rules... > > {};
 #endif
    // clang-format on

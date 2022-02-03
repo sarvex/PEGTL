@@ -48,17 +48,17 @@ namespace tao::pegtl
 #endif
 
       {
-         memory_input in( "a", 1, __FILE__ );
+         memory_input in( "a", 1 );
          parse< alpha, at_action >( in );
          TAO_PEGTL_TEST_ASSERT( at_counter == 1 );
       }
       {
-         memory_input in( "1", 1, __FILE__ );
+         memory_input in( "1", 1 );
          parse< not_at< alpha >, at_action >( in );
          TAO_PEGTL_TEST_ASSERT( at_counter == 1 );
       }
       {
-         memory_input in( "a", 1, __FILE__ );
+         memory_input in( "a", 1 );
          parse< not_at< alpha >, at_action >( in );
          TAO_PEGTL_TEST_ASSERT( at_counter == 1 );
       }

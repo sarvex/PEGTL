@@ -19,7 +19,7 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept
       {
-         return in.byte() == 0;
+         return in.current() == in.begin();
       }
    };
 

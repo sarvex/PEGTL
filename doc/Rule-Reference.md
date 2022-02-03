@@ -493,11 +493,9 @@ These rules respect the current `apply_mode`, but do **not** use the control cla
 
 ###### `apply< A... >`
 
-* Calls `A::apply()` for all `A`, in order, with an empty input and all states as arguments.
-* If any `A::apply()` has a boolean return type and returns `false`, no further `A::apply()` calls are made and the result is equivalent to `failure`, otherwise:
-* [Equivalent] to `success` wrt. parsing.
+* [Equivalent] to `if_apply< success, A... >`.
 * [Meta data] and [implementation] mapping:
-  - `apply< A... >::rule_t` is `internal::apply< A... >`
+  - `apply< A... >::rule_t` is `internal::if_apply< internal::success, A... >`
 
 ###### `apply0< A... >`
 
@@ -526,7 +524,7 @@ Atomic rules do not rely on other rules.
 
 * Succeeds at "beginning-of-file", i.e. when the input's `byte()` member function returns zero.
 * Does not consume input.
-* Does **not** work with inputs that don't have a `byte()` member function.
+* Requires an input with a `begin()` member function.
 * [Meta data] and [implementation] mapping:
   - `bof::rule_t` is `internal::bof`
 
@@ -555,9 +553,8 @@ Atomic rules do not rely on other rules.
 
 ###### `eol`
 
-* Depends on the `Eol` template parameter of the input, by default:
-* Matches and consumes a Unix or MS-DOS line ending, that is:
-* [Equivalent] to `sor< one< '\n' >, string< '\r', '\n' > >`.
+* Delegates matching to the input's `match_eol()` function,
+* which is usually supplied by `internal::input_with_eol<>`.
 * [Meta data] and [implementation] mapping:
   - `eol::rule_t` is `internal::eol`
 
@@ -573,7 +570,7 @@ Atomic rules do not rely on other rules.
 * Limited by the buffer size when using an [Incremental Input].
 * [Equivalent] to `until< eof, any >`.
 * [Meta data] and [implementation] mapping:
-  - `everything::rule_t` is `internal::everything< std::size_t >`
+  - `everything::rule_t` is `internal::everything`
 
 ###### `failure`
 
@@ -656,6 +653,20 @@ ASCII rules do not usually rely on other rules.
 * [Meta data] and [implementation] mapping:
   - `ascii::blank::rule_t` is `internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' >`
 
+###### `cr`
+
+* Matches and consumes a single ASCII carriage-return character.
+* [Equivalent] to `one< '\r' >`.
+* [Meta data] and [implementation] mapping:
+  - `ascii::cr::rule_t` is `internal::one< internal::result_on_found::success, internal::peek_char, '\r' >`
+
+###### `cr_lf`
+
+* Matches and consumes a single ASCII carriage-return or line-feed character.
+* [Equivalent] to `one< '\r', '\n' >`.
+* [Meta data] and [implementation] mapping:
+  - `ascii::cr_lf::rule_t` is `internal::one< internal::result_on_found::success, internal::peek_char, '\r', '\n >`
+
 ###### `digit`
 
 * Matches and consumes a single ASCII decimal digit character.
@@ -713,6 +724,13 @@ ASCII rules do not usually rely on other rules.
 * `C` must be a non-empty character pack.
 * [Meta data] and [implementation] mapping:
   - `ascii::keyword< C... >::rule_t` is `internal::seq< internal::string< C... >, internal::not_at< internal::ranges< internal::peek_char, 'a', 'z', 'A', 'Z', '0', '9', '_' > > >`
+
+###### `lf`
+
+* Matches and consumes a single ASCII line-feed character.
+* [Equivalent] to `one< '\n' >`.
+* [Meta data] and [implementation] mapping:
+  - `ascii::lf::rule_t` is `internal::one< internal::result_on_found::success, internal::peek_char, '\n' >`
 
 ###### `lower`
 
@@ -1421,6 +1439,8 @@ Binary rules do not rely on other rules.
 * [`canonical_combining_class< V >`](#canonical_combining_class-v-) <sup>[(icu rules)](#icu-rules-for-value-properties)</sup>
 * [`case_sensitive`](#case_sensitive) <sup>[(icu rules)](#icu-rules-for-binary-properties)</sup>
 * [`control< C, R... >`](#control-c-r-) <sup>[(meta rules)](#meta-rules)</sup>
+* [`cr`](#cr) <sup>[(ascii rules)](#ascii-rules)</sup>
+* [`cr_lf`](#cr_lf) <sup>[(ascii rules)](#ascii-rules)</sup>
 * [`dash`](#dash) <sup>[(icu rules)](#icu-rules-for-binary-properties)</sup>
 * [`decomposition_type< V >`](#decomposition_type-v-) <sup>[(icu rules)](#icu-rules-for-enumerated-properties)</sup>
 * [`default_ignorable_code_point`](#default_ignorable_code_point) <sup>[(icu rules)](#icu-rules-for-binary-properties)</sup>
@@ -1465,6 +1485,7 @@ Binary rules do not rely on other rules.
 * [`joining_type< V >`](#joining_type-v-) <sup>[(icu rules)](#icu-rules-for-enumerated-properties)</sup>
 * [`keyword< C... >`](#keyword-c-) <sup>[(ascii rules)](#ascii-rules)</sup>
 * [`lead_canonical_combining_class< V >`](#lead_canonical_combining_class-v-) <sup>[(icu rules)](#icu-rules-for-value-properties)</sup>
+* [`lf`](#lf) <sup>[(ascii rules)](#ascii-rules)</sup>
 * [`line_break< V >`](#line_break-v-) <sup>[(icu rules)](#icu-rules-for-enumerated-properties)</sup>
 * [`list< R, S >`](#list-r-s-) <sup>[(convenience)](#convenience)</sup>
 * [`list< R, S, P >`](#list-r-s-p-) <sup>[(convenience)](#convenience)</sup>

@@ -8,7 +8,6 @@
 #include <cstring>
 #include <utility>
 
-#include "bump_help.hpp"
 #include "enable_control.hpp"
 #include "one.hpp"
 #include "result_on_found.hpp"
@@ -58,7 +57,7 @@ namespace tao::pegtl::internal
       {
          if( in.size( sizeof...( Cs ) ) >= sizeof...( Cs ) ) {
             if( unsafe_equals( in.current(), { Cs... } ) ) {
-               bump_help< string >( in, sizeof...( Cs ) );
+               in.template consume< string >( sizeof...( Cs ) );
                return true;
             }
          }

@@ -191,7 +191,7 @@ namespace tao::pegtl::internal
    };
 
 #else
-#error Unknown host byte order!
+#error Unknown byte order!
 #endif
 
 }  // namespace tao::pegtl::internal

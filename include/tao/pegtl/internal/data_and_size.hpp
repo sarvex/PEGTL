@@ -23,8 +23,6 @@ namespace tao::pegtl::internal
       }
    };
 
-   using bool_and_size = data_and_size< bool >;
-
 }  // namespace tao::pegtl::internal
 
 #endif

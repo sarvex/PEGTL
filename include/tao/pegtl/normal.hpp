@@ -14,6 +14,7 @@
 #include "parse_error.hpp"
 #include "rewind_mode.hpp"
 
+#include "internal/action_input.hpp"
 #include "internal/enable_control.hpp"
 #include "internal/has_error_message.hpp"
 #include "internal/has_match.hpp"
@@ -49,10 +50,10 @@ namespace tao::pegtl
       {
 #if defined( __cpp_exceptions )
          if constexpr( internal::has_error_message< Rule > ) {
-            throw parse_error( Rule::error_message, in );
+            throw parse_error( Rule::error_message, in.current_position() );
          }
          else {
-            throw parse_error( "parse error matching " + std::string( demangle< Rule >() ), in );
+            throw parse_error( "parse error matching " + std::string( demangle< Rule >() ), in.current_position() );
          }
 #else
          static_assert( internal::dependent_false< Rule >, "exception support required for normal< Rule >::raise()" );
@@ -61,15 +62,32 @@ namespace tao::pegtl
 #endif
       }
 
+      template< typename Ambience, typename... States >
+      [[noreturn]] static void raise_nested( const Ambience& am, States&&... /*unused*/ )
+      {
+#if defined( __cpp_exceptions )
+         if constexpr( internal::has_error_message< Rule > ) {
+            std::throw_with_nested( parse_error( Rule::error_message, am.current_position() ) );  // TODO: Make this work when am is already a position.
+         }
+         else {
+            std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), am.current_position() ) );  // TODO: Make this work when am is already a position.
+         }
+#else
+         static_assert( internal::dependent_false< Rule >, "exception support required for normal< Rule >::raise_nested()" );
+         (void)am;
+         std::terminate();
+#endif
+      }
+
       template< template< typename... > class Action,
-                typename Frobnicator,
+                typename Position,
                 typename ParseInput,
                 typename... States >
-      static auto apply( const Frobnicator& begin, const ParseInput& in, States&&... st ) noexcept( noexcept( Action< Rule >::apply( std::declval< const typename ParseInput::action_t& >(), st... ) ) )
-         -> decltype( Action< Rule >::apply( std::declval< const typename ParseInput::action_t& >(), st... ) )
+      static auto apply( const Position& saved, const ParseInput& in, States&&... st ) noexcept( noexcept( Action< Rule >::apply( std::declval< const internal::action_input< ParseInput >& >(), st... ) ) )
+         -> decltype( Action< Rule >::apply( std::declval< const typename internal::action_input< ParseInput >& >(), st... ) )
       {
-         const typename ParseInput::action_t action_input( begin, in );
-         return Action< Rule >::apply( action_input, st... );
+         const internal::action_input< ParseInput > ai( saved, in );
+         return Action< Rule >::apply( ai, st... );
       }
 
       template< template< typename... > class Action,
