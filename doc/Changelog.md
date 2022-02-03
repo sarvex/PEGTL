@@ -14,6 +14,12 @@
 * Moved depth counter to adapter class in contrib.
 * **Many small and large changes that are not documented yet.**
 
+## 3.2.3
+
+Released: 2022-02-03
+
+* Fixed `static_assert` in `demangle()` with recent MSVC.
+
 ## 3.2.2
 
 Released 2021-10-22
@@ -652,6 +658,7 @@ Released 2008
 Development of the PEGTL started in November 2007 as an experiment in C++0x.
 It is based on ideas from the YARD library by Christopher Diggins.
 
+<<<<<<< HEAD
 ---
 
 This document is part of the [PEGTL](https://github.com/taocpp/PEGTL).
@@ -659,3 +666,6 @@ This document is part of the [PEGTL](https://github.com/taocpp/PEGTL).
 Copyright (c) 2007-2022 Dr. Colin Hirsch and Daniel Frey
 Distributed under the Boost Software License, Version 1.0<br>
 See accompanying file [LICENSE_1_0.txt](../LICENSE_1_0.txt) or copy at https://www.boost.org/LICENSE_1_0.txt
+=======
+Copyright (c) 2007-2022 Dr. Colin Hirsch and Daniel Frey
+>>>>>>> 3.x
