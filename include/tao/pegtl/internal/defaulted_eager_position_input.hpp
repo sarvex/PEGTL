@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_INTERNAL_EAGER_POSITION_INPUT_HPP
-#define TAO_PEGTL_INTERNAL_EAGER_POSITION_INPUT_HPP
+#ifndef TAO_PEGTL_INTERNAL_DEFAULTED_EAGER_POSITION_INPUT_HPP
+#define TAO_PEGTL_INTERNAL_DEFAULTED_EAGER_POSITION_INPUT_HPP
 
 #include <cstddef>
 #include <utility>
@@ -11,7 +11,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Position, typename Input >
-   class eager_position_input
+   class defaulted_eager_position_input
       : public Input
    {
    public:
@@ -21,20 +21,6 @@ namespace tao::pegtl::internal
       using position_t = Position;
 
       using Input::Input;
-
-      template< typename... As >
-      explicit eager_position_input( Position&& p, As&&... as )  // noexcept( auto )
-         : Input( std::forward< As >( as )... ),
-           m_position( std::move( p ) )
-      {}
-
-      template< typename... As >
-      explicit eager_position_input( const Position& p, As&&... as )  // noexcept( auto )
-         : Input( std::forward< As >( as )... ),
-           m_position( p )
-      {}
-
-      void restart() noexcept = delete;  // TODO: Split class like lazy.
 
       template< typename Rule >
       void consume( const std::size_t count )  // noexcept( auto )
@@ -46,9 +32,9 @@ namespace tao::pegtl::internal
       using rewind_position_t = decltype( std::declval< Position >().rewind_save( std::declval< pointer_t >() ) );
 
       template< rewind_mode M >
-      [[nodiscard]] rewind_guard< M, eager_position_input > make_rewind_guard() noexcept
+      [[nodiscard]] rewind_guard< M, defaulted_eager_position_input > make_rewind_guard() noexcept
       {
-         return rewind_guard< M, eager_position_input >( this );
+         return rewind_guard< M, defaulted_eager_position_input >( this );
       }
 
       [[nodiscard]] auto rewind_position() const noexcept

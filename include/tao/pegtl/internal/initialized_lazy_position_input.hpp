@@ -12,7 +12,7 @@
 #include "../nothing.hpp"
 #include "../rewind_mode.hpp"
 
-#include "eager_position_input.hpp"
+#include "initialized_eager_position_input.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -46,7 +46,7 @@ namespace tao::pegtl::internal
 
       [[nodiscard]] Position previous_position( const pointer_t where ) const  // noexcept( auto )
       {
-         eager_position_input< Position, typename Input::memory_input_t >in( m_position, this->begin(), where );
+         initialized_eager_position_input< Position, typename Input::memory_input_t >in( m_position, this->begin(), where );
          (void)normal< typename Position::lazy_rule >::template match< apply_mode::nothing, rewind_mode::dontcare, nothing, normal >( in );
          return std::move( in.private_position() );
       }

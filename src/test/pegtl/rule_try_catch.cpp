@@ -16,11 +16,11 @@ int main()
 namespace tao::pegtl
 {
    template< typename... Rules >
-   using test_try_catch_rule = try_catch< must< Rules... > >;
+   using test_try_catch_rule = try_catch_return_false< must< Rules... > >;
 
    void unit_test()
    {
-      verify_seqs< try_catch >();
+      verify_seqs< try_catch_return_false >();
       verify_seqs< test_try_catch_rule >();
    }
 

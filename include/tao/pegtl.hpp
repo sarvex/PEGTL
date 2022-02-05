@@ -26,6 +26,7 @@
 
 #if defined( __cpp_exceptions )
 #include "pegtl/must_if.hpp"
+#include "pegtl/nested_exceptions.hpp"
 #endif
 
 #endif

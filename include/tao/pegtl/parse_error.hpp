@@ -22,18 +22,25 @@ namespace tao::pegtl
          return std::runtime_error::what() + m_prefix;
       }
 
+      [[nodiscard]] const std::string& position_string() const noexcept
+      {
+         return m_position_string;
+      }
+
    protected:
       parse_error_base( const std::string& msg, const std::string& pos )
-         : parse_error_base( msg, pos, msg + ": " + pos )
+         : parse_error_base( msg, pos, pos + ": " + msg )
       {}
 
    private:
       parse_error_base( const std::string& /*unused*/, const std::string& pos, const std::string& cat )
          : std::runtime_error( cat ),
-           m_prefix( pos.size() + 2 )
+           m_prefix( pos.size() + 2 ),
+           m_position_string( pos )
       {}
 
       std::size_t m_prefix;
+      std::string m_position_string;
    };
 
    template< typename Position >
@@ -65,7 +72,7 @@ namespace tao::pegtl
          return m_position;
       }
 
-   private:
+   protected:
       Position m_position;
 
       template< typename T >

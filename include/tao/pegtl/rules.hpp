@@ -67,8 +67,10 @@ namespace tao::pegtl
       static constexpr const char error_message[] = { Cs..., 0 };
    };
    template< typename Cond, typename... Rules > struct star_must : internal::star_must< Cond, Rules... > {};
-   template< typename... Rules > struct try_catch : internal::try_catch_type< parse_error_base, Rules... > {};
-   template< typename Exception, typename... Rules > struct try_catch_type : internal::seq< internal::try_catch_type< Exception, Rules... > > {};
+   template< typename... Rules > struct try_catch_raise_nested : internal::try_catch_raise_nested< parse_error_base, Rules... > {};
+   template< typename... Rules > struct try_catch_return_false : internal::try_catch_return_false< parse_error_base, Rules... > {};
+   template< typename Exception, typename... Rules > struct try_catch_type_raise_nested : internal::try_catch_raise_nested< Exception, Rules... > {};
+   template< typename Exception, typename... Rules > struct try_catch_type_return_false : internal::try_catch_return_false< Exception, Rules... > {};
 #endif
    // clang-format on
 

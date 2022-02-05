@@ -9,7 +9,7 @@
 
 namespace tao::pegtl::internal
 {
-   template< typename, typename >
+   template< typename, typename = void >
    inline constexpr bool has_current_position = false;
 
    template< typename C >

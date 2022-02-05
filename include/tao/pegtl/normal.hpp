@@ -16,6 +16,7 @@
 
 #include "internal/action_input.hpp"
 #include "internal/enable_control.hpp"
+#include "internal/has_current_position.hpp"
 #include "internal/has_error_message.hpp"
 #include "internal/has_match.hpp"
 
@@ -67,10 +68,20 @@ namespace tao::pegtl
       {
 #if defined( __cpp_exceptions )
          if constexpr( internal::has_error_message< Rule > ) {
-            std::throw_with_nested( parse_error( Rule::error_message, am.current_position() ) );  // TODO: Make this work when am is already a position.
+            if constexpr( internal::has_current_position< Ambience > ) {
+               std::throw_with_nested( parse_error( Rule::error_message, am.current_position() ) );
+            }
+            else {
+               std::throw_with_nested( parse_error( Rule::error_message, am ) );
+            }
          }
          else {
-            std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), am.current_position() ) );  // TODO: Make this work when am is already a position.
+            if constexpr( internal::has_current_position< Ambience > ) {
+               std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), am.current_position() ) );
+            }
+            else {
+               std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), am ) );
+            }
          }
 #else
          static_assert( internal::dependent_false< Rule >, "exception support required for normal< Rule >::raise_nested()" );

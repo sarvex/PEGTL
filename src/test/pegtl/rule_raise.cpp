@@ -14,10 +14,10 @@ int main()
 
 #include "verify_meta.hpp"
 
-#if defined( _MSC_VER )
-#pragma warning( push )
-#pragma warning( disable : 4702 )
-#endif
+// #if defined( _MSC_VER )
+// #pragma warning( push )
+// #pragma warning( disable : 4702 )
+// #endif
 
 namespace tao::pegtl
 {
@@ -39,9 +39,9 @@ namespace tao::pegtl
 
 }  // namespace tao::pegtl
 
-#if defined( _MSC_VER )
-#pragma warning( pop )
-#endif
+// #if defined( _MSC_VER )
+// #pragma warning( pop )
+// #endif
 
 #include "main.hpp"
 

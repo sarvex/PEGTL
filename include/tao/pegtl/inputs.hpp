@@ -24,9 +24,12 @@
 #include "internal/byte_position.hpp"
 #include "internal/text_position.hpp"
 
+#include "internal/defaulted_eager_position_input.hpp"
 #include "internal/defaulted_lazy_position_input.hpp"
-#include "internal/eager_position_input.hpp"
+#include "internal/initialized_eager_position_input.hpp"
 #include "internal/initialized_lazy_position_input.hpp"
+
+#include "internal/initialized_restartable_eager_position_input.hpp"
 
 namespace tao::pegtl
 {
