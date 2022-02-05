@@ -4,19 +4,33 @@
 
 **Not yet released**
 
-* Added new atomic rule `everything`.
-* Removed the `TAO_PEGTL_NAMESPACE` macro.
 * Switched to Boost Software License, Version 1.0.
 * Added new customization point for error messages.
 * Added optional source line output for the tracer.
-* Removed support for building an amalgamated header.
-* Changed default top-level `rewind_mode` to `dontcare`.
+* Added new atomic rule `everything`.
 * Moved depth counter to adapter class in contrib.
+* Changed default top-level `rewind_mode` to `dontcare`.
+* Removed the `TAO_PEGTL_NAMESPACE` macro.
+* Removed support for building an amalgamated header.
+* Removed support for Visual Studio 2017.
+* Removed support for GCC 7.
 * **Many small and large changes that are not documented yet.**
+
+## 3.2.5
+
+Released 2022-02-05
+
+* Added missing include for fallback `demangle()` implementations.
+
+## 3.2.4
+
+Released 2022-02-03
+
+* Fixed `version.hpp`.
 
 ## 3.2.3
 
-Released: 2022-02-03
+Released 2022-02-03
 
 * Fixed `static_assert` in `demangle()` with recent MSVC.
 
@@ -658,7 +672,6 @@ Released 2008
 Development of the PEGTL started in November 2007 as an experiment in C++0x.
 It is based on ideas from the YARD library by Christopher Diggins.
 
-<<<<<<< HEAD
 ---
 
 This document is part of the [PEGTL](https://github.com/taocpp/PEGTL).
@@ -666,6 +679,3 @@ This document is part of the [PEGTL](https://github.com/taocpp/PEGTL).
 Copyright (c) 2007-2022 Dr. Colin Hirsch and Daniel Frey
 Distributed under the Boost Software License, Version 1.0<br>
 See accompanying file [LICENSE_1_0.txt](../LICENSE_1_0.txt) or copy at https://www.boost.org/LICENSE_1_0.txt
-=======
-Copyright (c) 2007-2022 Dr. Colin Hirsch and Daniel Frey
->>>>>>> 3.x
