@@ -5,28 +5,11 @@
 #ifndef TAO_PEGTL_INTERNAL_PEEK_CHAR_HPP
 #define TAO_PEGTL_INTERNAL_PEEK_CHAR_HPP
 
-#include <cstddef>
-
-#include "data_and_size.hpp"
+#include "peek_copy.hpp"
 
 namespace tao::pegtl::internal
 {
-   struct peek_char
-   {
-      using data_t = char;
-      using pair_t = data_and_size< char >;
-
-      template< typename ParseInput >
-      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.empty() ) )
-      {
-         static_assert( sizeof( typename ParseInput::data_t ) == 1 );
-
-         if( in.empty() ) {
-            return { 0, 0 };
-         }
-         return { *static_cast< const char* >( in.current() ), 1 };
-      }
-   };
+   using peek_char = peek_copy< char >;
 
 }  // namespace tao::pegtl::internal
 

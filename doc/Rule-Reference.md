@@ -832,6 +832,7 @@ ASCII rules do not usually rely on other rules.
 * [Equivalent] to `seq< one< C >... >`.
 * [Meta data] and [implementation] mapping:
   - `ascii::string<>::rule_t` is `internal::success`
+  - `ascii::string< C >::rule_t` is `internal::one< result_on_found::success, internal::peek_char, C >`
   - `ascii::string< C... >::rule_t` is `internal::string< C... >`
 
 ###### `TAO_PEGTL_ISTRING( "..." )`

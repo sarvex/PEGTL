@@ -9,13 +9,14 @@
 
 namespace tao::pegtl::internal
 {
-   template< typename Data >
+   template< typename Data, typename Size = std::uint8_t >
    struct data_and_size
    {
       Data data;
       std::uint8_t size;
 
       using data_t = Data;
+      using size_t = Size;
 
       [[nodiscard]] explicit operator bool() const noexcept
       {

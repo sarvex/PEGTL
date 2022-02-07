@@ -30,22 +30,16 @@ namespace tao::pegtl::internal
       : success
    {};
 
-   // template< char C >
-   // struct string
-   //    : one< C >
-   // {};
+   template< char C >
+   struct string< C >
+      : one< result_on_found::success, peek_char, C >
+   {};
 
    template< char... Cs >
    struct string
    {
       using rule_t = string;
       using subs_t = empty_list;
-
-      [[nodiscard]] static constexpr bool test_one( const char c ) noexcept
-      {
-         static_assert( sizeof...( Cs ) == 1 );
-         return one< result_on_found::success, peek_char, Cs... >::test_one( c );
-      }
 
       [[nodiscard]] static constexpr bool test_any( const char c ) noexcept
       {

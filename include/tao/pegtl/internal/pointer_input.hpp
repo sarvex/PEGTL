@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "byte_position.hpp"
+#include "count_position.hpp"
 #include "memory_input.hpp"
 #include "pointer_position.hpp"
 #include "rewind_guard.hpp"
@@ -102,7 +102,7 @@ namespace tao::pegtl::internal
 
       [[nodiscard]] auto previous_position( const pointer_t previous ) const noexcept
       {
-         return byte_position< std::size_t >( previous - begin() );
+         return count_position< std::size_t >( previous - begin() );
       }
 
       [[nodiscard]] Pointer&& pointer() && noexcept

@@ -6,14 +6,16 @@
 #define TAO_PEGTL_CONTRIB_INTERNAL_PEEK_UTF32_HPP
 
 #include <cstddef>
+#include <cstdint>
 
 #include "../../internal/data_and_size.hpp"
 
-#include "read_uint.hpp"
+#include "endian.hpp"
+#include "peek_endian_impl.hpp"
 
 namespace tao::pegtl::internal
 {
-   template< typename R >
+   template< typename Endian >
    struct peek_utf32_impl
    {
       using data_t = char32_t;
@@ -22,21 +24,19 @@ namespace tao::pegtl::internal
       static_assert( sizeof( char32_t ) == 4 );
 
       template< typename ParseInput >
-      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( 4 ) ) )
+      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( 42 ) ) )
       {
-         if( in.size( 4 ) < 4 ) {
-            return { 0, 0 };
-         }
-         const char32_t t = R::read( in.current() );
-         if( ( t <= 0x10ffff ) && !( t >= 0xd800 && t <= 0xdfff ) ) {
-            return { t, 4 };
+         const pair_t r = peek_endian_impl< char32, Endian >::peek( in );
+
+         if( ( r.data <= 0x10ffff ) && !( r.data >= 0xd800 && r.data <= 0xdfff ) ) {
+            return r;
          }
          return { 0, 0 };
       }
    };
 
-   using peek_utf32_be = peek_utf32_impl< read_uint32_be >;
-   using peek_utf32_le = peek_utf32_impl< read_uint32_le >;
+   using peek_utf32_be = peek_utf32_impl< from_be >;
+   using peek_utf32_le = peek_utf32_impl< from_le >;
 
 }  // namespace tao::pegtl::internal
 

@@ -5,44 +5,13 @@
 #ifndef TAO_PEGTL_PARSE_ERROR_HPP
 #define TAO_PEGTL_PARSE_ERROR_HPP
 
-#include <cstddef>
 #include <sstream>
-#include <stdexcept>
-#include <string>
 #include <utility>
+
+#include "parse_error_base.hpp"
 
 namespace tao::pegtl
 {
-   class parse_error_base
-      : public std::runtime_error
-   {
-   public:
-      [[nodiscard]] const char* message() const noexcept
-      {
-         return std::runtime_error::what() + m_prefix;
-      }
-
-      [[nodiscard]] const std::string& position_string() const noexcept
-      {
-         return m_position_string;
-      }
-
-   protected:
-      parse_error_base( const std::string& msg, const std::string& pos )
-         : parse_error_base( msg, pos, pos + ": " + msg )
-      {}
-
-   private:
-      parse_error_base( const std::string& /*unused*/, const std::string& pos, const std::string& cat )
-         : std::runtime_error( cat ),
-           m_prefix( pos.size() + 2 ),
-           m_position_string( pos )
-      {}
-
-      std::size_t m_prefix;
-      std::string m_position_string;
-   };
-
    template< typename Position >
    class parse_error
       : public parse_error_base

@@ -32,7 +32,7 @@ namespace tao::pegtl
    bool verify_data( const char ( &m )[ M ], const char ( &n )[ N ] )
    {
       std::string s;
-      memory_input in( m, M - 1, __FUNCTION__ );
+      memory_input in( m, M - 1 );
       if( !parse< unstring, unaction >( in, s ) ) {
          return false;  // LCOV_EXCL_LINE
       }
@@ -42,7 +42,7 @@ namespace tao::pegtl
    bool verify_fail( const std::string& m )
    {
       std::string s;
-      memory_input in( m, __FUNCTION__ );
+      memory_input in( m.data(), m.size() );
 #if defined( __cpp_exceptions )
       try {
          return !parse< unstring, unaction >( in, s );

@@ -5,7 +5,7 @@
 #ifndef TAO_PEGTL_INTERNAL_INPUT_WITH_BEGIN_HPP
 #define TAO_PEGTL_INTERNAL_INPUT_WITH_BEGIN_HPP
 
-#include "byte_position.hpp"
+#include "count_position.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -45,7 +45,7 @@ namespace tao::pegtl::internal
 
       [[nodiscard]] auto previous_position( const pointer_t previous ) const noexcept
       {
-         return byte_position( previous - m_begin );
+         return count_position( previous - m_begin );
       }
 
    protected:

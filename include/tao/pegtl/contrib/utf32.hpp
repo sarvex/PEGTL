@@ -42,15 +42,7 @@ namespace tao::pegtl
 
    }  // namespace utf32_le
 
-#if defined( _WIN32 ) && !defined( __MINGW32__ ) && !defined( __CYGWIN__ )
-   namespace utf32 = utf32_le;
-#elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-   namespace utf32 = utf32_le;
-#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-   namespace utf32 = utf32_be;
-#else
-#error Unknown endianness.
-#endif
+   namespace utf32 = TAO_PEGTL_ENDIAN_SUFFIXED( utf32_ );
 
 }  // namespace tao::pegtl
 

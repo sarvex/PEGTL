@@ -10,44 +10,39 @@
 
 #include "../../internal/data_and_size.hpp"
 
-#include "read_uint.hpp"
+#include "endian.hpp"
+#include "peek_endian_impl.hpp"
 
 namespace tao::pegtl::internal
 {
-   template< typename R, typename R::type M >
+   template< typename Data, Data Mask, typename Endian >
    struct peek_mask_uint_impl
    {
-      using data_t = typename R::type;
+      using data_t = Data;
       using pair_t = data_and_size< data_t >;
 
       template< typename ParseInput >
       [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( sizeof( data_t ) ) ) )
       {
-         if( in.size( sizeof( data_t ) ) < sizeof( data_t ) ) {
-            return { 0, 0 };
-         }
-         const data_t data = R::read( in.current() ) & M;
-         return { data, sizeof( data_t ) };
+         pair_t r = peek_endian_impl< Data, Endian >::peek( in );
+         r.data &= Mask;
+         return r;
       }
    };
 
-   template< std::uint16_t M >
-   using peek_mask_uint16_be = peek_mask_uint_impl< read_uint16_be, M >;
+   template< std::uint16_t Mask >
+   using peek_mask_uint16_be = peek_mask_uint_impl< std::uint16_t, Mask, from_be >;
+   template< std::uint32_t Mask >
+   using peek_mask_uint32_be = peek_mask_uint_impl< std::uint32_t, Mask, from_be >;
+   template< std::uint64_t Mask >
+   using peek_mask_uint64_be = peek_mask_uint_impl< std::uint64_t, Mask, from_be >;
 
-   template< std::uint16_t M >
-   using peek_mask_uint16_le = peek_mask_uint_impl< read_uint16_le, M >;
-
-   template< std::uint32_t M >
-   using peek_mask_uint32_be = peek_mask_uint_impl< read_uint32_be, M >;
-
-   template< std::uint32_t M >
-   using peek_mask_uint32_le = peek_mask_uint_impl< read_uint32_le, M >;
-
-   template< std::uint64_t M >
-   using peek_mask_uint64_be = peek_mask_uint_impl< read_uint64_be, M >;
-
-   template< std::uint64_t M >
-   using peek_mask_uint64_le = peek_mask_uint_impl< read_uint64_le, M >;
+   template< std::uint16_t Mask >
+   using peek_mask_uint16_le = peek_mask_uint_impl< std::uint16_t, Mask, from_le >;
+   template< std::uint32_t Mask >
+   using peek_mask_uint32_le = peek_mask_uint_impl< std::uint32_t, Mask, from_le >;
+   template< std::uint64_t Mask >
+   using peek_mask_uint64_le = peek_mask_uint_impl< std::uint64_t, Mask, from_le >;
 
 }  // namespace tao::pegtl::internal
 

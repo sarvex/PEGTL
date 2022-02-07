@@ -8,37 +8,18 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "../../internal/data_and_size.hpp"
-
-#include "read_uint.hpp"
+#include "endian.hpp"
+#include "peek_endian_impl.hpp"
 
 namespace tao::pegtl::internal
 {
-   template< typename R >
-   struct peek_uint_impl
-   {
-      using data_t = typename R::type;
-      using pair_t = data_and_size< data_t >;
+   using peek_uint16_be = peek_endian_impl< std::uint16_t, from_be >;
+   using peek_uint32_be = peek_endian_impl< std::uint32_t, from_be >;
+   using peek_uint64_be = peek_endian_impl< std::uint64_t, from_be >;
 
-      template< typename ParseInput >
-      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( sizeof( data_t ) ) ) )
-      {
-         if( in.size( sizeof( data_t ) ) < sizeof( data_t ) ) {
-            return { 0, 0 };
-         }
-         const data_t data = R::read( in.current() );
-         return { data, sizeof( data_t ) };
-      }
-   };
-
-   using peek_uint16_be = peek_uint_impl< read_uint16_be >;
-   using peek_uint16_le = peek_uint_impl< read_uint16_le >;
-
-   using peek_uint32_be = peek_uint_impl< read_uint32_be >;
-   using peek_uint32_le = peek_uint_impl< read_uint32_le >;
-
-   using peek_uint64_be = peek_uint_impl< read_uint64_be >;
-   using peek_uint64_le = peek_uint_impl< read_uint64_le >;
+   using peek_uint16_le = peek_endian_impl< std::uint16_t, from_le >;
+   using peek_uint32_le = peek_endian_impl< std::uint32_t, from_le >;
+   using peek_uint64_le = peek_endian_impl< std::uint64_t, from_le >;
 
 }  // namespace tao::pegtl::internal
 

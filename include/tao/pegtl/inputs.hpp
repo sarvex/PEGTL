@@ -12,6 +12,7 @@
 #include "ascii.hpp"
 #include "rules.hpp"
 
+#include "internal/argv_input.hpp"
 #include "internal/container_input.hpp"
 #include "internal/file_input.hpp"
 #include "internal/memory_input.hpp"
@@ -21,7 +22,7 @@
 #include "internal/input_with_begin.hpp"
 #include "internal/input_with_eol.hpp"
 
-#include "internal/byte_position.hpp"
+#include "internal/count_position.hpp"
 #include "internal/text_position.hpp"
 
 #include "internal/defaulted_eager_position_input.hpp"

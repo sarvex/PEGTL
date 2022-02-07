@@ -14,6 +14,8 @@ namespace tao::pegtl::internal
    template< typename Data >
    struct [[nodiscard]] pointer_position
    {
+      const Data* current;
+
       using lazy_rule = everything;
 
       explicit pointer_position( const Data* c ) noexcept
@@ -23,8 +25,6 @@ namespace tao::pegtl::internal
       explicit pointer_position( const pointer_position& s ) noexcept
          : current( s.current )
       {}
-
-      const Data* current;
    };
 
    template< typename Data >
