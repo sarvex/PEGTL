@@ -105,7 +105,7 @@ namespace tao::pegtl
    void unit_test()
    {
       state_one state{ 0, 0 };
-      bool parse_result = parse< grammar_one_a, action_one_a >( memory_input( "aaa", __FUNCTION__ ), state );
+      bool parse_result = parse< grammar_one_a, action_one_a >( memory_input( "aaa" ), state );
       TAO_PEGTL_TEST_ASSERT( parse_result );
       TAO_PEGTL_TEST_ASSERT( state.byte_in_line_a == 1 );
       TAO_PEGTL_TEST_ASSERT( state.byte_in_line_b == 2 );

@@ -13,7 +13,7 @@
 namespace tao::pegtl::int8
 {
    // clang-format off
-   struct any : internal::any< internal::peek_int8 > {};
+   struct any : internal::many< 1, internal::peek_int8 > {};
    template< unsigned Count > struct many : internal::many< Count, internal::peek_int8 > {};
 
    template< std::int8_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_int8, Cs... > {};

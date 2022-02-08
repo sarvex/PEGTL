@@ -12,7 +12,7 @@
 namespace tao::pegtl::internal
 {
    class argv_input
-      : memory_input< char >
+      : public memory_input< char >
    {
    public:
       argv_input( char** argv, const int argn )

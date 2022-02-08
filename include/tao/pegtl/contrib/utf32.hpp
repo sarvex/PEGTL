@@ -15,7 +15,7 @@ namespace tao::pegtl
    namespace utf32_be
    {
       // clang-format off
-      struct any : internal::any< internal::peek_utf32_be > {};
+      struct any : internal::many< 1, internal::peek_utf32_be > {};
       struct bom : internal::one< internal::result_on_found::success, internal::peek_utf32_be, 0xfeff > {};
       template< unsigned Count > struct many : internal::many< Count, internal::peek_utf32_be > {};
       template< char32_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_utf32_be, Cs... > {};
@@ -31,7 +31,7 @@ namespace tao::pegtl
    namespace utf32_le
    {
       // clang-format off
-      struct any : internal::any< internal::peek_utf32_le > {};
+      struct any : internal::many< 1, internal::peek_utf32_le > {};
       struct bom : internal::one< internal::result_on_found::success, internal::peek_utf32_le, 0xfeff > {};
       template< unsigned Count > struct many : internal::many< Count, internal::peek_utf32_le > {};
       template< char32_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_utf32_le, Cs... > {};

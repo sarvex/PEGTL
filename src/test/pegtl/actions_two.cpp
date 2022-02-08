@@ -50,7 +50,7 @@ namespace tao::pegtl
       void state_test()
       {
          std::string result;
-         memory_input in( "dk41sk41xk3", __FUNCTION__ );
+         memory_input in( "dk41sk41xk3" );
          parse< fibble, action1 >( in, result );
          TAO_PEGTL_TEST_ASSERT( result == "dkskxk" );
       }
@@ -81,11 +81,11 @@ namespace tao::pegtl
 
       void apply0_test()
       {
-         memory_input ina( "abcdefgh", __FUNCTION__ );
+         memory_input ina( "abcdefgh" );
          parse< star< alpha >, action0 >( ina );
          TAO_PEGTL_TEST_ASSERT( i0 == 8 );
          std::string s0;
-         memory_input ind( "12345678", __FUNCTION__ );
+         memory_input ind( "12345678" );
          parse< star< digit >, action0 >( ind, s0 );
          TAO_PEGTL_TEST_ASSERT( s0 == "00000000" );
       }

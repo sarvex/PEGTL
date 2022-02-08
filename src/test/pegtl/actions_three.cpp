@@ -53,7 +53,7 @@ namespace tao::pegtl
       void apply_bool_true()
       {
          apply_result = true;
-         memory_input in( "ab", __FUNCTION__ );
+         memory_input in( "ab" );
          const auto result = parse< grammar, apply_bool_action >( in );
          TAO_PEGTL_TEST_ASSERT( result );
          TAO_PEGTL_TEST_ASSERT( in.size() == 1 );
@@ -63,7 +63,7 @@ namespace tao::pegtl
       void apply_bool_false()
       {
          apply_result = false;
-         memory_input in( "ab", __FUNCTION__ );
+         memory_input in( "ab" );
          const auto result = parse< grammar, apply_bool_action >( in );
          TAO_PEGTL_TEST_ASSERT( !result );
          TAO_PEGTL_TEST_ASSERT( in.size() == 2 );
@@ -86,7 +86,7 @@ namespace tao::pegtl
       void apply0_bool_true()
       {
          apply_result = true;
-         memory_input in( "ab", __FUNCTION__ );
+         memory_input in( "ab" );
          const auto result = parse< grammar, apply0_bool_action >( in );
          TAO_PEGTL_TEST_ASSERT( result );
          TAO_PEGTL_TEST_ASSERT( in.size() == 1 );
@@ -96,7 +96,7 @@ namespace tao::pegtl
       void apply0_bool_false()
       {
          apply_result = false;
-         memory_input in( "ab", __FUNCTION__ );
+         memory_input in( "ab" );
          const auto result = parse< grammar, apply0_bool_action >( in );
          TAO_PEGTL_TEST_ASSERT( !result );
          TAO_PEGTL_TEST_ASSERT( in.size() == 2 );

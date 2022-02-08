@@ -36,6 +36,7 @@ set(test_sources
   contrib_integer.cpp
   contrib_iri.cpp
   contrib_json.cpp
+  contrib_limit_bytes.cpp
   contrib_limit_depth.cpp
   contrib_parse_tree.cpp
   contrib_parse_tree_to_dot.cpp
@@ -71,7 +72,6 @@ set(test_sources
   internal_endian.cpp
   internal_file_mapper.cpp
   internal_file_opener.cpp
-  limit_bytes.cpp
   parse_error.cpp
   pegtl_string_t.cpp
   position.cpp

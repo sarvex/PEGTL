@@ -30,7 +30,7 @@ namespace tao::pegtl::internal
          if( in.empty() ) {
             return { 0, 0 };
          }
-         return { std::uint8_t( *in.current() ) & Mask, 1 };
+         return { static_cast< std::uint8_t >( static_cast< std::uint8_t >( *in.current() ) & Mask ), 1 };
       }
    };
 

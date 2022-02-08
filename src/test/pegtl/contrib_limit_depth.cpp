@@ -29,22 +29,22 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      using memory_input_with_depth = input_with_depth< memory_input<> >;
+      using memory_input_with_depth = input_with_depth< internal::memory_input< char > >;
 
-      memory_input_with_depth i1( "aaa", __FUNCTION__ );
+      memory_input_with_depth i1( "aaa" );
       const auto r1 = pegtl::parse< test_grammar >( i1 );
       TAO_PEGTL_TEST_ASSERT( r1 );
 
-      memory_input_with_depth i2( "aaaaaaaaaaa", __FUNCTION__ );
+      memory_input_with_depth i2( "aaaaaaaaaaa" );
       const auto r2 = pegtl::parse< test_grammar >( i2 );
       TAO_PEGTL_TEST_ASSERT( r2 );
 
-      memory_input_with_depth i3( "aaa", __FUNCTION__ );
+      memory_input_with_depth i3( "aaa" );
       const auto r3 = pegtl::parse< test_grammar, test_action >( i3 );
       TAO_PEGTL_TEST_ASSERT( r3 );
 
 #if defined( __cpp_exceptions )
-      memory_input_with_depth i4( "aaaaaaaaaaa", __FUNCTION__ );
+      memory_input_with_depth i4( "aaaaaaaaaaa" );
       TAO_PEGTL_TEST_THROWS( pegtl::parse< test_grammar, test_action >( i4 ) );
 #endif
    }

@@ -24,7 +24,7 @@ namespace tao::pegtl::abnf
    struct HTAB : internal::one< internal::result_on_found::success, internal::peek_char, '\t' > {};
    struct LF : internal::one< internal::result_on_found::success, internal::peek_char, '\n' > {};
    struct LWSP : internal::star< internal::sor< internal::string< '\r', '\n' >, internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' > >, internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' > > {};
-   struct OCTET : internal::any< internal::peek_char > {};
+   struct OCTET : internal::many< 1, internal::peek_char > {};
    struct SP : internal::one< internal::result_on_found::success, internal::peek_char, ' ' > {};
    struct VCHAR : internal::range< internal::result_on_found::success, internal::peek_char, char( 33 ), char( 126 ) > {};
    struct WSP : internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' > {};

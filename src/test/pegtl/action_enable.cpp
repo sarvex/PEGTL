@@ -49,7 +49,7 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      memory_input<> in( "abcba", "" );
+      memory_input in( "abcba" );
       int a = 0;
       int b = 0;
       int c = 0;
