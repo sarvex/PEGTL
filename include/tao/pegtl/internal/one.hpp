@@ -7,9 +7,9 @@
 
 #include <cstddef>
 
-#include "any.hpp"
 #include "enable_control.hpp"
 #include "failure.hpp"
+#include "many.hpp"
 #include "result_on_found.hpp"
 
 #include "../type_list.hpp"
@@ -28,11 +28,6 @@ namespace tao::pegtl::internal
       [[nodiscard]] static constexpr bool test_one( const data_t c ) noexcept
       {
          return ( ( c == Cs ) || ... ) == bool( R );
-      }
-
-      [[nodiscard]] static constexpr bool test_any( const data_t c ) noexcept
-      {
-         return test_one( c );
       }
 
       template< typename ParseInput >
@@ -55,7 +50,7 @@ namespace tao::pegtl::internal
 
    template< typename Peek >
    struct one< result_on_found::failure, Peek >
-      : any< Peek >
+      : many< 1, Peek >
    {};
 
    template< result_on_found R, typename Peek, typename Peek::data_t... Cs >

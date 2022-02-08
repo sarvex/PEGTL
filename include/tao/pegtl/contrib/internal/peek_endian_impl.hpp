@@ -16,6 +16,8 @@ namespace tao::pegtl::internal
       using data_t = Data;
       using pair_t = data_and_size< data_t >;
 
+      static constexpr std::size_t fixed_size = sizeof( Data );
+
       template< typename ParseInput >
       [[nodiscard]] static pair_t peek( ParseInput& in, const std::size_t offset = 0 ) noexcept( noexcept( in.size( 42 ) ) )
       {

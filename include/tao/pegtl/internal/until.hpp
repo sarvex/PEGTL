@@ -5,7 +5,6 @@
 #ifndef TAO_PEGTL_INTERNAL_UNTIL_HPP
 #define TAO_PEGTL_INTERNAL_UNTIL_HPP
 
-#include "bytes.hpp"
 #include "enable_control.hpp"
 #include "eof.hpp"
 #include "not_at.hpp"

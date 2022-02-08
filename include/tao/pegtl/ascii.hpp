@@ -15,7 +15,7 @@ namespace tao::pegtl
       // clang-format off
       struct alnum : internal::ranges< internal::peek_char, 'a', 'z', 'A', 'Z', '0', '9' > {};
       struct alpha : internal::ranges< internal::peek_char, 'a', 'z', 'A', 'Z' > {};
-      struct any : internal::any< internal::peek_char > {};
+      struct any : internal::many< 1, internal::peek_char > {};
       struct blank : internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' > {};
       struct cr : internal::one< internal::result_on_found::success, internal::peek_char, '\r' > {};
       struct cr_lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n', '\r' > {};
@@ -30,6 +30,7 @@ namespace tao::pegtl
       template< char... Cs > struct keyword : internal::seq< internal::string< Cs... >, internal::not_at< internal::identifier_other > > { static_assert( sizeof...( Cs ) > 0 ); };
       struct lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n' > {};
       struct lower : internal::range< internal::result_on_found::success, internal::peek_char, 'a', 'z' > {};
+      template< unsigned Count > struct many : internal::many< Count, internal::peek_char > {};
       template< char... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_char, Cs... > {};
       template< char Lo, char Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_char, Lo, Hi > {};
       struct nul : internal::one< internal::result_on_found::success, internal::peek_char, char( 0 ) > {};

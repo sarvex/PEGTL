@@ -72,11 +72,6 @@ namespace tao::pegtl
             return Test< Peek, Ps... >::test_impl( c );
          }
 
-         [[nodiscard]] static constexpr bool test_any( const data_t c ) noexcept
-         {
-            return Test< Peek, Ps... >::test_impl( c );
-         }
-
          template< typename ParseInput >
          [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
          {

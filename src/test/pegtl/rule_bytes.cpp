@@ -12,8 +12,8 @@ namespace tao::pegtl
    void unit_test()
    {
       verify_meta< bytes< 0 >, internal::success >();
-      verify_meta< bytes< 1 >, internal::bytes< 1 > >();
-      verify_meta< bytes< 42 >, internal::bytes< 42 > >();
+      verify_meta< bytes< 1 >, internal::many< 1, internal::peek_char, 1 > >();
+      verify_meta< bytes< 42 >, internal::many< 42, internal::peek_char, 1 > >();
 
       verify_analyze< bytes< 0 > >( __LINE__, __FILE__, false, false );
 

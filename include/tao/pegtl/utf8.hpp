@@ -12,8 +12,9 @@
 namespace tao::pegtl::utf8
 {
    // clang-format off
-   struct any : internal::any< internal::peek_utf8 > {};
-   struct bom : internal::one< internal::result_on_found::success, internal::peek_utf8, 0xfeff > {};  // Lemon curry?
+   struct any : internal::many< 1, internal::peek_utf8 > {};
+   struct bom : internal::one< internal::result_on_found::success, internal::peek_utf8, 0xfeff > {};  // Not that a BOM makes much sense for a byte-based encoding...
+   template< unsigned Count > struct many : internal::many< Count, internal::peek_utf8 > {};
    template< char32_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_utf8, Cs... > {};
    template< char32_t Lo, char32_t Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_utf8, Lo, Hi > {};
    template< char32_t... Cs > struct one : internal::one< internal::result_on_found::success, internal::peek_utf8, Cs... > {};

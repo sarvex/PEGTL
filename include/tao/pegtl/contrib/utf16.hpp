@@ -17,6 +17,7 @@ namespace tao::pegtl
       // clang-format off
       struct any : internal::any< internal::peek_utf16_be > {};
       struct bom : internal::one< internal::result_on_found::success, internal::peek_utf16_be, 0xfeff > {};
+      template< unsigned Count > struct many : internal::many< Count, internal::peek_utf16_be > {};
       template< char32_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_utf16_be, Cs... > {};
       template< char32_t Lo, char32_t Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_utf16_be, Lo, Hi > {};
       template< char32_t... Cs > struct one : internal::one< internal::result_on_found::success, internal::peek_utf16_be, Cs... > {};
@@ -32,6 +33,7 @@ namespace tao::pegtl
       // clang-format off
       struct any : internal::any< internal::peek_utf16_le > {};
       struct bom : internal::one< internal::result_on_found::success, internal::peek_utf16_le, 0xfeff > {};
+      template< unsigned Count > struct many : internal::many< Count, internal::peek_utf16_le > {};
       template< char32_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_utf16_le, Cs... > {};
       template< char32_t Lo, char32_t Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_utf16_le, Lo, Hi > {};
       template< char32_t... Cs > struct one : internal::one< internal::result_on_found::success, internal::peek_utf16_le, Cs... > {};

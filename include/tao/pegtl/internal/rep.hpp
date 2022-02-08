@@ -15,13 +15,13 @@
 
 namespace tao::pegtl::internal
 {
-   template< unsigned Cnt, typename... Rules >
+   template< unsigned Count, typename... Rules >
    struct rep
-      : rep< Cnt, seq< Rules... > >
+      : rep< Count, seq< Rules... > >
    {};
 
-   template< unsigned Cnt >
-   struct rep< Cnt >
+   template< unsigned Count >
+   struct rep< Count >
       : success
    {};
 
@@ -30,8 +30,8 @@ namespace tao::pegtl::internal
       : success
    {};
 
-   template< unsigned Cnt, typename Rule >
-   struct rep< Cnt, Rule >
+   template< unsigned Count, typename Rule >
+   struct rep< Count, Rule >
    {
       using rule_t = rep;
       using subs_t = type_list< Rule >;
@@ -49,7 +49,7 @@ namespace tao::pegtl::internal
          auto m = in.template make_rewind_guard< M >();
          using m_t = decltype( m );
 
-         for( unsigned i = 0; i != Cnt; ++i ) {
+         for( unsigned i = 0; i != Count; ++i ) {
             if( !Control< Rule >::template match< A, m_t::next_rewind_mode, Action, Control >( in, st... ) ) {
                return false;
             }
@@ -58,8 +58,8 @@ namespace tao::pegtl::internal
       }
    };
 
-   template< unsigned Cnt, typename... Rules >
-   inline constexpr bool enable_control< rep< Cnt, Rules... > > = false;
+   template< unsigned Count, typename... Rules >
+   inline constexpr bool enable_control< rep< Count, Rules... > > = false;
 
 }  // namespace tao::pegtl::internal
 

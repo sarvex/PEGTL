@@ -8,9 +8,9 @@
 #include <ostream>
 #include <type_traits>
 
-#include "any.hpp"
 #include "eol.hpp"
 #include "eof.hpp"
+#include "many.hpp"
 #include "peek_char.hpp"
 #include "sor.hpp"
 #include "until.hpp"
@@ -26,7 +26,7 @@ namespace tao::pegtl::internal
       Size line = 1;
       Size count_in_line = 1;
 
-      using lazy_rule = until< eof, sor< eol, any< peek_char > > >;
+      using lazy_rule = until< eof, sor< eol, many< 1, peek_char > > >;
 
       text_position() noexcept = default;
 

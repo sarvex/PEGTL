@@ -16,6 +16,7 @@ namespace tao::pegtl
    {
       // clang-format off
       struct any : internal::any< internal::peek_int16_be > {};
+      template< unsigned Count > struct many : internal::many< Count, internal::peek_int16_be > {};
 
       template< std::int16_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_int16_be, Cs... > {};
       template< std::int16_t Lo, std::int16_t Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_int16_be, Lo, Hi > {};
@@ -31,6 +32,7 @@ namespace tao::pegtl
    {
       // clang-format off
       struct any : internal::any< internal::peek_int16_le > {};
+      template< unsigned Count > struct many : internal::many< Count, internal::peek_int16_le > {};
 
       template< std::int16_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_int16_le, Cs... > {};
       template< std::int16_t Lo, std::int16_t Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_int16_le, Lo, Hi > {};

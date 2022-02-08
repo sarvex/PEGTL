@@ -6,13 +6,11 @@
 #define TAO_PEGTL_INTERNAL_RULES_HPP
 
 #include "action.hpp"
-#include "any.hpp"
 #include "apply.hpp"
 #include "apply0.hpp"
 #include "at.hpp"
 #include "bof.hpp"
 #include "bol.hpp"
-#include "bytes.hpp"
 #include "control.hpp"
 #include "disable.hpp"
 #include "enable.hpp"
@@ -29,6 +27,7 @@
 #include "list.hpp"
 #include "list_tail.hpp"
 #include "list_tail_pad.hpp"
+#include "many.hpp"
 #include "minus.hpp"
 #include "not_at.hpp"
 #include "one.hpp"

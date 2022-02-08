@@ -61,11 +61,6 @@ namespace tao::pegtl::internal
          return one< result_on_found::success, peek_char, Cs... >::test_one( c );
       }
 
-      [[nodiscard]] static constexpr bool test_any( const char c ) noexcept
-      {
-         return one< result_on_found::success, peek_char, Cs... >::test_one( c );
-      }
-
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( 0 ) ) )
       {

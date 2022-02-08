@@ -9,6 +9,7 @@
 
 #include "parse_error.hpp"
 
+#include "internal/peek_char.hpp"
 #include "internal/rules.hpp"
 
 namespace tao::pegtl
@@ -20,7 +21,7 @@ namespace tao::pegtl
    template< typename... Rules > struct at : internal::at< Rules... > {};
    struct bof : internal::bof {};
    struct bol : internal::bol {};
-   template< unsigned Num > struct bytes : internal::bytes< Num > {};
+   template< unsigned Count > struct bytes : internal::many< Count, internal::peek_char > {};
    template< template< typename... > class Control, typename... Rules > struct control : internal::control< Control, Rules... > {};
    template< typename... Rules > struct disable : internal::disable< Rules... > {};
    template< typename... Rules > struct enable : internal::enable< Rules... > {};
@@ -42,7 +43,7 @@ namespace tao::pegtl
    template< typename Rule, typename Pad > struct pad_opt : internal::pad_opt< Rule, Pad > {};
    template< typename Rule, typename... Rules > struct plus : internal::plus< Rule, Rules... > {};
    template< typename Head, typename... Rules > struct rematch : internal::rematch< Head, Rules... > {};
-   template< unsigned Num, typename... Rules > struct rep : internal::rep< Num, Rules... > {};
+   template< unsigned Count, typename... Rules > struct rep : internal::rep< Count, Rules... > {};
    template< unsigned Max, typename... Rules > struct rep_max : internal::rep_min_max< 0, Max, Rules... > {};
    template< unsigned Min, typename Rule, typename... Rules > struct rep_min : internal::rep_min< Min, Rule, Rules... > {};
    template< unsigned Min, unsigned Max, typename... Rules > struct rep_min_max : internal::rep_min_max< Min, Max, Rules... > {};

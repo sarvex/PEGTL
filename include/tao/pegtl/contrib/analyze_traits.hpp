@@ -60,11 +60,6 @@ namespace tao::pegtl
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
    {};
 
-   template< typename Name, typename Peek >
-   struct analyze_traits< Name, internal::any< Peek > >
-      : analyze_any_traits<>
-   {};
-
    template< typename Name, typename... Actions >
    struct analyze_traits< Name, internal::apply< Actions... > >
       : analyze_opt_traits<>
@@ -88,11 +83,6 @@ namespace tao::pegtl
    template< typename Name >
    struct analyze_traits< Name, internal::bol >
       : analyze_opt_traits<>
-   {};
-
-   template< typename Name, unsigned Cnt >
-   struct analyze_traits< Name, internal::bytes< Cnt > >
-      : std::conditional_t< ( Cnt != 0 ), analyze_any_traits<>, analyze_opt_traits<> >
    {};
 
    template< typename Name, template< typename... > class Control, typename... Rules >
@@ -150,6 +140,11 @@ namespace tao::pegtl
       : std::conditional_t< ( sizeof...( Cs ) != 0 ), analyze_any_traits<>, analyze_opt_traits<> >
    {};
 
+   template< typename Name, unsigned Count, typename Peek, unsigned Fixed >
+   struct analyze_traits< Name, internal::many< Count, Peek, Fixed > >
+      : std::conditional_t< ( Count != 0 ), analyze_any_traits<>, analyze_opt_traits<> >
+   {};
+
    template< typename Name, typename... Rules >
    struct analyze_traits< Name, internal::not_at< Rules... > >
       : analyze_traits< Name, typename opt< Rules... >::rule_t >
@@ -185,9 +180,9 @@ namespace tao::pegtl
       : analyze_traits< Name, typename sor< Head, sor< seq< Rules, any >... > >::rule_t >  // TODO: Correct (enough)?
    {};
 
-   template< typename Name, unsigned Cnt, typename... Rules >
-   struct analyze_traits< Name, internal::rep< Cnt, Rules... > >
-      : analyze_traits< Name, std::conditional_t< ( Cnt != 0 ), typename seq< Rules... >::rule_t, typename opt< Rules... >::rule_t > >
+   template< typename Name, unsigned Count, typename... Rules >
+   struct analyze_traits< Name, internal::rep< Count, Rules... > >
+      : analyze_traits< Name, std::conditional_t< ( Count != 0 ), typename seq< Rules... >::rule_t, typename opt< Rules... >::rule_t > >
    {};
 
    template< typename Name, unsigned Min, unsigned Max, typename... Rules >
@@ -267,7 +262,12 @@ namespace tao::pegtl
    {};
 
    template< typename Name, typename Exception, typename... Rules >
-   struct analyze_traits< Name, internal::try_catch_type< Exception, Rules... > >
+   struct analyze_traits< Name, internal::try_catch_raise_nested< Exception, Rules... > >
+      : analyze_traits< Name, typename seq< Rules... >::rule_t >
+   {};
+
+   template< typename Name, typename Exception, typename... Rules >
+   struct analyze_traits< Name, internal::try_catch_return_false< Exception, Rules... > >
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
    {};
 #endif

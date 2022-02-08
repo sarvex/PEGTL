@@ -19,7 +19,7 @@ namespace tao::pegtl::internal
 {
    [[nodiscard]] inline bool unsafe_equals( const char* s, const std::initializer_list< char >& l ) noexcept
    {
-      return std::memcmp( s, &*l.begin(), l.size() ) == 0;
+      return std::memcmp( s, l.begin(), l.size() ) == 0;
    }
 
    template< char... Cs >
@@ -40,11 +40,6 @@ namespace tao::pegtl::internal
    {
       using rule_t = string;
       using subs_t = empty_list;
-
-      [[nodiscard]] static constexpr bool test_any( const char c ) noexcept
-      {
-         return one< result_on_found::success, peek_char, Cs... >::test_one( c );
-      }
 
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( 0 ) ) )

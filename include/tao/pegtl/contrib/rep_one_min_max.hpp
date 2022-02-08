@@ -10,7 +10,6 @@
 
 #include "../type_list.hpp"
 
-#include "../internal/bytes.hpp"
 #include "../internal/enable_control.hpp"
 #include "../internal/opt.hpp"
 
@@ -31,11 +30,6 @@ namespace tao::pegtl
          [[nodiscard]] static constexpr bool test_one( const char c ) noexcept
          {
             static_assert( ( Min == 1 ) && ( Max == 1 ) );
-            return C == c;
-         }
-
-         [[nodiscard]] static constexpr bool test_any( const char c ) noexcept
-         {
             return C == c;
          }
 
@@ -63,11 +57,6 @@ namespace tao::pegtl
       {
          using rule_t = rep_one_min_max;
          using subs_t = empty_list;
-
-         [[nodiscard]] static constexpr bool test_any( const char c ) noexcept
-         {
-            return C == c;
-         }
 
          template< typename ParseInput >
          [[nodiscard]] static bool match( ParseInput& in )

@@ -21,6 +21,8 @@ namespace tao::pegtl::internal
       using data_t = char32_t;
       using pair_t = data_and_size< char32_t >;
 
+      static constexpr std::size_t fixed_size = 4;
+
       static_assert( sizeof( char32_t ) == 4 );
 
       template< typename ParseInput >

@@ -29,11 +29,6 @@ namespace tao::pegtl::internal
          return ( ( Lo <= c ) && ( c <= Hi ) ) == bool( R );
       }
 
-      [[nodiscard]] static constexpr bool test_any( const data_t c ) noexcept
-      {
-         return test_one( c );
-      }
-
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
       {

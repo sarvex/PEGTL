@@ -49,11 +49,6 @@ namespace tao::pegtl::internal
          return test_impl( std::make_index_sequence< sizeof...( Cs ) / 2 >(), c );
       }
 
-      [[nodiscard]] static constexpr bool test_any( const data_t c ) noexcept
-      {
-         return test_impl( std::make_index_sequence< sizeof...( Cs ) / 2 >(), c );
-      }
-
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
       {
