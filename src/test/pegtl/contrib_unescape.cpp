@@ -47,7 +47,7 @@ namespace tao::pegtl
       try {
          return !parse< unstring, unaction >( in, s );
       }
-      catch( const parse_error& ) {
+      catch( ... ) {
       }
       return true;
 #else

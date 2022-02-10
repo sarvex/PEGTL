@@ -18,16 +18,16 @@ namespace tao::pegtl::internal
       static constexpr std::size_t fixed_size = sizeof( T );
 
       template< typename ParseInput >
-      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.empty() ) )
+      [[nodiscard]] static pair_t peek( ParseInput& in, const std::size_t offset = 0 ) noexcept( noexcept( in.size( 42 ) ) )
       {
          using peek_t = typename ParseInput::data_t;
 
          static_assert( sizeof( peek_t ) == sizeof( data_t ) );
 
-         if( in.empty() ) {
-            return { 0, 0 };
+         if( in.size( offset + 1 ) > offset ) {
+            return { T( *in.current( offset ) ), 1 };
          }
-         return { T( *in.current() ), 1 };
+         return { 0, 0 };
       }
    };
 

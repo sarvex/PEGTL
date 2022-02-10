@@ -19,14 +19,14 @@ namespace tao::pegtl::internal
 #define TAO_PEGTL_ENDIAN_SUFFIXED( iDeNTiFieR ) iDeNTiFieR ## be
 
    template< typename T >
-   [[nodiscard]] T from_big_endian( const T n ) noexcept
+   T big_endian::from( const T n ) noexcept
    {
       static_assert( std::is_integral_v< T > || std::is_enum_v< T > );
       return n;
    }
 
    template< typename T >
-   [[nodiscard]] T from_little_endian( const T n ) noexcept
+   T little_endian::from( const T n ) noexcept
    {
       static_assert( std::is_integral_v< T > || std::is_enum_v< T > );
 
@@ -46,20 +46,23 @@ namespace tao::pegtl::internal
          static_assert( dependent_false< T > );
       }
    }
+
+   using other_endian = little_endian;
+   using native_endian = big_endian;
 
 #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 
 #define TAO_PEGTL_ENDIAN_SUFFIXED( iDeNTiFieR ) iDeNTiFieR ## le
 
    template< typename T >
-   [[nodiscard]] T from_little_endian( const T n ) noexcept
+   T little_endian::from( const T n ) noexcept
    {
       static_assert( std::is_integral_v< T > || std::is_enum_v< T > );
       return n;
    }
 
    template< typename T >
-   [[nodiscard]] T from_big_endian( const T n ) noexcept
+   T big_endian::from( const T n ) noexcept
    {
       static_assert( std::is_integral_v< T > || std::is_enum_v< T > );
 
@@ -79,6 +82,9 @@ namespace tao::pegtl::internal
          static_assert( dependent_false< T > );
       }
    }
+
+   using other_endian = big_endian;
+   using native_endian = little_endian;
 
 #else
 #error Unknown byte order!

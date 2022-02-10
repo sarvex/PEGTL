@@ -33,18 +33,18 @@ namespace tao::pegtl::internal
    };
 
    template< std::uint16_t Mask >
-   using peek_mask_uint16_be = peek_mask_uint_impl< std::uint16_t, Mask, from_be >;
+   using peek_mask_uint16_be = peek_mask_uint_impl< std::uint16_t, Mask, big_endian >;
    template< std::uint32_t Mask >
-   using peek_mask_uint32_be = peek_mask_uint_impl< std::uint32_t, Mask, from_be >;
+   using peek_mask_uint32_be = peek_mask_uint_impl< std::uint32_t, Mask, big_endian >;
    template< std::uint64_t Mask >
-   using peek_mask_uint64_be = peek_mask_uint_impl< std::uint64_t, Mask, from_be >;
+   using peek_mask_uint64_be = peek_mask_uint_impl< std::uint64_t, Mask, big_endian >;
 
    template< std::uint16_t Mask >
-   using peek_mask_uint16_le = peek_mask_uint_impl< std::uint16_t, Mask, from_le >;
+   using peek_mask_uint16_le = peek_mask_uint_impl< std::uint16_t, Mask, little_endian >;
    template< std::uint32_t Mask >
-   using peek_mask_uint32_le = peek_mask_uint_impl< std::uint32_t, Mask, from_le >;
+   using peek_mask_uint32_le = peek_mask_uint_impl< std::uint32_t, Mask, little_endian >;
    template< std::uint64_t Mask >
-   using peek_mask_uint64_le = peek_mask_uint_impl< std::uint64_t, Mask, from_le >;
+   using peek_mask_uint64_le = peek_mask_uint_impl< std::uint64_t, Mask, little_endian >;
 
 }  // namespace tao::pegtl::internal
 

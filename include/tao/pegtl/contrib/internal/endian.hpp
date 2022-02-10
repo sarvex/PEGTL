@@ -7,48 +7,42 @@
 
 #include <cstring>
 
+namespace tao::pegtl::internal
+{
+   struct big_endian
+   {
+      template< typename T >
+      [[nodiscard]] static T from( const T n ) noexcept;
+
+      template< typename T >
+      [[nodiscard]] static T from( const void* p ) noexcept
+      {
+         T n;
+         std::memcpy( &n, p, sizeof( n ) );
+         return from( n );
+      }
+   };
+
+   struct little_endian
+   {
+      template< typename T >
+      [[nodiscard]] static T from( const T n ) noexcept;
+
+      template< typename T >
+      [[nodiscard]] static T from( const void* p ) noexcept
+      {
+         T n;
+         std::memcpy( &n, p, sizeof( n ) );
+         return from( n );
+      }
+   };
+
+}  // namespace tao::pegtl::internal
+
 #if defined( _WIN32 ) && !defined( __MINGW32__ ) && !defined( __CYGWIN__ )
 #include "endian_win.hpp"
 #else
 #include "endian_gcc.hpp"
 #endif
-
-namespace tao::pegtl::internal
-{
-   struct from_be
-   {
-      template< typename T >
-      [[nodiscard]] static T from( const T n ) noexcept
-      {
-         return from_big_endian( n );
-      }
-
-      template< typename T >
-      [[nodiscard]] static T from( const void* p ) noexcept
-      {
-         T n;
-         std::memcpy( &n, p, sizeof( n ) );
-         return from_big_endian( n );
-      }
-   };
-
-   struct from_le
-   {
-      template< typename T >
-      [[nodiscard]] static T from( const T n ) noexcept
-      {
-         return from_little_endian( n );
-      }
-
-      template< typename T >
-      [[nodiscard]] static T from( const void* p ) noexcept
-      {
-         T n;
-         std::memcpy( &n, p, sizeof( n ) );
-         return internal::from_little_endian( n );
-      }
-   };
-
-}  // namespace tao::pegtl::internal
 
 #endif

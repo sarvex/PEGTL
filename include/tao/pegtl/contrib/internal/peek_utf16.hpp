@@ -27,14 +27,14 @@ namespace tao::pegtl::internal
       static_assert( sizeof( char32_t ) == 4 );
 
       template< typename ParseInput >
-      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( 42 ) ) )
+      [[nodiscard]] static pair_t peek( ParseInput& in, const std::size_t offset = 0 ) noexcept( noexcept( in.size( 42 ) ) )
       {
-         if( const auto r = peek_endian_impl< char16_t, Endian >( in ) ) {
+         if( const auto r = peek_endian_impl< char16_t, Endian >( in, offset ) ) {
             if( ( r.data < 0xd800 ) || ( r.data > 0xdfff ) ) {
                return r;
             }
             if( r.data < 0xdc00 ) {
-               if( const auto s = peek_endian_impl< char16_t, Endian >( in, r.size ) ) {
+               if( const auto s = peek_endian_impl< char16_t, Endian >( in, r.size + offset ) ) {
                   if( ( s.data >= 0xdc00 ) && ( s.data <= 0xdfff ) ) {
                      return { ( ( char32_t( r.data & 0x03ff ) << 10 ) | char32_t( s.data & 0x03ff ) ) + 0x10000, r.size + s.size };
                   }
@@ -45,8 +45,8 @@ namespace tao::pegtl::internal
       }
    };
 
-   using peek_utf16_be = peek_utf16_impl< from_be >;
-   using peek_utf16_le = peek_utf16_impl< from_le >;
+   using peek_utf16_be = peek_utf16_impl< big_endian >;
+   using peek_utf16_le = peek_utf16_impl< little_endian >;
 
 }  // namespace tao::pegtl::internal
 

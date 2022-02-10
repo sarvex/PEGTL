@@ -26,9 +26,9 @@ namespace tao::pegtl::internal
       static_assert( sizeof( char32_t ) == 4 );
 
       template< typename ParseInput >
-      [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( 42 ) ) )
+      [[nodiscard]] static pair_t peek( ParseInput& in, const std::size_t offset ) noexcept( noexcept( in.size( 42 ) ) )
       {
-         const pair_t r = peek_endian_impl< char32, Endian >::peek( in );
+         const pair_t r = peek_endian_impl< char32, Endian >::peek( in, offset );
 
          if( ( r.data <= 0x10ffff ) && !( r.data >= 0xd800 && r.data <= 0xdfff ) ) {
             return r;
@@ -37,8 +37,8 @@ namespace tao::pegtl::internal
       }
    };
 
-   using peek_utf32_be = peek_utf32_impl< from_be >;
-   using peek_utf32_le = peek_utf32_impl< from_le >;
+   using peek_utf32_be = peek_utf32_impl< big_endian >;
+   using peek_utf32_le = peek_utf32_impl< little_endian >;
 
 }  // namespace tao::pegtl::internal
 

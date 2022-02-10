@@ -18,6 +18,7 @@ namespace tao::pegtl
       struct any : internal::many< 1, internal::peek_char > {};
       struct blank : internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' > {};
       struct cr : internal::one< internal::result_on_found::success, internal::peek_char, '\r' > {};
+      struct cr_crlf : internal::sor< internal::string< '\r', '\n' >, internal::one< internal::result_on_found::success, internal::peek_char, '\r' > > {};
       struct cr_lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n', '\r' > {};
       struct crlf : internal::string< '\r', '\n' > {};
       struct digit : internal::range< internal::result_on_found::success, internal::peek_char, '0', '9' > {};
@@ -29,6 +30,7 @@ namespace tao::pegtl
       template< char... Cs > struct istring : internal::istring< Cs... > {};
       template< char... Cs > struct keyword : internal::seq< internal::string< Cs... >, internal::not_at< internal::identifier_other > > { static_assert( sizeof...( Cs ) > 0 ); };
       struct lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n' > {};
+      struct lf_crlf : internal::sor< internal::one< internal::result_on_found::success, internal::peek_char, '\n' >, internal::string< '\r', '\n' > > {};
       struct lower : internal::range< internal::result_on_found::success, internal::peek_char, 'a', 'z' > {};
       template< unsigned Count > struct many : internal::many< Count, internal::peek_char > {};
       template< char... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_char, Cs... > {};

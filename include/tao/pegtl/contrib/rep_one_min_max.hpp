@@ -36,16 +36,17 @@ namespace tao::pegtl
          template< typename ParseInput >
          [[nodiscard]] static bool match( ParseInput& in )
          {
+            static_assert( sizeof( *in.current() ) == 1 );
             const auto size = in.size( Max + 1 );
             if( size < Min ) {
                return false;
             }
             unsigned i = 0;
-            while( ( i < size ) && ( in.peek_char( i ) == C ) ) {
+            while( ( i < size ) && ( static_cast< char >( i[ in.current() ] ) == C ) ) {
                ++i;
             }
             if( ( Min <= i ) && ( i <= Max ) ) {
-               in.consume< rep_one_min_max >( i );
+               in.template consume< rep_one_min_max >( i );
                return true;
             }
             return false;
@@ -61,13 +62,14 @@ namespace tao::pegtl
          template< typename ParseInput >
          [[nodiscard]] static bool match( ParseInput& in )
          {
+            static_assert( sizeof( *in.current() ) == 1 );
             const auto size = in.size( Max + 1 );
             unsigned i = 0;
-            while( ( i < size ) && ( in.peek_char( i ) == C ) ) {
+            while( ( i < size ) && ( static_cast< char >( i[ in.current() ] ) == C ) ) {
                ++i;
             }
             if( i <= Max ) {
-               in.consume< rep_one_min_max >( i );
+               in.template consume< rep_one_min_max >( i );
                return true;
             }
             return false;

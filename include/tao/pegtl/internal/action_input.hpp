@@ -86,9 +86,9 @@ namespace tao::pegtl::internal
          return m_input;
       }
 
-      [[nodiscard]] decltype( auto ) position() const
+      [[nodiscard]] decltype( auto ) current_position() const
       {
-         return m_input.previous_position( m_saved );  // NOTE: For lazy inputs this is O(n) where n is size of consumption since begin of parsing run.
+         return m_input.previous_position( m_saved );  // NOTE: For lazy inputs this is O(n) where n is m_saved.current() - m_input.begin().
       }
 
    protected:

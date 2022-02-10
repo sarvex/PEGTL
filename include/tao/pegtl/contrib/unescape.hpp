@@ -150,7 +150,7 @@ namespace tao::pegtl::unescape
       {
          assert( !in.empty() );  // First character MUST be present, usually 'u' or 'U'.
          if( !utf8_append_utf32( s, unhex_string< unsigned >( in.begin() + 1, in.end() ) ) ) {
-            throw parse_error( "invalid escaped unicode code point", in );
+            throw parse_error( "invalid escaped unicode code point", in.current_position() );
          }
       }
 #else
@@ -199,7 +199,7 @@ namespace tao::pegtl::unescape
             }
             if( !utf8_append_utf32( s, c ) ) {
 #if defined( __cpp_exceptions )
-               throw parse_error( "invalid escaped unicode code point", in );
+               throw parse_error( "invalid escaped unicode code point", in.current_position() );  // TODO: Control< unescape_j >::raise( "...", in ) but ... we don't have Control here.
 #else
                return false;
 #endif

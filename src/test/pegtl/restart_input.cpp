@@ -8,32 +8,75 @@ namespace tao::pegtl
 {
    using grammar = seq< string< 'a', 'b', 'c' >, eof >;
 
-   void test_lazy()
+   using inner_input_t = internal::input_with_eol< lf, internal::input_with_begin< internal::memory_input< char > > >;
+
+   void test_memory()
    {
       const std::string data = "abc";
-      memory_input< tracking_mode::lazy, eol::lf_crlf, std::string > in( data, __FUNCTION__ );
-      bool success = parse< grammar >( in );
-      TAO_PEGTL_TEST_ASSERT( success );
+      inner_input_t in( data.data(), data.size() );
+      {
+         const bool success = parse< grammar >( in );
+         TAO_PEGTL_TEST_ASSERT( success );
+      }
       in.restart();
-      success = parse< grammar >( in );
-      TAO_PEGTL_TEST_ASSERT( success );
+      {
+         const bool success = parse< grammar >( in );
+         TAO_PEGTL_TEST_ASSERT( success );
+      }
    }
 
-   void test_eager()
+   template< typename Input >
+   void test_defaulted()
    {
       const std::string data = "abc";
-      memory_input< tracking_mode::eager, eol::lf_crlf, std::string > in( std::string_view( data ), __FUNCTION__ );
-      bool success = parse< grammar >( in );
-      TAO_PEGTL_TEST_ASSERT( success );
+      Input in( data.data(), data.size() );
+      {
+         const bool success = parse< grammar >( in );
+         const auto position = in.current_position();
+         TAO_PEGTL_TEST_ASSERT( success );
+         TAO_PEGTL_TEST_ASSERT( position.line == 1 );
+         TAO_PEGTL_TEST_ASSERT( position.count_in_line == 4 );
+      }
       in.restart();
-      success = parse< grammar >( in );
-      TAO_PEGTL_TEST_ASSERT( success );
+      {
+         const bool success = parse< grammar >( in );
+         const auto position = in.current_position();
+         TAO_PEGTL_TEST_ASSERT( success );
+         TAO_PEGTL_TEST_ASSERT( position.line == 1 );
+         TAO_PEGTL_TEST_ASSERT( position.count_in_line == 4 );
+      }
+   }
+
+   template< typename Input >
+   void test_initialized()
+   {
+      const std::string data = "abc";
+      const internal::text_position< unsigned > pos( 50, 60 );
+      Input in( pos, data.data(), data.size() );
+      {
+         const bool success = parse< grammar >( in );
+         const auto position = in.current_position();
+         TAO_PEGTL_TEST_ASSERT( success );
+         TAO_PEGTL_TEST_ASSERT( position.line == 50 );
+         TAO_PEGTL_TEST_ASSERT( position.count_in_line == 63 );
+      }
+      in.restart();
+      {
+         const bool success = parse< grammar >( in );
+         const auto position = in.current_position();
+         TAO_PEGTL_TEST_ASSERT( success );
+         TAO_PEGTL_TEST_ASSERT( position.line == 50 );
+         TAO_PEGTL_TEST_ASSERT( position.count_in_line == 63 );
+      }
    }
 
    void unit_test()
    {
-      test_lazy();
-      test_eager();
+      test_memory();
+      test_defaulted< internal::defaulted_lazy_position_input< internal::text_position< unsigned >, inner_input_t > >();
+      test_defaulted< internal::defaulted_eager_position_input< internal::text_position< unsigned >, inner_input_t > >();
+      test_initialized< internal::initialized_lazy_position_input< internal::text_position< unsigned >, inner_input_t > >();
+      test_initialized< internal::initialized_restartable_eager_position_input< internal::text_position< unsigned >, inner_input_t > >();
    }
 
 }  // namespace tao::pegtl

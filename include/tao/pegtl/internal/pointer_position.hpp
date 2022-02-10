@@ -21,10 +21,6 @@ namespace tao::pegtl::internal
       explicit pointer_position( const Data* c ) noexcept
          : current( c )
       {}
-
-      explicit pointer_position( const pointer_position& s ) noexcept
-         : current( s.current )
-      {}
    };
 
    template< typename Data >

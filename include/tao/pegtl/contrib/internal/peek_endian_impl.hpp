@@ -27,13 +27,13 @@ namespace tao::pegtl::internal
             if( in.size( sizeof( data_t ) + offset ) < sizeof( data_t ) + offset ) {
                return { 0, 0 };
             }
-            return { Endian::template from< Data >( in.current() + offset ), sizeof( data_t ) };
+            return { Endian::template from< Data >( in.current( offset ) ), sizeof( data_t ) };
          }
          else if constexpr( sizeof( peek_t ) == sizeof( data_t ) ) {
             if( in.size( 1 + offset ) < 1 + offset ) {
                return { 0, 0 };
             }
-            return { Endian::template from< Data >( *( in.current() + offset ) ), 1 };
+            return { Endian::template from< Data >( *in.current( offset ) ), 1 };
          }
          else {
             static_assert( dependent_false< ParseInput > );

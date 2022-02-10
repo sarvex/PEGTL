@@ -22,6 +22,12 @@ namespace tao::pegtl::internal
 
       using Input::Input;
 
+      void restart()
+      {
+         Input::restart();
+         m_position = Position();
+      }
+
       template< typename Rule >
       void consume( const std::size_t count )  // noexcept( auto )
       {

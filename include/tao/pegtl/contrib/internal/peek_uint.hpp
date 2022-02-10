@@ -13,13 +13,13 @@
 
 namespace tao::pegtl::internal
 {
-   using peek_uint16_be = peek_endian_impl< std::uint16_t, from_be >;
-   using peek_uint32_be = peek_endian_impl< std::uint32_t, from_be >;
-   using peek_uint64_be = peek_endian_impl< std::uint64_t, from_be >;
+   using peek_uint16_be = peek_endian_impl< std::uint16_t, big_endian >;
+   using peek_uint32_be = peek_endian_impl< std::uint32_t, big_endian >;
+   using peek_uint64_be = peek_endian_impl< std::uint64_t, big_endian >;
 
-   using peek_uint16_le = peek_endian_impl< std::uint16_t, from_le >;
-   using peek_uint32_le = peek_endian_impl< std::uint32_t, from_le >;
-   using peek_uint64_le = peek_endian_impl< std::uint64_t, from_le >;
+   using peek_uint16_le = peek_endian_impl< std::uint16_t, little_endian >;
+   using peek_uint32_le = peek_endian_impl< std::uint32_t, little_endian >;
+   using peek_uint64_le = peek_endian_impl< std::uint64_t, little_endian >;
 
 }  // namespace tao::pegtl::internal
 

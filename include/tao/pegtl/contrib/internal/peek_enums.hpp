@@ -14,14 +14,14 @@ namespace tao::pegtl::internal
 {
    template< typename E >
    struct peek_enums_be
-      : peek_endian_impl< E, from_be >
+      : peek_endian_impl< E, big_endian >
    {
       static_assert( std::is_enum_v< E > );
    };
 
    template< typename E >
    struct peek_enums_le
-      : peek_endian_impl< E, from_le >
+      : peek_endian_impl< E, little_endian >
    {
       static_assert( std::is_enum_v< E > );
    };
