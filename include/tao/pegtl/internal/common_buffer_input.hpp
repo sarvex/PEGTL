@@ -36,7 +36,7 @@ namespace tao::pegtl::internal
       template< typename... As >
       common_buffer_input( As&&... as )
          : Base( std::forward< As >( as )... ),
-           m_current( this->buffer_begin() ),
+           m_current( this->mutable_begin() ),
            m_end( this->mutable_begin() )
       {
          // assert( buffer_chunk_size() > 0 );
@@ -88,9 +88,9 @@ namespace tao::pegtl::internal
          const std::size_t s = m_end - m_current;
 
          if( ( s > 0 ) && ( m_current > this->buffer_begin() + this->buffer_chunk_size() ) ) {
-            std::memmove( this->buffer_begin(), m_current, s );
+            std::memmove( this->mutable_begin(), m_current, s );
          }
-         m_current = this->buffer_begin();
+         m_current = this->mutable_begin();
          m_end = m_current + s;
       }
 
@@ -163,6 +163,11 @@ namespace tao::pegtl::internal
          m_end = in_end;
       }
 
+      void private_set_current( const pointer_t in_current ) noexcept
+      {
+         m_current = const_cast< data_t* >( in_current );
+      }
+
       [[nodiscard]] pointer_t private_get_end() const noexcept
       {
          return m_end;
@@ -179,7 +184,7 @@ namespace tao::pegtl::internal
       }
 
    protected:
-      const data_t* m_current;
+      data_t* m_current;
       data_t* m_end;
 
    };

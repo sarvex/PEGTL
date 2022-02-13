@@ -8,35 +8,145 @@
 
 namespace tao::pegtl
 {
-   template< typename Rule, template< typename... > class Action = nothing >
-   bool parse_cstring( const char* string, const char* source, const std::size_t maximum )
+   using dynamic_t = internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::input_with_eol< lf, internal::common_buffer_input< internal::dynamic_buffer_input_base< char, internal::cstring_reader > > > >;
+
+   template< unsigned S, unsigned C >
+   using static_t = internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::input_with_eol< lf, internal::common_buffer_input< internal::static_buffer_input_base< char, S, C, internal::cstring_reader > > > >;
+
+   using dynamic_a = internal::auto_buffer_input< dynamic_t >;
+
+   template< unsigned S, unsigned C >
+   using static_a = internal::auto_buffer_input< static_t< S, C > >;
+
+   template< typename BufferInput >
+   void unit_test_01( BufferInput&& in )
    {
-      buffer_input< internal::cstring_reader > in( source, maximum, string );
-      return parse< Rule, Action >( in );
+      const auto r = parse< two< 'a' > >( in );
+      TAO_PEGTL_TEST_ASSERT( r );
+      TAO_PEGTL_TEST_ASSERT( in.buffer_size() == 0 );
+      const auto& p = in.current_position();
+      TAO_PEGTL_TEST_ASSERT( p.line == 1 );
+      TAO_PEGTL_TEST_ASSERT( p.count_in_line == 3 );
    }
+
+   template< typename BufferInput >
+   void unit_test_02( BufferInput&& in )
+   {
+      const auto r = parse< two< 'a' > >( in );
+      TAO_PEGTL_TEST_ASSERT( r );
+      TAO_PEGTL_TEST_ASSERT( in.buffer_size() == 1 );
+      const auto& p = in.current_position();
+      TAO_PEGTL_TEST_ASSERT( p.line == 1 );
+      TAO_PEGTL_TEST_ASSERT( p.count_in_line == 3 );
+   }
+
+   template< typename BufferInput >
+   void unit_test_03( BufferInput&& in )
+   {
+      const auto r = parse< seq< string< 'a', 'a', 'b', 'b' >, discard, string< 'c', 'c', 'd', 'd' > > >( in );
+      TAO_PEGTL_TEST_ASSERT( r );
+      TAO_PEGTL_TEST_ASSERT( in.buffer_size() == 0 );
+      const auto& p = in.current_position();
+      TAO_PEGTL_TEST_ASSERT( p.line == 1 );
+      TAO_PEGTL_TEST_ASSERT( p.count_in_line == 9 );
+   }
+
+   template< typename Rule >
+   struct action_06
+      : nothing< Rule >
+   {};
+
+   template<>
+   struct action_06< string< 'a', 'b' > >
+   {
+      static void apply0() noexcept
+      {}
+   };
+
+   unsigned count = 0;
+
+   template< typename Rule >
+   struct action_07
+      : nothing< Rule >
+   {};
+
+   template<>
+   struct action_07< string< 'a', 'b' > >
+   {
+      template< typename ActionInput >
+      static void apply( const ActionInput& in ) noexcept
+      {
+         ++count;
+         TAO_PEGTL_TEST_ASSERT( in.string() == "ab" );
+      }
+   };
+
+   template< typename Rule >
+   struct action_08
+      : nothing< Rule >
+   {};
+
+   template<>
+   struct action_08< seq< string< 'a', 'b' >, string< 'c', 'd' > > >
+   {
+      template< typename ActionInput >
+      static void apply( const ActionInput& /*unused*/ ) noexcept
+      {
+         ++count;
+      }
+   };
 
    void unit_test()
    {
-      static constexpr std::size_t chunk_size = buffer_input< internal::cstring_reader >::chunk_size;
+      unit_test_01( static_t< 8, 1 >( "aax" ) );
+      unit_test_01( dynamic_t( 8, 1, "aax" ) );
+      unit_test_01( static_a< 8, 1 >( "aax" ) );
+      unit_test_01( dynamic_a( 8, 1, "aax" ) );
 
-      static_assert( chunk_size >= 2 );
-      TAO_PEGTL_TEST_ASSERT( parse_cstring< seq< string< 'a', 'b', 'c' >, eof > >( "abc", TAO_TEST_LINE, 1 ) );
-      TAO_PEGTL_TEST_ASSERT( parse_cstring< seq< string< 'a', 'b', 'c' >, eof > >( "abc", TAO_TEST_LINE, 128 ) );
+      unit_test_02( static_t< 8, 4 >( "aax" ) );
+      unit_test_02( dynamic_t( 8, 4, "aax" ) );
+      unit_test_02( static_a< 8, 4 >( "aax" ) );
+      unit_test_02( dynamic_a( 8, 4, "aax" ) );
 
-      // We need one extra byte in the buffer so that eof calling in.empty() calling in.require( 1 ) does not throw a "require beyond end of buffer" exception.
-#if defined( __cpp_exceptions )
-      TAO_PEGTL_TEST_THROWS( parse_cstring< seq< rep< chunk_size + 2, one< 'a' > >, eof > >( std::string( std::size_t( chunk_size + 2 ), 'a' ).c_str(), TAO_TEST_LINE, 2 ) );
-#endif
-      TAO_PEGTL_TEST_ASSERT( parse_cstring< seq< rep< chunk_size + 2, one< 'a' > >, eof > >( std::string( std::size_t( chunk_size + 2 ), 'a' ).c_str(), TAO_TEST_LINE, 3 ) );
+      unit_test_03( static_t< 8, 4 >( "aabbccdd" ) );
+      unit_test_03( dynamic_t( 8, 4, "aabbccdd" ) );
+      unit_test_03( static_a< 8, 4 >( "aabbccdd" ) );
+      unit_test_03( dynamic_a( 8, 4, "aabbccdd" ) );
 
-      TAO_PEGTL_TEST_ASSERT( parse_cstring< rep< chunk_size + 9, one< 'a' > > >( std::string( std::size_t( chunk_size + 9 ), 'a' ).c_str(), TAO_TEST_LINE, 9 ) );
-      TAO_PEGTL_TEST_ASSERT( parse_cstring< rep< chunk_size + 9, one< 'a' > > >( std::string( std::size_t( chunk_size + 10 ), 'a' ).c_str(), TAO_TEST_LINE, 9 ) );
-#if defined( __cpp_exceptions )
-      TAO_PEGTL_TEST_THROWS( parse_cstring< rep< chunk_size + 10, one< 'a' > > >( std::string( std::size_t( chunk_size + 10 ), 'a' ).c_str(), TAO_TEST_LINE, 9 ) );
-      TAO_PEGTL_TEST_THROWS( parse_cstring< rep< chunk_size + 10, one< 'a' > > >( std::string( std::size_t( chunk_size + 11 ), 'a' ).c_str(), TAO_TEST_LINE, 9 ) );
-      TAO_PEGTL_TEST_THROWS( parse_cstring< seq< rep< chunk_size + 10, one< 'a' > >, eof > >( std::string( std::size_t( chunk_size + 10 ), 'a' ).c_str(), TAO_TEST_LINE, 9 ) );
-      TAO_PEGTL_TEST_THROWS( parse_cstring< seq< rep< chunk_size + 10, one< 'a' > >, eof > >( std::string( std::size_t( chunk_size + 10 ), 'a' ).c_str(), TAO_TEST_LINE, 10 ) );
-#endif
+      TAO_PEGTL_TEST_THROWS( parse< string< 'a', 'b', 'c', 'd' > >( static_t< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_THROWS( parse< string< 'a', 'b', 'c', 'd' > >( dynamic_t( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_THROWS( parse< string< 'a', 'b', 'c', 'd' > >( static_a< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_THROWS( parse< string< 'a', 'b', 'c', 'd' > >( dynamic_a( 3, 1, "abcd" ) ) );
+
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > > >( static_t< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > > >( dynamic_t( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > > >( static_a< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > > >( dynamic_a( 3, 1, "abcd" ) ) );
+
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_06 >( static_t< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_06 >( dynamic_t( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_06 >( static_a< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_06 >( dynamic_a( 3, 1, "abcd" ) ) );
+
+      count = 0;
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_07 >( static_t< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 1 );
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_07 >( dynamic_t( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 2 );
+      TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_07 >( static_a< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 3 );
+      TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_07 >( dynamic_a( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 4 );
+
+      count = 0;
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_08 >( static_t< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 0 );
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_08 >( dynamic_t( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 0 );
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_08 >( static_a< 3, 1 >( "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 0 );
+      TAO_PEGTL_TEST_THROWS( parse< seq< string< 'a', 'b' >, string< 'c', 'd' > >, action_08 >( dynamic_a( 3, 1, "abcd" ) ) );
+      TAO_PEGTL_TEST_ASSERT( count == 0 );
    }
 
 }  // namespace tao::pegtl
