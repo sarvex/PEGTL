@@ -17,6 +17,7 @@
 #endif
 
 #include "dummy_position.hpp"
+#include "memory_input.hpp"
 #include "pointer_position.hpp"
 #include "rewind_guard.hpp"
 
@@ -30,12 +31,13 @@ namespace tao::pegtl::internal
       using data_t = typename Base::data_t;
       using pointer_t = typename Base::pointer_t;
 
-   public:
+      using memory_input_t = memory_input< data_t >;
+
       template< typename... As >
       common_buffer_input( As&&... as )
          : Base( std::forward< As >( as )... ),
            m_current( this->buffer_begin() ),
-           m_end( this->buffer_begin() )
+           m_end( this->mutable_begin() )
       {
          // assert( buffer_chunk_size() > 0 );
          // assert( buffer_chunk_size() < buffer_capacity() );
@@ -105,7 +107,7 @@ namespace tao::pegtl::internal
             std::terminate();
 #endif
          }
-         m_end += m_reader( m_end, ( std::min )( buffer_free_after_end(), ( std::max )( amount - buffer_size(), this->buffer_chunk_size() ) ) );
+         m_end += this->m_reader( m_end, ( std::min )( buffer_free_after_end(), ( std::max )( amount - buffer_size(), this->buffer_chunk_size() ) ) );
       }
 
       void buffer_check_size( const std::size_t amount )
@@ -178,7 +180,7 @@ namespace tao::pegtl::internal
 
    protected:
       const data_t* m_current;
-      const data_t* m_end;
+      data_t* m_end;
 
    };
 

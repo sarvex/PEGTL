@@ -23,8 +23,8 @@ namespace tao::pegtl
       struct cr_lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n', '\r' > {};
       struct crlf : internal::string< '\r', '\n' > {};
       struct digit : internal::range< internal::result_on_found::success, internal::peek_char, '0', '9' > {};
+      struct esc : internal::one< internal::result_on_found::success, internal::peek_char, char( 27 ) > {};
       struct ellipsis : internal::string< '.', '.', '.' > {};
-      template< char... Cs > struct forty_two : internal::rep< 42, internal::one< internal::result_on_found::success, internal::peek_char, Cs... > > {};
       struct identifier_first : internal::identifier_first {};
       struct identifier_other : internal::identifier_other {};
       struct identifier : internal::identifier {};

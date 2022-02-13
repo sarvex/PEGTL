@@ -34,6 +34,11 @@ namespace tao::pegtl::internal
       void operator=( static_buffer_input_base&& ) = delete;
       void operator=( const static_buffer_input_base& ) = delete;
 
+      [[nodiscard]] Data* mutable_begin() noexcept
+      {
+         return m_buffer.data();
+      }
+
       [[nodiscard]] pointer_t buffer_begin() const noexcept
       {
          return m_buffer.data();

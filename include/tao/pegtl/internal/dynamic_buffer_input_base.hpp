@@ -37,14 +37,19 @@ namespace tao::pegtl::internal
       void operator=( dynamic_buffer_input_base&& ) = delete;
       void operator=( const dynamic_buffer_input_base& ) = delete;
 
-      [[nodiscard]] pointer_t buffer_begin() const noexcept
+      [[nodiscard]] Data* mutable_begin() noexcept
+      {
+         return m_buffer.get();
+      }
+
+      [[nodiscard]] const Data* buffer_begin() const noexcept
       {
          return m_buffer.get();
       }
 
       [[nodiscard]] std::size_t buffer_capacity() const noexcept
       {
-         return m_size();
+         return m_size;
       }
 
       [[nodiscard]] std::size_t buffer_chunk_size() const noexcept

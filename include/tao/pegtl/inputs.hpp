@@ -32,10 +32,14 @@
 
 #include "internal/initialized_restartable_eager_position_input.hpp"
 
-#include "internal/automatic_buffer_input.hpp"
+#include "internal/auto_buffer_input.hpp"
 #include "internal/dynamic_buffer_input_base.hpp"
 #include "internal/static_buffer_input_base.hpp"
 #include "internal/common_buffer_input.hpp"
+
+#include "internal/cstream_reader.hpp"
+#include "internal/cstring_reader.hpp"
+#include "internal/istream_reader.hpp"
 
 namespace tao::pegtl
 {
