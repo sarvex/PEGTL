@@ -16,16 +16,16 @@ namespace tao::pegtl::unescape
 {
    // Utility functions for the unescape actions.
 
-   [[nodiscard]] inline bool utf8_append_utf32( std::string& string, const unsigned utf32 )
+   [[nodiscard]] inline bool utf8_append_utf32( std::string& utf8, const char32_t utf32 )
    {
       if( utf32 <= 0x7f ) {
-         string += char( utf32 & 0xff );
+         utf8 += char( utf32 & 0xff );
          return true;
       }
       if( utf32 <= 0x7ff ) {
          char tmp[] = { char( ( ( utf32 & 0x7c0 ) >> 6 ) | 0xc0 ),
                         char( ( ( utf32 & 0x03f ) ) | 0x80 ) };
-         string.append( tmp, sizeof( tmp ) );
+         utf8.append( tmp, sizeof( tmp ) );
          return true;
       }
       if( utf32 <= 0xffff ) {
@@ -36,7 +36,7 @@ namespace tao::pegtl::unescape
          char tmp[] = { char( ( ( utf32 & 0xf000 ) >> 12 ) | 0xe0 ),
                         char( ( ( utf32 & 0x0fc0 ) >> 6 ) | 0x80 ),
                         char( ( ( utf32 & 0x003f ) ) | 0x80 ) };
-         string.append( tmp, sizeof( tmp ) );
+         utf8.append( tmp, sizeof( tmp ) );
          return true;
       }
       if( utf32 <= 0x10ffff ) {
@@ -44,7 +44,7 @@ namespace tao::pegtl::unescape
                         char( ( ( utf32 & 0x03f000 ) >> 12 ) | 0x80 ),
                         char( ( ( utf32 & 0x000fc0 ) >> 6 ) | 0x80 ),
                         char( ( ( utf32 & 0x00003f ) ) | 0x80 ) };
-         string.append( tmp, sizeof( tmp ) );
+         utf8.append( tmp, sizeof( tmp ) );
          return true;
       }
       return false;

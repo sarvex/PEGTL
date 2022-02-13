@@ -12,7 +12,7 @@
 #include "../../internal/data_and_size.hpp"
 
 #include "endian.hpp"
-#include "peek_endian_impl.hpp"
+#include "peek_endian.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -27,7 +27,7 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static pair_t peek( ParseInput& in ) noexcept( noexcept( in.size( sizeof( data_t ) ) ) )
       {
-         pair_t r = peek_endian_impl< Data, Endian >::peek( in );
+         pair_t r = peek_endian< Data, Endian >::peek( in );
          r.data &= Mask;
          return r;
       }

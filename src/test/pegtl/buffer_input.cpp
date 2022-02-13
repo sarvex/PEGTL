@@ -6,9 +6,6 @@
 
 #include "test.hpp"
 
-#include <tao/pegtl/contrib/dynamic_buffer_input.hpp>
-#include <tao/pegtl/contrib/internal/cstring_reader.hpp>
-
 namespace tao::pegtl
 {
    template< typename Rule, template< typename... > class Action = nothing >

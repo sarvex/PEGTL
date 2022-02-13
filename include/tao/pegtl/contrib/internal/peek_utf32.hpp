@@ -11,7 +11,7 @@
 #include "../../internal/data_and_size.hpp"
 
 #include "endian.hpp"
-#include "peek_endian_impl.hpp"
+#include "peek_endian.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -28,7 +28,7 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static pair_t peek( ParseInput& in, const std::size_t offset = 0 ) noexcept( noexcept( in.size( 42 ) ) )
       {
-         const pair_t r = peek_endian_impl< char32_t, Endian >::peek( in, offset );
+         const pair_t r = peek_endian< char32_t, Endian >::peek( in, offset );
 
          if( ( r.data <= 0x10ffff ) && !( r.data >= 0xd800 && r.data <= 0xdfff ) ) {
             return r;

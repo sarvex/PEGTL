@@ -2,13 +2,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_INTERNAL_DYNAMIC_BUFFER_INPUT_HPP
-#define TAO_PEGTL_INTERNAL_DYNAMIC_BUFFER_INPUT_HPP
+#ifndef TAO_PEGTL_INTERNAL_AUTOMATIC_BUFFER_INPUT_HPP
+#define TAO_PEGTL_INTERNAL_AUTOMATIC_BUFFER_INPUT_HPP
 
 #include <cstddef>
 #include <utility>
 
-#include "internal/rewind_cancel_guard.hpp"
+#include "rewind_cancel_guard.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -19,10 +19,10 @@ namespace tao::pegtl::internal
    public:
       using BufferInput::BufferInput;
 
-      template< typename = void >
+      template< typename Rule >
       void consume( const std::size_t count ) noexcept
       {
-         m_current += count;
+         BufferInput::template consume< Rule >( count );
          automatic_discard();
       }
 

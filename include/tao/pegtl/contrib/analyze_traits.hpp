@@ -95,6 +95,11 @@ namespace tao::pegtl
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
    {};
 
+   template< typename Name >
+   struct analyze_traits< Name, internal::discard >
+      : analyze_opt_traits<>
+   {};
+
    template< typename Name, typename... Rules >
    struct analyze_traits< Name, internal::enable< Rules... > >
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
@@ -140,8 +145,8 @@ namespace tao::pegtl
       : std::conditional_t< ( sizeof...( Cs ) != 0 ), analyze_any_traits<>, analyze_opt_traits<> >
    {};
 
-   template< typename Name, unsigned Count, typename Peek, unsigned Fixed >
-   struct analyze_traits< Name, internal::many< Count, Peek, Fixed > >
+   template< typename Name, unsigned Count, typename Peek >
+   struct analyze_traits< Name, internal::many< Count, Peek > >
       : std::conditional_t< ( Count != 0 ), analyze_any_traits<>, analyze_opt_traits<> >
    {};
 

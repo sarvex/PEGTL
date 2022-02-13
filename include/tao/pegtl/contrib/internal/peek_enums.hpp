@@ -8,20 +8,20 @@
 #include <type_traits>
 
 #include "endian.hpp"
-#include "peek_endian_impl.hpp"
+#include "peek_endian.hpp"
 
 namespace tao::pegtl::internal
 {
    template< typename E >
    struct peek_enums_be
-      : peek_endian_impl< E, big_endian >
+      : peek_endian< E, big_endian >
    {
       static_assert( std::is_enum_v< E > );
    };
 
    template< typename E >
    struct peek_enums_le
-      : peek_endian_impl< E, little_endian >
+      : peek_endian< E, little_endian >
    {
       static_assert( std::is_enum_v< E > );
    };

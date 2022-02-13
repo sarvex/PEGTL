@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "parse_error.hpp"
+#include "parse_error_base.hpp"
 
 #include "internal/peek_copy.hpp"
 #include "internal/rules.hpp"
@@ -24,6 +24,7 @@ namespace tao::pegtl
    template< unsigned Count > struct bytes : internal::many< Count, internal::peek_char > {};
    template< template< typename... > class Control, typename... Rules > struct control : internal::control< Control, Rules... > {};
    template< typename... Rules > struct disable : internal::disable< Rules... > {};
+   struct discard : internal::discard {};
    template< typename... Rules > struct enable : internal::enable< Rules... > {};
    struct eof : internal::eof {};
    struct eol : internal::eol {};

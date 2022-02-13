@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_IMPL_HPP
-#define TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_IMPL_HPP
+#ifndef TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_HPP
+#define TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_HPP
 
 #include "../../internal/allow_bulk.hpp"
 #include "../../internal/data_and_size.hpp"
@@ -12,10 +12,12 @@
 namespace tao::pegtl::internal
 {
    template< typename Data, typename Endian >
-   struct peek_endian_impl
+   struct peek_endian
    {
       using data_t = Data;
-      using pair_t = data_and_size< data_t >;
+      using pair_t = data_and_size< Data >;
+
+      static_assert( sizeof( Data ) > 1 );
 
       static constexpr std::size_t fixed_size = sizeof( Data );
 
@@ -25,25 +27,25 @@ namespace tao::pegtl::internal
          using peek_t = typename ParseInput::data_t;
 
          if constexpr( sizeof( peek_t ) == 1 ) {
-            if( in.size( sizeof( data_t ) + offset ) < sizeof( data_t ) + offset ) {
+            if( in.size( sizeof( Data ) + offset ) < sizeof( Data ) + offset ) {
                return { 0, 0 };
             }
-            return { Endian::template from< Data >( in.current( offset ) ), sizeof( data_t ) };
+            return { Endian::template from< Data >( in.current( offset ) ), sizeof( Data ) };
          }
-         else if constexpr( sizeof( peek_t ) == sizeof( data_t ) ) {
+         else if constexpr( sizeof( peek_t ) == sizeof( Data ) ) {
             if( in.size( 1 + offset ) < 1 + offset ) {
                return { 0, 0 };
             }
             return { Endian::template from< Data >( *in.current( offset ) ), 1 };
          }
          else {
-            static_assert( dependent_false< ParseInput > );
+            static_assert( dependent_false< peek_endian > );
          }
       }
    };
 
    template< typename Data, typename Endian >
-   inline constexpr bool allow_bulk< peek_endian_impl< Data, Endian > > = true;
+   inline constexpr bool allow_bulk< peek_endian< Data, Endian > > = true;
 
 }  // namespace tao::pegtl::internal
 

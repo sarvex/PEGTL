@@ -32,6 +32,11 @@
 
 #include "internal/initialized_restartable_eager_position_input.hpp"
 
+#include "internal/automatic_buffer_input.hpp"
+#include "internal/dynamic_buffer_input_base.hpp"
+#include "internal/static_buffer_input_base.hpp"
+#include "internal/common_buffer_input.hpp"
+
 namespace tao::pegtl
 {
    using file_input = internal::file_input;
