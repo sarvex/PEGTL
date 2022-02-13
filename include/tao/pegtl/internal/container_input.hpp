@@ -99,7 +99,7 @@ namespace tao::pegtl::internal
 
       void rewind_position( const rewind_position_t& saved ) noexcept
       {
-         m_current = saved.pointer();
+         m_current = saved.current;
       }
 
       void private_set_current( const pointer_t in_current ) noexcept
