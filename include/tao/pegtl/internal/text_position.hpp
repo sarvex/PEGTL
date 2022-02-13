@@ -11,7 +11,7 @@
 #include "eol.hpp"
 #include "eof.hpp"
 #include "many.hpp"
-#include "peek_char.hpp"
+#include "peek_copy.hpp"
 #include "sor.hpp"
 #include "until.hpp"
 

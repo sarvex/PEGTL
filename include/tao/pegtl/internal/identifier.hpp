@@ -5,7 +5,7 @@
 #ifndef TAO_PEGTL_INTERNAL_IDENTIFIER_HPP
 #define TAO_PEGTL_INTERNAL_IDENTIFIER_HPP
 
-#include "peek_char.hpp"
+#include "peek_copy.hpp"
 #include "ranges.hpp"
 #include "seq.hpp"
 #include "star.hpp"

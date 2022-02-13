@@ -9,7 +9,7 @@
 
 #include "parse_error.hpp"
 
-#include "internal/peek_char.hpp"
+#include "internal/peek_copy.hpp"
 #include "internal/rules.hpp"
 
 namespace tao::pegtl

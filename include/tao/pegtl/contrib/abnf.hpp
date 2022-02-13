@@ -5,6 +5,7 @@
 #ifndef TAO_PEGTL_CONTRIB_ABNF_HPP
 #define TAO_PEGTL_CONTRIB_ABNF_HPP
 
+#include "../internal/peek_copy.hpp"
 #include "../internal/rules.hpp"
 
 namespace tao::pegtl::abnf

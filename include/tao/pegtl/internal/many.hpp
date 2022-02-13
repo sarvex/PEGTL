@@ -5,6 +5,7 @@
 #ifndef TAO_PEGTL_INTERNAL_MANY_HPP
 #define TAO_PEGTL_INTERNAL_MANY_HPP
 
+#include "allow_bulk.hpp"
 #include "dependent_false.hpp"
 #include "enable_control.hpp"
 #include "success.hpp"
@@ -13,7 +14,7 @@
 
 namespace tao::pegtl::internal
 {
-   template< unsigned Count, typename Peek, unsigned Fixed = Peek::fixed_size >
+   template< unsigned Count, typename Peek >
    struct many
    {
       using rule_t = many;
@@ -22,14 +23,29 @@ namespace tao::pegtl::internal
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( Count ) ) )
       {
-         if constexpr( sizeof( *in.current() ) == 1 ) {
-            if( in.size( Count * Fixed ) >= Count * Fixed ) {
-               in.template consume< many >( Count * Fixed );
+         if constexpr( !allow_bulk< Peek > ) {
+            std::size_t done = 0;
+
+            for( unsigned i = 0; i < Count; ++i ) {
+               if( const auto t = Peek::peek( in, done ) ) {
+                  done += t.size;
+                  continue;
+               }
+               return false;
+            }
+            in.template consume< many >( done );
+            return true;
+         }
+         else if constexpr( sizeof( *in.current() ) == 1 ) {
+            static_assert( Peek::fixed_size > 0 );
+            if( in.size( Count * Peek::fixed_size ) >= Count * Peek::fixed_size ) {
+               in.template consume< many >( Count * Peek::fixed_size );
                return true;
             }
             return false;
          }
-         else if constexpr( sizeof( *in.current() ) == Fixed ) {
+         else if constexpr( sizeof( *in.current() ) == Peek::fixed_size ) {
+            static_assert( Peek::fixed_size > 0 );
             if( in.size( Count ) >= Count ) {
                in.template consume< many >( Count );
                return true;
@@ -37,46 +53,19 @@ namespace tao::pegtl::internal
             return false;
          }
          else {
+            static_assert( Peek::fixed_size > 0 );
             static_assert( dependent_false< Peek > );
          }
       }
    };
 
-   template< unsigned Count, typename Peek >
-   struct many< Count, Peek, 0 >
-   {
-      using rule_t = many;
-      using subs_t = empty_list;
-
-      template< typename ParseInput >
-      [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( Count ) ) )
-      {
-         std::size_t done = 0;
-
-         for( unsigned i = 0; i < Count; ++i ) {
-            if( const auto t = Peek::peek( in, done ) ) {
-               done += t.size;
-               continue;
-            }
-            return false;
-         }
-         in.template consume< many >( done );
-         return true;
-      }
-   };
-
-   template< typename Peek, unsigned Fixed >
-   struct many< 0, Peek, Fixed >
-      : success
-   {};
-
    template< typename Peek >
-   struct many< 0, Peek, 0 >
+   struct many< 0, Peek >
       : success
    {};
 
-   template< unsigned Count, typename Peek, unsigned Fixed >
-   inline constexpr bool enable_control< many< Count, Peek, Fixed > > = false;
+   template< unsigned Count, typename Peek >
+   inline constexpr bool enable_control< many< Count, Peek > > = false;
 
 }  // namespace tao::pegtl::internal
 

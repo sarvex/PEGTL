@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "../../internal/allow_bulk.hpp"
 #include "../../internal/data_and_size.hpp"
 
 #include "endian.hpp"
@@ -45,6 +46,9 @@ namespace tao::pegtl::internal
    using peek_mask_uint32_le = peek_mask_uint_impl< std::uint32_t, Mask, little_endian >;
    template< std::uint64_t Mask >
    using peek_mask_uint64_le = peek_mask_uint_impl< std::uint64_t, Mask, little_endian >;
+
+   template< typename Data, Data Mask, typename Endian >
+   inline constexpr bool allow_bulk< peek_mask_uint_impl< Data, Mask, Endian > > = true;
 
 }  // namespace tao::pegtl::internal
 

@@ -51,7 +51,7 @@ namespace tao::pegtl::internal
       [[nodiscard]] std::size_t size( const std::size_t amount ) noexcept
       {
          require( amount );
-         return buffer_used();
+         return buffer_size();
       }
 
       [[nodiscard]] pointer_t current( const std::size_t offset = 0 ) const noexcept
@@ -95,10 +95,10 @@ namespace tao::pegtl::internal
             std::terminate();
 #endif
          }
-         m_end += m_reader( m_end, ( std::min )( buffer_free_after_end(), ( std::max )( amount - buffer_used(), Chunk ) ) ) ) {
+         m_end += m_reader( m_end, ( std::min )( buffer_free_after_end(), ( std::max )( amount - buffer_size(), Chunk ) ) ) ) {
       }
 
-      [[nodiscard]] std::size_t buffer_used() const noexcept
+      [[nodiscard]] std::size_t buffer_size() const noexcept
       {
          // assert( m_end >= m_current );
          return m_end - m_current;

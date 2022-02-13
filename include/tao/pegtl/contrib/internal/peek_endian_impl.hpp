@@ -5,6 +5,7 @@
 #ifndef TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_IMPL_HPP
 #define TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_IMPL_HPP
 
+#include "../../internal/allow_bulk.hpp"
 #include "../../internal/data_and_size.hpp"
 #include "../../internal/dependent_false.hpp"
 
@@ -40,6 +41,9 @@ namespace tao::pegtl::internal
          }
       }
    };
+
+   template< typename Data, typename Endian >
+   inline constexpr bool allow_bulk< peek_endian_impl< Data, Endian > > = true;
 
 }  // namespace tao::pegtl::internal
 

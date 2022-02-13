@@ -11,21 +11,19 @@ namespace tao::pegtl
 {
    namespace
    {
-      std::string u32s( const char32_t u )
+      [[nodiscard]] std::string u32s( const char32_t u )
       {
          return std::string( reinterpret_cast< const char* >( &u ), sizeof( u ) );
       }
 
-      std::string u32s_be( const char32_t v )
+      [[nodiscard]] std::string u32s_be( const char32_t v )
       {
-         const std::uint32_t u = internal::h_to_be( std::uint32_t( v ) );
-         return std::string( reinterpret_cast< const char* >( &u ), sizeof( u ) );
+         return u32s( internal::big_endian::from( std::uint32_t( v ) ) );
       }
 
-      std::string u32s_le( const char32_t v )
+      [[nodiscard]] std::string u32s_le( const char32_t v )
       {
-         const std::uint32_t u = internal::h_to_le( std::uint32_t( v ) );
-         return std::string( reinterpret_cast< const char* >( &u ), sizeof( u ) );
+         return u32s( internal::little_endian::from( std::uint32_t( v ) ) );
       }
 
    }  // namespace

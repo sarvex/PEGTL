@@ -5,11 +5,11 @@
 #ifndef TAO_PEGTL_CONTRIB_UINT8_HPP
 #define TAO_PEGTL_CONTRIB_UINT8_HPP
 
+#include "../internal/peek_copy.hpp"
 #include "../internal/result_on_found.hpp"
 #include "../internal/rules.hpp"
 
 #include "internal/peek_mask_uint8.hpp"
-#include "internal/peek_uint8.hpp"
 
 namespace tao::pegtl::uint8
 {

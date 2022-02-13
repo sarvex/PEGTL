@@ -10,6 +10,7 @@
 
 #include "enable_control.hpp"
 #include "one.hpp"
+#include "peek_copy.hpp"
 #include "result_on_found.hpp"
 #include "success.hpp"
 

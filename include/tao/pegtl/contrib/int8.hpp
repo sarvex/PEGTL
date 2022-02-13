@@ -5,10 +5,9 @@
 #ifndef TAO_PEGTL_CONTRIB_INT8_HPP
 #define TAO_PEGTL_CONTRIB_INT8_HPP
 
+#include "../internal/peek_copy.hpp"
 #include "../internal/result_on_found.hpp"
 #include "../internal/rules.hpp"
-
-#include "internal/peek_int8.hpp"
 
 namespace tao::pegtl::int8
 {

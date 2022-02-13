@@ -5,6 +5,9 @@
 #ifndef TAO_PEGTL_INTERNAL_PEEK_COPY_HPP
 #define TAO_PEGTL_INTERNAL_PEEK_COPY_HPP
 
+#include <cstddef>
+
+#include "allow_bulk.hpp"
 #include "data_and_size.hpp"
 
 namespace tao::pegtl::internal
@@ -30,6 +33,14 @@ namespace tao::pegtl::internal
          return { 0, 0 };
       }
    };
+
+   using peek_char = peek_copy< char >;
+   using peek_int8 = peek_copy< std::int8_t >;
+   using peek_uint8 = peek_copy< std::uint8_t >;
+   using peek_byte = peek_copy< std::byte >;
+
+   template< typename T >
+   inline constexpr bool allow_bulk< peek_copy< T > > = true;
 
 }  // namespace tao::pegtl::internal
 

@@ -5,6 +5,7 @@
 #ifndef TAO_PEGTL_ASCII_HPP
 #define TAO_PEGTL_ASCII_HPP
 
+#include "internal/peek_copy.hpp"
 #include "internal/result_on_found.hpp"
 #include "internal/rules.hpp"
 

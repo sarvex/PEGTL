@@ -44,7 +44,7 @@ namespace tao::pegtl
 
    }  // namespace utf16_le
 
-   namespace utf32 = TAO_PEGTL_ENDIAN_SUFFIXED( utf16_ );
+   namespace utf16 = TAO_PEGTL_ENDIAN_SUFFIXED( utf16_ );
 
 }  // namespace tao::pegtl
 
