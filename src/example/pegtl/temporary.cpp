@@ -34,8 +34,8 @@ struct my_action< string< 'h', 'a', 'l', 'l', 'o' > >
 int main()
 {
    // memory_input in( "hallo", 5 );
-   internal::eager_position_input< text_position, internal::input_with_eol< one< '\n' >, memory_input > > in( "hallo", 5 );
-   // internal::defaulted_lazy_position_input< text_position, internal::input_with_begin< internal::input_with_eol< one< '\n' >, memory_input > > > in( "hallo", 5 );
+   internal::eager_position_input< text_position, internal::line_based_input< one< '\n' >, memory_input > > in( "hallo", 5 );
+   // internal::defaulted_lazy_position_input< text_position, internal::restartable_input< internal::line_based_input< one< '\n' >, memory_input > > > in( "hallo", 5 );
 
    //   const bool result = parse< my_grammar, my_action, normal >( in );
    const bool result = parse< my_grammar, my_action, normal >( in );

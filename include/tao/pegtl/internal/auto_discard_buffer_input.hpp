@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_INTERNAL_AUTO_BUFFER_INPUT_HPP
-#define TAO_PEGTL_INTERNAL_AUTO_BUFFER_INPUT_HPP
+#ifndef TAO_PEGTL_INTERNAL_AUTO_DISCARD_BUFFER_INPUT_HPP
+#define TAO_PEGTL_INTERNAL_AUTO_DISCARD_BUFFER_INPUT_HPP
 
 #include <cstddef>
 #include <utility>
@@ -13,7 +13,7 @@
 namespace tao::pegtl::internal
 {
    template< typename BufferInput >
-   class auto_buffer_input
+   class auto_discard_buffer_input
       : public BufferInput
    {
    public:
@@ -31,7 +31,7 @@ namespace tao::pegtl::internal
       template< rewind_mode M >
       [[nodiscard]] auto make_rewind_guard() noexcept
       {
-         return rewind_cancel_guard< M, auto_buffer_input >( this );
+         return rewind_cancel_guard< M, auto_discard_buffer_input >( this );
       }
 
       [[nodiscard]] auto rewind_position() noexcept

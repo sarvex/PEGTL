@@ -10,32 +10,11 @@
 #include <vector>
 
 #include "ascii.hpp"
-#include "rules.hpp"
 
-#include "internal/argv_input.hpp"
-#include "internal/container_input.hpp"
-#include "internal/file_input.hpp"
-#include "internal/memory_input.hpp"
-#include "internal/pointer_input.hpp"
-#include "internal/read_input.hpp"
-
-#include "internal/input_with_begin.hpp"
-#include "internal/input_with_eol.hpp"
+#include "internal/inputs.hpp"
 
 #include "internal/count_position.hpp"
 #include "internal/text_position.hpp"
-
-#include "internal/defaulted_eager_position_input.hpp"
-#include "internal/defaulted_lazy_position_input.hpp"
-#include "internal/initialized_eager_position_input.hpp"
-#include "internal/initialized_lazy_position_input.hpp"
-
-#include "internal/initialized_restartable_eager_position_input.hpp"
-
-#include "internal/auto_buffer_input.hpp"
-#include "internal/dynamic_buffer_input_base.hpp"
-#include "internal/static_buffer_input_base.hpp"
-#include "internal/common_buffer_input.hpp"
 
 #include "internal/cstream_reader.hpp"
 #include "internal/cstring_reader.hpp"
@@ -44,10 +23,10 @@
 namespace tao::pegtl
 {
    using file_input = internal::file_input;
-   // using mmap_input = internal::mmap_input< internal::input_with_begin< internal::memory_input< char > > >;
+   // using mmap_input = internal::mmap_input< internal::restartable_input< internal::memory_input< char > > >;
 
    using memory_input = internal::memory_input< char >;
-   // using ???_input = internal::input_with_begin< internal::memory_input< char > >;
+   // using ???_input = internal::restartable_input< internal::memory_input< char > >;
 
    using string_input = internal::container_input< std::string >;
    using vector_input = internal::container_input< std::vector< char > >;
@@ -55,9 +34,11 @@ namespace tao::pegtl
    using shared_input = internal::pointer_input< std::shared_ptr< char[] > >;
    using unique_input = internal::pointer_input< std::unique_ptr< char[] > >;
 
-   using mmap_input = internal::input_with_eol< lf, internal::mmap_input< internal::input_with_begin< internal::memory_input< char > > > >;
+   using mmap_input = internal::line_based_input< lf, internal::mmap_input< internal::restartable_input< internal::memory_input< char > > > >;
 
    // TODO: What exactly?
+
+   // Buffer inputs only work with eager positions, not restartable eager position.
 
 }  // namespace tao::pegtl
 

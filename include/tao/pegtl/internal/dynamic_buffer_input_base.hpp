@@ -16,7 +16,6 @@ namespace tao::pegtl::internal
    {
    public:
       using data_t = Data;
-      using pointer_t = const Data*;
 
       template< typename... As >
       dynamic_buffer_input_base( const std::size_t size, const std::size_t chunk, As&&... as )

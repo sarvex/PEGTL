@@ -5,7 +5,7 @@
 #include "test.hpp"
 #include "verify_rule.hpp"
 
-#include <tao/pegtl/contrib/utf16.hpp>
+#include <tao/pegtl/utf16.hpp>
 
 namespace tao::pegtl
 {

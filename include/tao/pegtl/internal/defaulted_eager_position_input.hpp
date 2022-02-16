@@ -8,6 +8,8 @@
 #include <cstddef>
 #include <utility>
 
+#include "input_traits.hpp"
+
 namespace tao::pegtl::internal
 {
    template< typename Position, typename Input >
@@ -15,10 +17,9 @@ namespace tao::pegtl::internal
       : public Input
    {
    public:
-      using typename Input::data_t;
-      //      using memory_input_t = typename Input::memory_input_t;
-      using typename Input::pointer_t;
       using position_t = Position;
+
+      using typename Input::data_t;
 
       using Input::Input;
 
@@ -35,7 +36,7 @@ namespace tao::pegtl::internal
          Input::template consume< Rule >( count );
       }
 
-      using rewind_position_t = decltype( std::declval< Position >().rewind_save( std::declval< pointer_t >() ) );
+      using rewind_position_t = decltype( std::declval< Position >().rewind_save( std::declval< const data_t* >() ) );
 
       template< rewind_mode M >
       [[nodiscard]] rewind_guard< M, defaulted_eager_position_input > make_rewind_guard() noexcept
@@ -80,6 +81,12 @@ namespace tao::pegtl::internal
 
    protected:
       Position m_position;
+   };
+
+   template< typename Position, typename Input >
+   struct input_traits< defaulted_eager_position_input< Position, Input > >
+   {
+      using memory_input_t = typename input_traits< Input >::memory_input_t;
    };
 
 }  // namespace tao::pegtl::internal

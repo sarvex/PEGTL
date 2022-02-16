@@ -8,15 +8,15 @@
 
 namespace tao::pegtl
 {
-   using dynamic_t = internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::input_with_eol< lf, internal::common_buffer_input< internal::dynamic_buffer_input_base< char, internal::cstring_reader > > > >;
+   using dynamic_t = internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::line_based_input< lf, internal::common_buffer_input< internal::dynamic_buffer_input_base< char, internal::cstring_reader > > > >;
 
    template< unsigned S, unsigned C >
-   using static_t = internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::input_with_eol< lf, internal::common_buffer_input< internal::static_buffer_input_base< char, S, C, internal::cstring_reader > > > >;
+   using static_t = internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::line_based_input< lf, internal::common_buffer_input< internal::static_buffer_input_base< char, S, C, internal::cstring_reader > > > >;
 
-   using dynamic_a = internal::auto_buffer_input< dynamic_t >;
+   using dynamic_a = internal::auto_discard_buffer_input< dynamic_t >;
 
    template< unsigned S, unsigned C >
-   using static_a = internal::auto_buffer_input< static_t< S, C > >;
+   using static_a = internal::auto_discard_buffer_input< static_t< S, C > >;
 
    template< typename BufferInput >
    void unit_test_01( BufferInput&& in )

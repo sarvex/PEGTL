@@ -2,13 +2,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_INTERNAL_PEEK_MASK_UINT8_HPP
-#define TAO_PEGTL_CONTRIB_INTERNAL_PEEK_MASK_UINT8_HPP
+#ifndef TAO_PEGTL_INTERNAL_PEEK_MASK_UINT8_HPP
+#define TAO_PEGTL_INTERNAL_PEEK_MASK_UINT8_HPP
 
 #include <cstddef>
 #include <cstdint>
 
-#include "../../internal/data_and_size.hpp"
+#include "data_and_size.hpp"
 
 namespace tao::pegtl::internal
 {

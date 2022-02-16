@@ -39,9 +39,6 @@ namespace tao::pegtl::internal
    {
    public:
       using data_t = typename ParseInput::data_t;
-      using pointer_t = typename ParseInput::pointer_t;
-
-      using rewind_position_t = typename ParseInput::rewind_position_t;
 
       static constexpr rewind_mode next_rewind_mode = rewind_mode::active;
 
@@ -73,10 +70,12 @@ namespace tao::pegtl::internal
          m_input->rewind_position( m_saved );
       }
 
-      [[nodiscard]] pointer_t current() const noexcept
+      [[nodiscard]] const data_t* current() const noexcept
       {
          return m_saved.current;
       }
+
+      using rewind_position_t = typename ParseInput::rewind_position_t;
 
       [[nodiscard]] const rewind_position_t& saved() const noexcept
       {

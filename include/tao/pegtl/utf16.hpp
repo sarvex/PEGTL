@@ -5,10 +5,9 @@
 #ifndef TAO_PEGTL_CONTRIB_UTF16_HPP
 #define TAO_PEGTL_CONTRIB_UTF16_HPP
 
-#include "../internal/result_on_found.hpp"
-#include "../internal/rules.hpp"
-
 #include "internal/peek_utf16.hpp"
+#include "internal/result_on_found.hpp"
+#include "internal/rules.hpp"
 
 namespace tao::pegtl
 {

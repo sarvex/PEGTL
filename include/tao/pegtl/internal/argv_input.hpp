@@ -7,6 +7,7 @@
 
 #include <cstring>
 
+#include "input_traits.hpp"
 #include "memory_input.hpp"
 
 namespace tao::pegtl::internal
@@ -18,6 +19,12 @@ namespace tao::pegtl::internal
       argv_input( char** argv, const int argn )
          : memory_input< char >( argv[ argn ], std::strlen( argv[ argn ] ) )
       {}
+   };
+
+   template<>
+   struct input_traits< argv_input >
+   {
+      using memory_input_t = memory_input< char >;
    };
 
 }  // namespace tao::pegtl::internal

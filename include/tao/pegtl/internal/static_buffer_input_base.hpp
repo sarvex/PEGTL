@@ -16,7 +16,6 @@ namespace tao::pegtl::internal
    {
    public:
       using data_t = Data;
-      using pointer_t = const Data*;
 
       template< typename... As >
       explicit static_buffer_input_base( As&&... as )
@@ -39,7 +38,7 @@ namespace tao::pegtl::internal
          return m_buffer.data();
       }
 
-      [[nodiscard]] pointer_t buffer_begin() const noexcept
+      [[nodiscard]] const Data* buffer_begin() const noexcept
       {
          return m_buffer.data();
       }

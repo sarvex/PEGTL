@@ -37,7 +37,7 @@ namespace tao::pegtl
       if( remain < 0 ) {
          remain = ( expected == result_type::success ) ? 0 : int( data.size() );
       }
-      using input_t = internal::input_with_begin< internal::input_with_eol< Eol, internal::memory_input< char > > >;
+      using input_t = internal::restartable_input< internal::line_based_input< Eol, internal::memory_input< char > > >;
       {
          input_t in( data.data(), data.data() + data.size() );
          verify_impl_one< Rule, nothing >( line, file, data, in, expected, remain );
@@ -55,7 +55,7 @@ namespace tao::pegtl
    template< typename Rule, typename Eol = sor< lf, crlf > >
    void verify_only( const std::size_t line, const char* file, const std::string& data, const result_type expected, const std::size_t remain )
    {
-      using input_t = internal::input_with_begin< internal::input_with_eol< Eol, internal::memory_input< char > > >;
+      using input_t = internal::restartable_input< internal::line_based_input< Eol, internal::memory_input< char > > >;
       {
          input_t in( data.data(), data.data() + data.size() );
          verify_impl_one< Rule, nothing >( line, file, data, in, expected, remain );

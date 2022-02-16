@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "count_position.hpp"
+#include "input_traits.hpp"
 #include "memory_input.hpp"
 #include "pointer_position.hpp"
 #include "rewind_guard.hpp"
@@ -21,8 +22,6 @@ namespace tao::pegtl::internal
    {
    public:
       using data_t = std::decay_t< typename Pointer::element_type >;
-      using pointer_t = const data_t*;
-      using memory_input_t = memory_input< data_t >;
 
       pointer_input( Pointer&& in_pointer, const std::size_t in_size )
          : m_pointer( std::move( in_pointer ) ),
@@ -46,17 +45,17 @@ namespace tao::pegtl::internal
          return end() - m_current;
       }
 
-      [[nodiscard]] pointer_t begin() const noexcept
+      [[nodiscard]] const data_t* begin() const noexcept
       {
          return m_pointer.get();
       }
 
-      [[nodiscard]] pointer_t current( const std::size_t offset = 0 ) const noexcept
+      [[nodiscard]] const data_t* current( const std::size_t offset = 0 ) const noexcept
       {
          return m_current + offset;
       }
 
-      [[nodiscard]] pointer_t end( const std::size_t /*unused*/ = 0 ) const noexcept
+      [[nodiscard]] const data_t* end( const std::size_t /*unused*/ = 0 ) const noexcept
       {
          return m_end;
       }
@@ -90,7 +89,7 @@ namespace tao::pegtl::internal
          m_current = saved.pointer();
       }
 
-      void private_set_current( const pointer_t in_current ) noexcept
+      void private_set_current( const data_t* in_current ) noexcept
       {
          m_current = in_current;  // Used by rematch.
       }
@@ -100,7 +99,7 @@ namespace tao::pegtl::internal
          return previous_position( m_current );
       }
 
-      [[nodiscard]] auto previous_position( const pointer_t previous ) const noexcept
+      [[nodiscard]] auto previous_position( const data_t* previous ) const noexcept
       {
          return count_position< std::size_t >( previous - begin() );
       }
@@ -117,8 +116,15 @@ namespace tao::pegtl::internal
 
    protected:
       Pointer m_pointer;
-      pointer_t m_current;
-      pointer_t m_end;
+
+      const data_t* m_current;
+      const data_t* m_end;
+   };
+
+   template< typename Pointer >
+   struct input_traits< pointer_input< Pointer > >
+   {
+      using memory_input_t = memory_input< typename pointer_input< Pointer >::data_t >;
    };
 
 }  // namespace tao::pegtl::internal

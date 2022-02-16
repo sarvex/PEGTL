@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "count_position.hpp"
+#include "input_traits.hpp"
 #include "memory_input.hpp"
 #include "pointer_position.hpp"
 #include "rewind_guard.hpp"
@@ -21,15 +22,13 @@ namespace tao::pegtl::internal
    {
    public:
       using data_t = typename Container::value_type;
-      using pointer_t = const data_t*;
-      using memory_input_t = memory_input< data_t >;
 
-      container_input( data_t* in_begin, data_t* in_end )
+      container_input( const data_t* in_begin, const data_t* in_end )
          : m_container( in_begin, in_end ),
            m_current( m_container.data() )
       {}
 
-      container_input( data_t* in_begin, const std::size_t in_size )
+      container_input( const data_t* in_begin, const std::size_t in_size )
          : container_input( in_begin, in_begin + in_size )
       {}
 
@@ -58,17 +57,17 @@ namespace tao::pegtl::internal
          return end() - m_current;
       }
 
-      [[nodiscard]] pointer_t begin() const noexcept
+      [[nodiscard]] const data_t* begin() const noexcept
       {
          return m_container.data();
       }
 
-      [[nodiscard]] pointer_t current( const std::size_t offset = 0 ) const noexcept
+      [[nodiscard]] const data_t* current( const std::size_t offset = 0 ) const noexcept
       {
          return m_current + offset;
       }
 
-      [[nodiscard]] pointer_t end( const std::size_t /*unused*/ = 0 ) const noexcept
+      [[nodiscard]] const data_t* end( const std::size_t /*unused*/ = 0 ) const noexcept
       {
          return m_container.data() + m_container.size();
       }
@@ -102,7 +101,7 @@ namespace tao::pegtl::internal
          m_current = saved.current;
       }
 
-      void private_set_current( const pointer_t in_current ) noexcept
+      void private_set_current( const data_t* in_current ) noexcept
       {
          m_current = in_current;
       }
@@ -112,7 +111,7 @@ namespace tao::pegtl::internal
          return previous_position( m_current );
       }
 
-      [[nodiscard]] auto previous_position( const pointer_t previous ) const noexcept
+      [[nodiscard]] auto previous_position( const data_t* previous ) const noexcept
       {
          return count_position< std::size_t >( previous - begin() );
       }
@@ -129,7 +128,13 @@ namespace tao::pegtl::internal
 
    protected:
       Container m_container;
-      pointer_t m_current;
+      const data_t* m_current;
+   };
+
+   template< typename Container >
+   struct input_traits< container_input< Container > >
+   {
+      using memory_input_t = memory_input< typename container_input< Container >::data_t >;
    };
 
 }  // namespace tao::pegtl::internal

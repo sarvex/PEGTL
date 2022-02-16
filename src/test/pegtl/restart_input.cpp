@@ -8,7 +8,7 @@ namespace tao::pegtl
 {
    using grammar = seq< string< 'a', 'b', 'c' >, eof >;
 
-   using inner_input_t = internal::input_with_eol< lf, internal::input_with_begin< internal::memory_input< char > > >;
+   using inner_input_t = internal::line_based_input< lf, internal::restartable_input< internal::memory_input< char > > >;
 
    void test_memory()
    {

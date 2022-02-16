@@ -2,12 +2,12 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_HPP
-#define TAO_PEGTL_CONTRIB_INTERNAL_PEEK_ENDIAN_HPP
+#ifndef TAO_PEGTL_INTERNAL_PEEK_ENDIAN_HPP
+#define TAO_PEGTL_INTERNAL_PEEK_ENDIAN_HPP
 
-#include "../../internal/allow_bulk.hpp"
-#include "../../internal/data_and_size.hpp"
-#include "../../internal/dependent_false.hpp"
+#include "allow_bulk.hpp"
+#include "data_and_size.hpp"
+#include "dependent_false.hpp"
 
 namespace tao::pegtl::internal
 {

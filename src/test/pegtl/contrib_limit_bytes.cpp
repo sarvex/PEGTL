@@ -28,7 +28,7 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      using memory_input_t = internal::input_with_begin< internal::memory_input< char > >;
+      using memory_input_t = internal::restartable_input< internal::memory_input< char > >;
 
       memory_input_t i1( "aaa" );
       const auto r1 = pegtl::parse< test_grammar >( i1 );

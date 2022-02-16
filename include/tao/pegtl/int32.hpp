@@ -2,13 +2,12 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_INT32_HPP
-#define TAO_PEGTL_CONTRIB_INT32_HPP
-
-#include "../internal/result_on_found.hpp"
-#include "../internal/rules.hpp"
+#ifndef TAO_PEGTL_INT32_HPP
+#define TAO_PEGTL_INT32_HPP
 
 #include "internal/peek_int.hpp"
+#include "internal/result_on_found.hpp"
+#include "internal/rules.hpp"
 
 namespace tao::pegtl
 {

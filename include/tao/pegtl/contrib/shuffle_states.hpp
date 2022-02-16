@@ -15,6 +15,12 @@ namespace tao::pegtl
 {
    namespace internal
    {
+      struct reverse
+      {
+         template< std::size_t I, std::size_t S >
+         static constexpr std::size_t value = ( S - 1 ) - I;
+      };
+
       template< std::size_t N >
       struct rotate_left
       {
@@ -27,12 +33,6 @@ namespace tao::pegtl
       {
          template< std::size_t I, std::size_t S >
          static constexpr std::size_t value = ( I + S - N ) % S;
-      };
-
-      struct reverse
-      {
-         template< std::size_t I, std::size_t S >
-         static constexpr std::size_t value = ( S - 1 ) - I;
       };
 
    }  // namespace internal
@@ -178,14 +178,14 @@ namespace tao::pegtl
       }
    };
 
+   template< typename Base >
+   using reverse_states = shuffle_states< Base, internal::reverse >;
+
    template< typename Base, std::size_t N = 1 >
    using rotate_states_left = shuffle_states< Base, internal::rotate_left< N > >;
 
    template< typename Base, std::size_t N = 1 >
    using rotate_states_right = shuffle_states< Base, internal::rotate_right< N > >;
-
-   template< typename Base >
-   using reverse_states = shuffle_states< Base, internal::reverse >;
 
 }  // namespace tao::pegtl
 

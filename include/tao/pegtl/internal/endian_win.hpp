@@ -2,13 +2,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_INTERNAL_ENDIAN_WIN_HPP
-#define TAO_PEGTL_CONTRIB_INTERNAL_ENDIAN_WIN_HPP
+#ifndef TAO_PEGTL_INTERNAL_ENDIAN_WIN_HPP
+#define TAO_PEGTL_INTERNAL_ENDIAN_WIN_HPP
 
 #include <cstdint>
 #include <type_traits>
 
-#include "../../internal/dependent_false.hpp"
+#include "dependent_false.hpp"
 
 namespace tao::pegtl::internal
 {

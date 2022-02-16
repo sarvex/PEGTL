@@ -29,9 +29,6 @@ namespace tao::pegtl::internal
    {
    public:
       using data_t = typename Base::data_t;
-      using pointer_t = typename Base::pointer_t;
-
-      using memory_input_t = memory_input< data_t >;
 
       template< typename... As >
       common_buffer_input( As&&... as )
@@ -69,13 +66,13 @@ namespace tao::pegtl::internal
          return this->buffer_size();
       }
 
-      [[nodiscard]] pointer_t current( const std::size_t offset = 0 ) const noexcept
+      [[nodiscard]] const data_t* current( const std::size_t offset = 0 ) const noexcept
       {
          return m_current + offset;
       }
 
-      // [[nodiscard]] pointer_t end( const std::size_t amount );
-      // [[nodiscard]] pointer_t end( const std::size_t minimum, const std::size_t maximum );
+      // [[nodiscard]] const data_t* end( const std::size_t amount );
+      // [[nodiscard]] const data_t* end( const std::size_t minimum, const std::size_t maximum );
 
       template< typename Rule >
       void consume( const std::size_t count ) noexcept
@@ -158,17 +155,17 @@ namespace tao::pegtl::internal
          m_current = saved.pointer();
       }
 
-      void private_set_end( const pointer_t in_end ) noexcept
+      void private_set_end( const data_t* in_end ) noexcept
       {
          m_end = in_end;
       }
 
-      void private_set_current( const pointer_t in_current ) noexcept
+      void private_set_current( const data_t* in_current ) noexcept
       {
          m_current = const_cast< data_t* >( in_current );
       }
 
-      [[nodiscard]] pointer_t private_get_end() const noexcept
+      [[nodiscard]] const data_t* private_get_end() const noexcept
       {
          return m_end;
       }
@@ -178,7 +175,7 @@ namespace tao::pegtl::internal
          return previous_position( m_current );
       }
 
-      [[nodiscard]] dummy_position previous_position( const pointer_t /*unused*/ ) const noexcept
+      [[nodiscard]] dummy_position previous_position( const data_t* /*unused*/ ) const noexcept
       {
          return dummy_position();
       }
