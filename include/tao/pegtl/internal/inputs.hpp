@@ -26,4 +26,16 @@
 #include "static_buffer_input_base.hpp"
 #include "common_buffer_input.hpp"
 
+#include "fake_buffer_input.hpp"
+
+namespace tao::pegtl::internal
+{
+   template< typename Data, typename Reader >
+   using dynamic_buffer_input = common_buffer_input< dynamic_buffer_input_base< Data, Reader > >;
+
+   template< typename Data, std::size_t Size, std::size_t Chunk, typename Reader >
+   using static_buffer_input = common_buffer_input< static_buffer_input_base< Data, Size, Chunk, Reader > >;
+
+}  // namespace tao::pegtl::internal
+
 #endif

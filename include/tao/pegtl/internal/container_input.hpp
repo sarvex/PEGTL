@@ -49,10 +49,10 @@ namespace tao::pegtl::internal
 
       [[nodiscard]] bool empty() const noexcept
       {
-         return size( 1 ) == 0;
+         return size() == 0;
       }
 
-      [[nodiscard]] std::size_t size( const std::size_t /*unused*/ = 0 ) const noexcept
+      [[nodiscard]] std::size_t size() const noexcept
       {
          return end() - m_current;
       }
@@ -67,7 +67,7 @@ namespace tao::pegtl::internal
          return m_current + offset;
       }
 
-      [[nodiscard]] const data_t* end( const std::size_t /*unused*/ = 0 ) const noexcept
+      [[nodiscard]] const data_t* end() const noexcept
       {
          return m_container.data() + m_container.size();
       }

@@ -183,7 +183,6 @@ namespace tao::pegtl::internal
    protected:
       data_t* m_current;
       data_t* m_end;
-
    };
 
 }  // namespace tao::pegtl::internal

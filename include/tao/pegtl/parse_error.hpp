@@ -5,7 +5,6 @@
 #ifndef TAO_PEGTL_PARSE_ERROR_HPP
 #define TAO_PEGTL_PARSE_ERROR_HPP
 
-#include <sstream>
 #include <utility>
 
 #include "parse_error_base.hpp"
@@ -20,36 +19,23 @@ namespace tao::pegtl
       using position_t = Position;
 
       parse_error( const char* msg, Position pos )
-         : parse_error_base( msg, to_string( pos ) ),
-           m_position( std::move( pos ) )
+         : parse_error_base( msg, std::move( pos ) )
       {}
 
       parse_error( const std::string& msg, Position pos )
-         : parse_error_base( msg, to_string( pos ) ),
-           m_position( std::move( pos ) )
+         : parse_error_base( msg, std::move( pos ) )
       {}
 
-      void position() & noexcept = delete;  // TODO?
+      void position() & noexcept = delete;
 
       [[nodiscard]] Position&& position() && noexcept
       {
-         return std::move( m_position );
+         return std::move( std::static_pointer_cast< internal::parse_error_impl< Position > >( m_impl )->position );
       }
 
       [[nodiscard]] const Position& position() const& noexcept
       {
-         return m_position;
-      }
-
-   protected:
-      Position m_position;
-
-      template< typename T >
-      [[nodiscard]] static std::string to_string( const T& t )
-      {
-         std::ostringstream oss;
-         oss << t;
-         return std::move( oss ).str();
+         return std::static_pointer_cast< internal::parse_error_impl< Position > >( m_impl )->position;
       }
    };
 

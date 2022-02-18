@@ -92,7 +92,7 @@ namespace tao::pegtl::internal
    template< typename Position, typename Input >
    struct input_traits< initialized_eager_position_input< Position, Input > >
    {
-      using memory_inupt_t = typename input_traits< Input >::memory_input_t;
+      using memory_input_t = typename input_traits< Input >::memory_input_t;
    };
 
 }  // namespace tao::pegtl::internal
