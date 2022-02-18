@@ -43,13 +43,13 @@ namespace tao::pegtl
    {
       {
          S st = -123;
-         memory_input in( i, __FUNCTION__ );
+         memory_input in( i );
          parse< must< signed_rule, eof >, int_action >( in, st );
          TAO_PEGTL_TEST_ASSERT( st == s );
       }
       {
          S st = -123;
-         memory_input in( i, __FUNCTION__ );
+         memory_input in( i );
          parse< must< signed_rule_with_action, eof > >( in, st );
          TAO_PEGTL_TEST_ASSERT( st == s );
       }
@@ -59,7 +59,7 @@ namespace tao::pegtl
    void test_signed( const std::string& i )
    {
       S st;
-      memory_input in( i, __FUNCTION__ );
+      memory_input in( i );
       TAO_PEGTL_TEST_THROWS( parse< must< signed_rule, eof >, int_action >( in, st ) );
    }
 
@@ -76,7 +76,7 @@ namespace tao::pegtl
    {
       S st;
       const auto i = lexical_cast( s );
-      memory_input in( i, __FUNCTION__ );
+      memory_input in( i );
       parse< must< signed_rule, eof >, int_action >( in, st );
       TAO_PEGTL_TEST_ASSERT( st == s );
    }
@@ -86,13 +86,13 @@ namespace tao::pegtl
    {
       {
          S st = 123;
-         memory_input in( i, __FUNCTION__ );
+         memory_input in( i );
          parse< must< unsigned_rule, eof >, int_action >( in, st );
          TAO_PEGTL_TEST_ASSERT( st == s );
       }
       {
          S st = 123;
-         memory_input in( i, __FUNCTION__ );
+         memory_input in( i );
          parse< must< unsigned_rule_with_action, eof > >( in, st );
          TAO_PEGTL_TEST_ASSERT( st == s );
       }
@@ -102,7 +102,7 @@ namespace tao::pegtl
    void test_unsigned( const std::string& i )
    {
       S st = 123;
-      memory_input in( i, __FUNCTION__ );
+      memory_input in( i );
       TAO_PEGTL_TEST_THROWS( parse< must< unsigned_rule, eof >, int_action >( in, st ) );
    }
 
@@ -111,7 +111,7 @@ namespace tao::pegtl
    {
       S st = 123;
       const auto i = lexical_cast( s );
-      memory_input in( i, __FUNCTION__ );
+      memory_input in( i );
       parse< must< unsigned_rule, eof >, int_action >( in, st );
       TAO_PEGTL_TEST_ASSERT( st == s );
    }

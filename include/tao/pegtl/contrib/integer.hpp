@@ -151,14 +151,14 @@ namespace tao::pegtl
       [[nodiscard]] bool match_unsigned( ParseInput& in ) noexcept( noexcept( in.empty() ) )
       {
          if( !in.empty() ) {
-            const char c = in.peek_char();
+            const char c = *in.current();
             if( is_digit( c ) ) {
-               in.bump_in_this_line();
+               in.template consume< void >( 1 );
                if( c == '0' ) {
-                  return in.empty() || ( !is_digit( in.peek_char() ) );
+                  return in.empty() || ( !is_digit( *in.current() ) );
                }
-               while( ( !in.empty() ) && is_digit( in.peek_char() ) ) {
-                  in.bump_in_this_line();
+               while( ( !in.empty() ) && is_digit( *in.current() ) ) {
+                  in.template consume< void >( 1 );
                }
                return true;
             }
@@ -174,18 +174,18 @@ namespace tao::pegtl
          // Assumes st == 0.
 
          if( !in.empty() ) {
-            char c = in.peek_char();
+            char c = *in.current();
             if( is_digit( c ) ) {
                if( c == '0' ) {
-                  in.bump_in_this_line();
-                  return in.empty() || ( !is_digit( in.peek_char() ) );
+                  in.template consume< void >( 1 );
+                  return in.empty() || ( !is_digit( *in.current() ) );
                }
                do {
                   if( !accumulate_digit< Unsigned, Maximum >( st, c ) ) {
-                     throw tao::pegtl::parse_error( "integer overflow", in );
+                     throw tao::pegtl::parse_error( "integer overflow", in.current_position() );
                   }
-                  in.bump_in_this_line();
-               } while( ( !in.empty() ) && is_digit( c = in.peek_char() ) );
+                  in.template consume< void >( 1 );
+               } while( ( !in.empty() ) && is_digit( c = *in.current() ) );
                return true;
             }
          }
@@ -200,10 +200,10 @@ namespace tao::pegtl
          // Assumes st == 0.
 
          if( !in.empty() ) {
-            char c = in.peek_char();
+            char c = *in.current();
             if( c == '0' ) {
-               if( ( in.size( 2 ) < 2 ) || ( !is_digit( in.peek_char( 1 ) ) ) ) {
-                  in.bump_in_this_line();
+               if( ( in.size( 2 ) < 2 ) || ( !is_digit( *in.current( 1 ) ) ) ) {
+                  in.template consume< void >( 1 );
                   return true;
                }
                return false;
@@ -216,8 +216,8 @@ namespace tao::pegtl
                      return false;
                   }
                   ++b;
-               } while( ( !in.empty() ) && is_digit( c = in.peek_char( b ) ) );
-               in.bump_in_this_line( b );
+               } while( ( !in.empty() ) && is_digit( c = *in.current( b ) ) );
+               in.template consume< void >( b );
                return true;
             }
          }
@@ -236,7 +236,7 @@ namespace tao::pegtl
          // This function "only" offers basic exception safety.
          st = 0;
          if( !internal::convert_unsigned( st, in.string_view() ) ) {
-            throw parse_error( "unsigned integer overflow", in );
+            throw parse_error( "unsigned integer overflow", in.current_position() );
          }
       }
    };
@@ -370,7 +370,7 @@ namespace tao::pegtl
          // This function "only" offers basic exception safety.
          st = 0;
          if( !internal::convert_signed( st, in.string_view() ) ) {
-            throw parse_error( "signed integer overflow", in );
+            throw parse_error( "signed integer overflow", in.current_position() );
          }
       }
    };

@@ -2,6 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
+#include <iostream>
+
 #include "test.hpp"
 
 #include <tao/pegtl/contrib/parse_tree.hpp>
@@ -30,7 +32,8 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      memory_input in( "ac[\"\\\x01\x7f\b\n\r\f\t\a\v]", "input" );
+      using memory_input_t = internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::text_position< std::size_t >, internal::line_based_input< lf, internal::memory_input< char > > > >;
+      memory_input_t in( "ac[\"\\\x01\x7f\b\n\r\f\t\a\v]" );
       const auto root = parse_tree::parse< D, selector >( in );
       parse_tree::print_dot( std::cout, *root );
    }

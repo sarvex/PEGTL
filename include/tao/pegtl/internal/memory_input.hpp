@@ -7,6 +7,8 @@
 
 #include <array>
 #include <cstddef>
+#include <string>
+#include <string_view>
 #include <type_traits>
 
 #include "input_traits.hpp"
@@ -28,6 +30,16 @@ namespace tao::pegtl::internal
 
       memory_input( const Data* in_begin, const std::size_t in_size ) noexcept
          : memory_input( in_begin, in_begin + in_size )
+      {}
+
+      memory_input( const std::string&& ) = delete;
+
+      explicit memory_input( const std::string& in_view ) noexcept
+         : memory_input( in_view.data(), in_view.size() )
+      {}
+
+      explicit memory_input( const std::string_view in_view ) noexcept
+         : memory_input( in_view.data(), in_view.size() )
       {}
 
       template< std::size_t N >
