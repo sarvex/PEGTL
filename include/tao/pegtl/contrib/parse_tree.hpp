@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -27,10 +28,12 @@
 
 #include "../internal/enable_control.hpp"
 #include "../internal/has_unwind.hpp"
+#include "../internal/text_position.hpp"
+#include "../internal/text_rewind_position.hpp"
 
 namespace tao::pegtl::parse_tree
 {
-   template< typename T, typename Source = std::string_view >
+   template< typename T, typename Position, typename RewindPosition >
    struct basic_node
    {
       using node_t = T;
@@ -38,10 +41,9 @@ namespace tao::pegtl::parse_tree
       children_t children;
 
       std::string_view type;
-      Source source;
 
-      tao::pegtl::internal::frobnicator m_begin;
-      tao::pegtl::internal::frobnicator m_end;
+      std::optional< RewindPosition > m_begin;
+      std::optional< RewindPosition > m_end;
 
       // each node will be default constructed
       basic_node() = default;
@@ -75,31 +77,33 @@ namespace tao::pegtl::parse_tree
          type = demangle< U >();
       }
 
-      [[nodiscard]] position begin() const
+      [[nodiscard]] Position begin() const
       {
-         return position( m_begin, source );
+         assert( m_begin );
+         return Position( *m_begin );
       }
 
-      [[nodiscard]] position end() const
+      [[nodiscard]] Position end() const
       {
-         return position( m_end, source );
+         assert( m_end );
+         return Position( *m_end );
       }
 
       [[nodiscard]] bool has_content() const noexcept
       {
-         return m_end.data != nullptr;
+         return m_begin && m_end;
       }
 
       [[nodiscard]] std::string_view string_view() const noexcept
       {
          assert( has_content() );
-         return std::string_view( m_begin.data, m_end.data - m_begin.data );
+         return std::string_view( m_begin->current, m_end->current - m_begin->current );
       }
 
       [[nodiscard]] std::string string() const
       {
          assert( has_content() );
-         return std::string( m_begin.data, m_end.data );
+         return std::string( m_begin->current, m_end->current );
       }
 
       // template< tracking_mode P = tracking_mode::eager, typename Eol = eol::lf_crlf >
@@ -112,7 +116,7 @@ namespace tao::pegtl::parse_tree
       template< typename... States >
       void remove_content( States&&... /*unused*/ ) noexcept
       {
-         m_end = tao::pegtl::internal::frobnicator();
+         m_end.reset();
       }
 
       // all non-root nodes are initialized by calling this method
@@ -120,15 +124,14 @@ namespace tao::pegtl::parse_tree
       void start( const ParseInput& in, States&&... /*unused*/ )
       {
          set_type< Rule >();
-         source = in.source();
-         m_begin = tao::pegtl::internal::frobnicator( in.frobnicator() );
+         m_begin = in.rewind_position();
       }
 
       // if parsing of the rule succeeded, this method is called
       template< typename Rule, typename ParseInput, typename... States >
       void success( const ParseInput& in, States&&... /*unused*/ ) noexcept
       {
-         m_end = tao::pegtl::internal::frobnicator( in.frobnicator() );
+         m_end = in.rewind_position();
       }
 
       // if parsing of the rule failed, this method is called
@@ -154,12 +157,12 @@ namespace tao::pegtl::parse_tree
    };
 
    struct node
-      : basic_node< node >
+      : basic_node< node, internal::text_position< std::size_t >, internal::text_rewind_position< char, std::size_t > >
    {};
 
    namespace internal
    {
-      template< typename Node >
+      template< typename Node = node >
       struct state
       {
          std::vector< std::unique_ptr< Node > > stack;
