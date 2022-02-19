@@ -50,7 +50,7 @@ namespace tao::pegtl::internal
 
    template< typename Peek >
    struct one< result_on_found::failure, Peek >
-      : many< 1, Peek >
+      : any< Peek >
    {};
 
    template< result_on_found R, typename Peek, typename Peek::data_t... Cs >

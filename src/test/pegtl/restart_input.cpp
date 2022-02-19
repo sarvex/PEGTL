@@ -51,7 +51,7 @@ namespace tao::pegtl
    void test_initialized()
    {
       const std::string data = "abc";
-      const internal::text_position< unsigned > pos( 50, 60 );
+      const internal::careless_text_position< unsigned > pos( 50, 60 );
       Input in( pos, data.data(), data.size() );
       {
          const bool success = parse< grammar >( in );
@@ -73,10 +73,10 @@ namespace tao::pegtl
    void unit_test()
    {
       test_memory();
-      test_defaulted< internal::defaulted_lazy_position_input< internal::text_position< unsigned >, inner_input_t > >();
-      test_defaulted< internal::defaulted_eager_position_input< internal::text_position< unsigned >, inner_input_t > >();
-      test_initialized< internal::initialized_lazy_position_input< internal::text_position< unsigned >, inner_input_t > >();
-      test_initialized< internal::initialized_restartable_eager_position_input< internal::text_position< unsigned >, inner_input_t > >();
+      test_defaulted< internal::defaulted_lazy_position_input< internal::careless_text_position< unsigned >, inner_input_t > >();
+      test_defaulted< internal::defaulted_eager_position_input< internal::careless_text_position< unsigned >, inner_input_t > >();
+      test_initialized< internal::initialized_lazy_position_input< internal::careless_text_position< unsigned >, inner_input_t > >();
+      test_initialized< internal::initialized_restartable_eager_position_input< internal::careless_text_position< unsigned >, inner_input_t > >();
    }
 
 }  // namespace tao::pegtl

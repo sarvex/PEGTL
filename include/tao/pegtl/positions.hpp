@@ -9,15 +9,31 @@
 
 #include "internal/count_position.hpp"
 #include "internal/pointer_position.hpp"
-#include "internal/text_count_position.hpp"
-#include "internal/text_position.hpp"
+
+#include "internal/careless_text_position.hpp"
+#include "internal/paranoid_text_position.hpp"
+#include "internal/selected_text_position.hpp"
+
+#include "internal/careless_text_count_position.hpp"
+#include "internal/paranoid_text_count_position.hpp"
+#include "internal/selected_text_count_position.hpp"
 
 namespace tao::pegtl
 {
    using count_position = internal::count_position< std::size_t >;
    using pointer_position = internal::pointer_position< const char >;
-   using text_count_position = internal::text_count_position< std::size_t >;
-   using text_position = internal::text_position< std::size_t >;
+
+   using careless_text_position = internal::careless_text_position< std::size_t >;
+   template< typename Eol >
+   using paranoid_text_position = internal::paranoid_text_position< Eol, std::size_t >;
+   template< typename Eol >
+   using selected_text_position = internal::selected_text_position< Eol, std::size_t >;
+
+   using careless_text_count_position = internal::careless_text_count_position< std::size_t >;
+   template< typename Eol >
+   using paranoid_text_count_position = internal::paranoid_text_count_position< Eol, std::size_t >;
+   template< typename Eol >
+   using selected_text_count_position = internal::selected_text_count_position< Eol, std::size_t >;
 
 }  // namespace tao::pegtl
 

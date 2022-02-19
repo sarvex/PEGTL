@@ -13,6 +13,8 @@
 #include "../rewind_mode.hpp"
 #include "../rules.hpp"
 
+#include "../internal/type_tags.hpp"
+
 #include "analyze_traits.hpp"
 
 namespace tao::pegtl
@@ -26,7 +28,7 @@ namespace tao::pegtl
          using subs_t = empty_list;
 
          template< apply_mode A,
-                   rewind_mode,
+                   rewind_mode M,
                    template< typename... >
                    class Action,
                    template< typename... >
@@ -34,15 +36,15 @@ namespace tao::pegtl
                    typename ParseInput >
          [[nodiscard]] static bool match( ParseInput& in, std::size_t& marker_size ) noexcept( noexcept( in.size( 0 ) ) )
          {
-            if( in.empty() || ( in.peek_char( 0 ) != Open ) ) {
+            if( in.empty() || ( *in.current() != Open ) ) {
                return false;
             }
             for( std::size_t i = 1; i < in.size( i + 1 ); ++i ) {
-               switch( const auto c = in.peek_char( i ) ) {
+               switch( const auto c = *in.current( i ) ) {
                   case Open:
                      marker_size = i + 1;
-                     in.bump_in_this_line( marker_size );
-                     (void)eol::match( in );
+                     in.template consume< raw_string_open >( marker_size );
+                     (void)in.template match_eol< A, M, Action, Control >( in );
                      return true;
                   case Marker:
                      break;
@@ -75,14 +77,14 @@ namespace tao::pegtl
             if( in.size( marker_size ) < marker_size ) {
                return false;
             }
-            if( in.peek_char( 0 ) != Close ) {
+            if( *in.current( 0 ) != Close ) {
                return false;
             }
-            if( in.peek_char( marker_size - 1 ) != Close ) {
+            if( *in.current( marker_size - 1 ) != Close ) {
                return false;
             }
             for( std::size_t i = 0; i < ( marker_size - 2 ); ++i ) {
-               if( in.peek_char( i + 1 ) != Marker ) {
+               if( *in.current( i + 1 ) != Marker ) {
                   return false;
                }
             }
@@ -120,7 +122,7 @@ namespace tao::pegtl
                if( in.empty() ) {
                   return false;
                }
-               in.bump();
+               in.template consume< eol_unknown_tag >( 1 );
             }
             return m( true );
          }
@@ -209,7 +211,7 @@ namespace tao::pegtl
          std::size_t marker_size;
          if( Control< internal::raw_string_open< Open, Marker > >::template match< A, M, Action, Control >( in, marker_size ) ) {
             if( Control< content >::template match< A, M, Action, Control >( in, marker_size, st... ) ) {
-               in.bump_in_this_line( marker_size );
+               in.template consume< raw_string >( marker_size );
                return true;
             }
          }

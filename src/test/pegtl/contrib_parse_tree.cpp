@@ -39,7 +39,7 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      using memory_input_t = internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::text_position< std::size_t >, internal::line_based_input< lf, internal::memory_input< char > > > >;
+      using memory_input_t = internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::careless_text_position< std::size_t >, internal::line_based_input< lf, internal::memory_input< char > > > >;
       {
          memory_input_t in( "ac" );
          const auto r = parse_tree::parse< D, selector >( in );

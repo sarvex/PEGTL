@@ -13,12 +13,12 @@
 
 namespace tao::pegtl::internal
 {
-   template< typename Rule, typename Input >
+   template< typename Eol, typename Input >
    class line_based_input
       : public Input
    {
    public:
-      using eol_t = Rule;
+      using eol_rule = Eol;
 
       using typename Input::data_t;
 
@@ -34,7 +34,7 @@ namespace tao::pegtl::internal
                 typename... States >
       [[nodiscard]] static bool match_eol( ParseInput& in, States&&... st )
       {
-         if( Control< Rule >::template match< A, M, Action, Control >( in, st... ) ) {
+         if( Control< Eol >::template match< A, M, Action, Control >( in, st... ) ) {
             in.template consume< eol_consume_tag >( 0 );
             return true;
          }
@@ -42,10 +42,10 @@ namespace tao::pegtl::internal
       }
    };
 
-   template< typename Rule, typename Input >
-   struct input_traits< line_based_input< Rule, Input > >
+   template< typename Eol, typename Input >
+   struct input_traits< line_based_input< Eol, Input > >
    {
-      using memory_input_t = line_based_input< Rule, typename input_traits< Input >::memory_input_t >;
+      using memory_input_t = line_based_input< Eol, typename input_traits< Input >::memory_input_t >;
    };
 
 }  // namespace tao::pegtl::internal

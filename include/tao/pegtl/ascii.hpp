@@ -16,10 +16,11 @@ namespace tao::pegtl
       // clang-format off
       struct alnum : internal::ranges< internal::peek_char, 'a', 'z', 'A', 'Z', '0', '9' > {};
       struct alpha : internal::ranges< internal::peek_char, 'a', 'z', 'A', 'Z' > {};
-      struct any : internal::many< 1, internal::peek_char > {};
+      struct any : internal::any< internal::peek_char > {};
       struct blank : internal::one< internal::result_on_found::success, internal::peek_char, ' ', '\t' > {};
       struct cr : internal::one< internal::result_on_found::success, internal::peek_char, '\r' > {};
       struct cr_crlf : internal::sor< internal::string< '\r', '\n' >, internal::one< internal::result_on_found::success, internal::peek_char, '\r' > > {};
+      struct cr_crlf_lf : internal::sor< internal::string< '\r', '\n' >, internal::one< internal::result_on_found::success, internal::peek_char, '\r', '\n' > > {};
       struct cr_lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n', '\r' > {};
       struct crlf : internal::string< '\r', '\n' > {};
       struct digit : internal::range< internal::result_on_found::success, internal::peek_char, '0', '9' > {};

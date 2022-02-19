@@ -54,13 +54,14 @@ namespace tao::pegtl
    void verify_data( const std::size_t line, const char* file, const char ( &m )[ M ], const char ( &n )[ N ] )
    {
       content.clear();
-      memory_input in( m, m + M - 1, file, 0, line, 1 );
+      using pos_t = internal::selected_text_position< std::size_t >;
+      internal::fake_buffer_input< internal::initialized_eager_position_input< pos_t, internal::line_based_input< lf_crlf, internal::memory_input< char > > > > in( pos_t( line, 1 ), m, m + M - 1 );
       const auto r = parse< Rule, Action >( in );
       if( ( !r ) || ( content != std::string_view( n, N - 1 ) ) ) {
          TAO_PEGTL_TEST_FAILED( "input data [ '" << m << "' ] expected success with [ '" << n << "' ] but got [ '" << content << "' ] result [ " << r << " ]" );  // LCOV_EXCL_LINE
       }
       content.clear();
-      memory_input< tracking_mode::lazy > in2( m, m + M - 1, file, 0, line, 1 );
+      internal::fake_buffer_input< internal::initialized_lazy_position_input< pos_t, internal::line_based_input< lf_crlf, internal::memory_input< char > > > > in2( pos_t( line, 1 ), m, m + M - 1 );
       const auto r2 = parse< Rule, Action >( in2 );
       if( ( !r2 ) || ( content != std::string_view( n, N - 1 ) ) ) {
          TAO_PEGTL_TEST_FAILED( "input data [ '" << m << "' ] with tracking_mode::lazy expected success with [ '" << n << "' ] but got [ '" << content << "' ] result [ " << r2 << " ]" );  // LCOV_EXCL_LINE
@@ -70,7 +71,7 @@ namespace tao::pegtl
    template< typename Rule >
    void verify_fail( const std::size_t line, const char* file, const std::string& s )
    {
-      memory_input in( s, "expect exception" );
+      internal::fake_buffer_input< internal::line_based_input< lf, internal::memory_input< char > > > in( s );
       if( parse< Rule >( in ) ) {
          TAO_PEGTL_TEST_FAILED( "expected exception" );  // LCOV_EXCL_LINE
       }

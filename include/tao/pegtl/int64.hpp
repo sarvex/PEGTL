@@ -14,7 +14,7 @@ namespace tao::pegtl
    namespace int64_be
    {
       // clang-format off
-      struct any : internal::many< 1, internal::peek_int64_be > {};
+      struct any : internal::any< internal::peek_int64_be > {};
       template< unsigned Count > struct many : internal::many< Count, internal::peek_int64_be > {};
 
       template< std::int64_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_int64_be, Cs... > {};
@@ -30,7 +30,7 @@ namespace tao::pegtl
    namespace int64_le
    {
       // clang-format off
-      struct any : internal::many< 1, internal::peek_int64_le > {};
+      struct any : internal::any< internal::peek_int64_le > {};
       template< unsigned Count > struct many : internal::many< Count, internal::peek_int64_le > {};
 
       template< std::int64_t... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_int64_le, Cs... > {};

@@ -28,7 +28,7 @@
 
 #include "../internal/enable_control.hpp"
 #include "../internal/has_unwind.hpp"
-#include "../internal/text_position.hpp"
+#include "../internal/text_position_base.hpp"
 #include "../internal/text_rewind_position.hpp"
 
 namespace tao::pegtl::parse_tree
@@ -157,7 +157,7 @@ namespace tao::pegtl::parse_tree
    };
 
    struct node
-      : basic_node< node, internal::text_position< std::size_t >, internal::text_rewind_position< char, std::size_t > >
+      : basic_node< node, internal::text_position_base< std::size_t >, internal::text_rewind_position< char, std::size_t > >
    {};
 
    namespace internal

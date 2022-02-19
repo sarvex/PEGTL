@@ -16,8 +16,8 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      static_assert( contains_v< grammar, digit > );
-      static_assert( !contains_v< grammar, xdigit > );
+      static_assert( grammar_contains_rule< grammar, digit > );
+      static_assert( !grammar_contains_rule< grammar, xdigit > );
    }
 
 }  // namespace tao::pegtl

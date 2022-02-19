@@ -10,11 +10,9 @@
 #include <vector>
 
 #include "ascii.hpp"
+#include "positions.hpp"
 
 #include "internal/inputs.hpp"
-
-#include "internal/count_position.hpp"
-#include "internal/text_position.hpp"
 
 #include "internal/cstream_reader.hpp"
 #include "internal/cstring_reader.hpp"
@@ -45,28 +43,28 @@ namespace tao::pegtl
 
    // Omit defaulted_ prefix because that's the, well, default case...?
 
-   using eager_text_lf_memory_input = internal::defaulted_eager_position_input< internal::text_position< std::size_t >, lf_memory_input >;
+   using eager_text_lf_memory_input = internal::defaulted_eager_position_input< internal::careless_text_position< std::size_t >, lf_memory_input >;
    // ...
 
-   using eager_text_crlf_memory_input = internal::defaulted_eager_position_input< internal::text_position< std::size_t >, crlf_memory_input >;
+   using eager_text_crlf_memory_input = internal::defaulted_eager_position_input< internal::careless_text_position< std::size_t >, crlf_memory_input >;
    // ...
 
-   using lazy_text_lf_memory_input = internal::defaulted_lazy_position_input< internal::text_position< std::size_t >, lf_memory_input >;
+   using lazy_text_lf_memory_input = internal::defaulted_lazy_position_input< internal::careless_text_position< std::size_t >, lf_memory_input >;
    // ...
 
-   using lazy_text_crlf_memory_input = internal::defaulted_lazy_position_input< internal::text_position< std::size_t >, crlf_memory_input >;
+   using lazy_text_crlf_memory_input = internal::defaulted_lazy_position_input< internal::careless_text_position< std::size_t >, crlf_memory_input >;
    // ...
 
-   using initialized_eager_text_lf_memory_input = internal::initialized_eager_position_input< internal::text_position< std::size_t >, lf_memory_input >;
+   using initialized_eager_text_lf_memory_input = internal::initialized_eager_position_input< internal::careless_text_position< std::size_t >, lf_memory_input >;
    // ...
 
-   using initialized_eager_text_crlf_memory_input = internal::initialized_eager_position_input< internal::text_position< std::size_t >, crlf_memory_input >;
+   using initialized_eager_text_crlf_memory_input = internal::initialized_eager_position_input< internal::careless_text_position< std::size_t >, crlf_memory_input >;
    // ...
 
-   using initialized_lazy_text_lf_memory_input = internal::initialized_lazy_position_input< internal::text_position< std::size_t >, lf_memory_input >;
+   using initialized_lazy_text_lf_memory_input = internal::initialized_lazy_position_input< internal::careless_text_position< std::size_t >, lf_memory_input >;
    // ...
 
-   using initialized_lazy_text_crlf_memory_input = internal::initialized_lazy_position_input< internal::text_position< std::size_t >, crlf_memory_input >;
+   using initialized_lazy_text_crlf_memory_input = internal::initialized_lazy_position_input< internal::careless_text_position< std::size_t >, crlf_memory_input >;
    // ...
 
    // TODO: initialized_restartable_eager_position_input requires restartable_input around memory_inputs.

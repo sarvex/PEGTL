@@ -22,6 +22,7 @@ namespace tao::pegtl
    struct bof : internal::bof {};
    struct bol : internal::bol {};
    template< unsigned Count > struct bytes : internal::many< Count, internal::peek_char > {};
+   template< unsigned Count > struct consume : internal::consume< Count > {};
    template< template< typename... > class Control, typename... Rules > struct control : internal::control< Control, Rules... > {};
    template< typename... Rules > struct disable : internal::disable< Rules... > {};
    struct discard : internal::discard {};

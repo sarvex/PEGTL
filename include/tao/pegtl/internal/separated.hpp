@@ -14,7 +14,7 @@
 
 namespace tao::pegtl::internal
 {
-   template< typename... >
+   template< typename, typename... >
    struct separated;
 
    template< typename Sep >
@@ -24,7 +24,7 @@ namespace tao::pegtl::internal
 
    template< typename Sep, typename Rule, typename... Rules >
    struct separated< Sep, Rule, Rules... >
-      : type_repack_t< seq, type_list_concat_t< type_list< Rule >, type_list< Sep, Rules >... > >
+      : type_repack_t< seq, type_list_concat< type_list< Rule >, type_list< Sep, Rules >... > >
    {};
 
    template< typename Sep, typename... Rules >
