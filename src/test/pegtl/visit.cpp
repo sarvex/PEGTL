@@ -9,6 +9,13 @@
 
 namespace tao::pegtl
 {
+   static_assert( !internal::contains_v< int > );
+   static_assert( internal::contains_v< int, char, double, int > );
+   static_assert( !internal::contains_v< int, char, double, unsigned > );
+
+   static_assert( std::is_same_v< internal::filter_t< type_list< int, char, float, double >, empty_list, empty_list >, type_list< int, char, float, double > > );
+   static_assert( std::is_same_v< internal::filter_t< type_list< int, char, float, double >, empty_list, type_list< char, double > >, type_list< int, float > > );
+
    using grammar = seq< plus< alpha >, star< sor< space, digit > > >;
 
    template< typename Name >

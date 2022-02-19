@@ -5,9 +5,12 @@
 #ifndef TAO_PEGTL_INTERNAL_SEPARATED_HPP
 #define TAO_PEGTL_INTERNAL_SEPARATED_HPP
 
+#include "../type_list.hpp"
+
 #include "enable_control.hpp"
 #include "seq.hpp"
 #include "success.hpp"
+#include "type_repack.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -19,12 +22,9 @@ namespace tao::pegtl::internal
       : success
    {};
 
-   template< typename... Ls, typename... Rs >
-   [[nodiscard]] seq< Ls..., Rs... > operator+( const seq< Ls... >&, const seq< Rs... >& ) noexcept;
-
    template< typename Sep, typename Rule, typename... Rules >
    struct separated< Sep, Rule, Rules... >
-      : decltype( ( seq< Rule >() + ... + seq< Sep, Rules >() ) )
+      : type_repack_t< seq, type_list_concat_t< type_list< Rule >, type_list< Sep, Rules >... > >
    {};
 
    template< typename Sep, typename... Rules >

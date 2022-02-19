@@ -17,25 +17,14 @@ namespace tao::pegtl
 
    using empty_list = type_list<>;
 
-   template< typename... >
-   struct type_list_concat;
-
-   template<>
-   struct type_list_concat<>
-   {
-      using type = empty_list;
-   };
+   template< typename... Ls, typename... Rs >
+   [[nodiscard]] type_list< Ls..., Rs... > operator+( const type_list< Ls... >&, const type_list< Rs... >& ) noexcept;
 
    template< typename... Ts >
-   struct type_list_concat< type_list< Ts... > >
+   struct type_list_concat
    {
-      using type = type_list< Ts... >;
+      using type = decltype( ( empty_list() + ... + Ts() ) );
    };
-
-   template< typename... T0s, typename... T1s, typename... Ts >
-   struct type_list_concat< type_list< T0s... >, type_list< T1s... >, Ts... >
-      : type_list_concat< type_list< T0s..., T1s... >, Ts... >
-   {};
 
    template< typename... Ts >
    using type_list_concat_t = typename type_list_concat< Ts... >::type;

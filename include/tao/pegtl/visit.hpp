@@ -13,6 +13,12 @@ namespace tao::pegtl
 {
    namespace internal
    {
+      template< typename T >
+      struct wrap_as_type
+      {
+         using type = T;
+      };
+
       template< typename Type, typename... Types >
       inline constexpr bool contains_v = ( std::is_same_v< Type, Types > || ... );
 
@@ -34,7 +40,7 @@ namespace tao::pegtl
 
       template< typename Rule, typename... Rules, typename... Todo, typename... Done >
       struct filter< type_list< Rule, Rules... >, type_list< Todo... >, type_list< Done... > >
-         : filter< type_list< Rules... >, std::conditional_t< contains_v< Rule, Todo..., Done... >, type_list< Todo... >, type_list< Rule, Todo... > >, type_list< Done... > >
+         : filter< type_list< Rules... >, std::conditional_t< contains_v< Rule, Todo..., Done... >, type_list< Todo... >, type_list< Todo..., Rule > >, type_list< Done... > >
       {};
 
       template< typename Rules, typename Todo, typename Done >
@@ -47,7 +53,7 @@ namespace tao::pegtl
          using NextSubs = type_list_concat_t< typename Rules::subs_t... >;
          using NextTodo = filter_t< NextSubs, empty_list, NextDone >;
 
-         using type = typename std::conditional_t< std::is_same_v< NextTodo, empty_list >, type_list_concat< NextDone >, visit_list< NextDone, NextTodo > >::type;
+         using type = typename std::conditional_t< std::is_same_v< NextTodo, empty_list >, wrap_as_type< NextDone >, visit_list< NextDone, NextTodo > >::type;
       };
 
       template< typename Done, typename... Rules >
