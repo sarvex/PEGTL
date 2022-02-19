@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_FUNCTION_HPP
-#define TAO_PEGTL_CONTRIB_FUNCTION_HPP
+#ifndef TAO_PEGTL_CONTRIB_DELEGATE_HPP
+#define TAO_PEGTL_CONTRIB_DELEGATE_HPP
 
 #include "../apply_mode.hpp"
 #include "../rewind_mode.hpp"
@@ -16,12 +16,12 @@ namespace tao::pegtl
    namespace internal
    {
       template< typename F, F U >
-      struct function;
+      struct delegate;
 
       template< typename ParseInput, typename... States, bool ( *U )( ParseInput&, States... ) >
-      struct function< bool ( * )( ParseInput&, States... ), U >
+      struct delegate< bool ( * )( ParseInput&, States... ), U >
       {
-         using rule_t = function;
+         using rule_t = delegate;
          using subs_t = empty_list;
 
          template< apply_mode A,
@@ -37,13 +37,13 @@ namespace tao::pegtl
       };
 
       template< typename F, F U >
-      inline constexpr bool enable_control< function< F, U > > = false;
+      inline constexpr bool enable_control< delegate< F, U > > = false;
 
    }  // namespace internal
 
    template< auto F >
-   struct function
-      : internal::function< decltype( F ), F >
+   struct delegate
+      : internal::delegate< decltype( F ), F >
    {};
 
 }  // namespace tao::pegtl

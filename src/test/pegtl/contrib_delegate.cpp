@@ -4,19 +4,19 @@
 
 #include "test.hpp"
 
-#include <tao/pegtl/contrib/function.hpp>
+#include <tao/pegtl/contrib/delegate.hpp>
 
 namespace tao::pegtl
 {
    bool call1 = false;
 
-   [[nodiscard]] bool func1( memory_input<>& /*unused*/, int /*unused*/, char*& /*unused*/, const double& /*unused*/ )
+   [[nodiscard]] bool func1( memory_input& /*unused*/, int /*unused*/, char*& /*unused*/, const double& /*unused*/ )
    {
       call1 = true;
       return true;
    }
 
-   struct rule1 : tao::pegtl::function< func1 >
+   struct rule1 : tao::pegtl::delegate< func1 >
    {};
 
    void unit_test()
@@ -24,7 +24,7 @@ namespace tao::pegtl
       int i = 42;
       char c = 'a';
       double d = 42.0;
-      memory_input in( "foo", __FUNCTION__ );
+      memory_input in( "foo" );
       TAO_PEGTL_TEST_ASSERT( parse< rule1 >( in, i, &c, d ) );
       TAO_PEGTL_TEST_ASSERT( call1 );
    }
