@@ -29,7 +29,7 @@ namespace tao::pegtl
 
    void unit_test()
    {
-      using memory_input_with_depth = input_with_depth< internal::memory_input< char > >;
+      using memory_input_with_depth = input_with_depth< internal::fake_buffer_input< internal::memory_input< char > > >;
 
       memory_input_with_depth i1( "aaa" );
       const auto r1 = pegtl::parse< test_grammar >( i1 );

@@ -18,7 +18,7 @@ namespace tao::pegtl
 {
    using rule = seq< one< 'a' >, try_catch_raise_nested< one< 'b' >, try_catch_raise_nested< one< 'c' >, must< one< 'D' > > > > >;
 
-   using input_t = internal::defaulted_eager_position_input< internal::text_position< std::size_t >, internal::line_based_input< lf, internal::memory_input< char > > >;
+   using input_t = internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::text_position< std::size_t >, internal::line_based_input< lf, internal::memory_input< char > > > >;
 
    void unit_test()
    {

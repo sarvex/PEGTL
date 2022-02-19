@@ -43,6 +43,7 @@
 #include "rep_min_max.hpp"
 #include "rep_opt.hpp"
 #include "require.hpp"
+#include "separated.hpp"
 #include "seq.hpp"
 #include "sor.hpp"
 #include "star.hpp"

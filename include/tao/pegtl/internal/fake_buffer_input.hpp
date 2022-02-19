@@ -7,6 +7,8 @@
 
 #include <cstddef>
 
+#include "input_traits.hpp"
+
 namespace tao::pegtl::internal
 {
    template< typename Input >
@@ -39,6 +41,12 @@ namespace tao::pegtl::internal
       {}
 
       // The buffer_foo() member functions were and are only for actual buffer inputs.
+   };
+
+   template< typename Input >
+   struct input_traits< fake_buffer_input< Input > >
+   {
+      using memory_input_t = fake_buffer_input< typename input_traits< Input >::memory_input_t >;
    };
 
 }  // namespace tao::pegtl

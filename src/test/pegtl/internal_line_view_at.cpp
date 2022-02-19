@@ -10,7 +10,7 @@ namespace tao::pegtl
 {
    void unit_test()
    {
-      internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::line_based_input< lf, internal::memory_input< char > > > in( "abc\ndef\nghi" );
+      internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::text_position< unsigned >, internal::line_based_input< lf, internal::memory_input< char > > > > in( "abc\ndef\nghi" );
       TAO_PEGTL_TEST_ASSERT( parse< seq< string< 'a', 'b', 'c' >, eol, one< 'd' > > >( in ) );
       TAO_PEGTL_TEST_ASSERT( line_view_at( in, in.rewind_position() ) == "def" );
    }
