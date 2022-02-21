@@ -15,9 +15,9 @@ namespace tao::pegtl
    {
       // clang-format off
       template< auto E, decltype( E )... Es > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_enums_be< decltype( E ) >, E, Es... > {};
-      template< auto Lo, decltype( Lo ) Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_enums_be< decltype( E ) >, Lo, Hi > {};
+      template< auto Lo, decltype( Lo ) Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_enums_be< decltype( Lo ) >, Lo, Hi > {};
       template< auto E, decltype( E )... Es > struct one : internal::one< internal::result_on_found::success, internal::peek_enums_be< decltype( E ) >, E, Es... > {};
-      template< auto Lo, decltype( Lo ) Hi > struct range : internal::range< internal::result_on_found::success, internal::peek_enums_be< decltype( E ) >, Lo, Hi > {};
+      template< auto Lo, decltype( Lo ) Hi > struct range : internal::range< internal::result_on_found::success, internal::peek_enums_be< decltype( Lo ) >, Lo, Hi > {};
       template< auto E, decltype( E )... Es > struct ranges : internal::ranges< internal::peek_enums_be< decltype( E ) >, E, Es... > {};
       template< auto E, decltype( E )... Es > struct string : internal::seq< internal::one< internal::result_on_found::success, internal::peek_enums_be< decltype( E ) >, E >, internal::one< internal::result_on_found::success, internal::peek_enums_be< decltype( E ) >, Es >... > {};
       // clang-format on
@@ -28,9 +28,9 @@ namespace tao::pegtl
    {
       // clang-format off
       template< auto E, decltype( E )... Es > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_enums_le< decltype( E ) >, E, Es... > {};
-      template< auto Lo, decltype( Lo ) Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_enums_le< decltype( E ) >, Lo, Hi > {};
+      template< auto Lo, decltype( Lo ) Hi > struct not_range : internal::range< internal::result_on_found::failure, internal::peek_enums_le< decltype( Lo ) >, Lo, Hi > {};
       template< auto E, decltype( E )... Es > struct one : internal::one< internal::result_on_found::success, internal::peek_enums_le< decltype( E ) >, E, Es... > {};
-      template< auto Lo, decltype( Lo ) Hi > struct range : internal::range< internal::result_on_found::success, internal::peek_enums_le< decltype( E ) >, Lo, Hi > {};
+      template< auto Lo, decltype( Lo ) Hi > struct range : internal::range< internal::result_on_found::success, internal::peek_enums_le< decltype( Lo ) >, Lo, Hi > {};
       template< auto E, decltype( E )... Es > struct ranges : internal::ranges< internal::peek_enums_le< decltype( E ) >, E, Es... > {};
       template< auto E, decltype( E )... Es > struct string : internal::seq< internal::one< internal::result_on_found::success, internal::peek_enums_le< decltype( E ) >, E >, internal::one< internal::result_on_found::success, internal::peek_enums_le< decltype( E ) >, Es >... > {};
       // clang-format on

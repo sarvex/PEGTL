@@ -9,44 +9,11 @@
 
 #include <tao/pegtl.hpp>
 
-#include <tao/pegtl/contrib/analyze_traits.hpp>
-
-namespace tao::pegtl
-{
-   namespace internal
-   {
-      template< typename Type, Type Value >
-      struct token_type
-      {
-         using rule_t = token_type;
-         using subs_t = empty_list;
-
-         template< typename ParseInput >
-         static bool match( ParseInput& in )
-         {
-            if( ( !in.empty() ) && ( in.current()->type == Value ) ) {
-               in.template consume< token_type >( 1 );
-               return true;
-            }
-            return false;
-         }
-      };
-
-   }  // namespace internal
-
-   template< auto Value >
-   using token_type = internal::token_type< decltype( Value ), Value >;
-
-   template< typename Name, typename Type, Type Value >
-   struct analyze_traits< Name, internal::token_type< Type, Value > >
-      : analyze_any_traits<>
-   {};
-
-}  // namespace tao::pegtl
+#include <tao/pegtl/contrib/token_kind.hpp>
 
 using namespace tao::pegtl;
 
-enum my_type
+enum my_kind
 {
    a,
    b,
@@ -55,7 +22,7 @@ enum my_type
 
 struct my_token
 {
-   my_type type;
+   my_kind kind;
    std::string data;
 };
 
@@ -72,7 +39,7 @@ struct my_action
 {};
 
 template<>
-struct my_action< token_type< my_type::a > >
+struct my_action< token_kind< my_kind::a > >
 {
    template< typename ActionInput >
    static void apply( const ActionInput& in, my_state& st )
@@ -83,7 +50,7 @@ struct my_action< token_type< my_type::a > >
 };
 
 template<>
-struct my_action< token_type< my_type::b > >
+struct my_action< token_kind< my_kind::b > >
 {
    template< typename ActionInput >
    static void apply( const ActionInput& in, my_state& st )
@@ -94,7 +61,7 @@ struct my_action< token_type< my_type::b > >
 };
 
 template<>
-struct my_action< token_type< my_type::c > >
+struct my_action< token_kind< my_kind::c > >
 {
    static void apply0( my_state& st )
    {
@@ -104,7 +71,7 @@ struct my_action< token_type< my_type::c > >
 };
 
 struct any_token
-   : sor< token_type< my_type::a >, token_type< my_type::b >, token_type< my_type::c > >
+   : sor< token_kind< my_kind::a >, token_kind< my_kind::b >, token_kind< my_kind::c > >
 {};
 
 struct my_grammar
@@ -114,12 +81,12 @@ struct my_grammar
 int main()
 {
    const std::vector< my_token > v{
-      { my_type::a, "A1" },
-      { my_type::b, "B1" },
-      { my_type::c, "C1" },
-      { my_type::c, "C2" },
-      { my_type::a, "A2" },
-      { my_type::b, "B2" }
+      { my_kind::a, "A1" },
+      { my_kind::b, "B1" },
+      { my_kind::c, "C1" },
+      { my_kind::c, "C2" },
+      { my_kind::a, "A2" },
+      { my_kind::b, "B2" }
    };
    my_state st;
    internal::container_input< std::vector< my_token > > in( v );

@@ -56,7 +56,7 @@ namespace tao::pegtl
          parse< rule >( in );
       }
       catch( ... ) {
-         unravel( [ &count ]( const auto& e, const unsigned l ){
+         unravel_types( empty_list(), [ &count ]( const auto& e, const unsigned l ){
             TAO_PEGTL_TEST_ASSERT( l + count == 2 );
             if constexpr( std::is_same_v< std::decay_t< decltype( e ) >, parse_error_base > ) {
                std::cerr << l << " $ " << e.position_string() << " $ " << e.message() << std::endl;

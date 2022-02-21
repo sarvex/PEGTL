@@ -9,21 +9,9 @@
 
 #include <tao/pegtl.hpp>
 
-#include <tao/pegtl/internal/peek_member.hpp>
-
-namespace tao::pegtl
-{
-   namespace member
-   {
-      template< auto M, auto... Ts > struct one : internal::one< internal::result_on_found::success, internal::peek_member< M >, Ts... > {};
-
-   }  // namespace member
-
-}  // namespace tao::pegtl
-
 using namespace tao::pegtl;
 
-enum my_type
+enum my_kind
 {
    a,
    b,
@@ -32,12 +20,13 @@ enum my_type
 
 struct my_token
 {
-   my_type type;
+   my_kind kind;
    std::string data;
 };
 
-template< my_type... Ts >
-using my_rule = tao::pegtl::member::one< &my_token::type, Ts... >;
+template< my_kind... Ts >  // Two equivalent versions:
+// using my_rule = tao::pegtl::member::one< &my_token::kind, Ts... >;
+using my_rule = tao::pegtl::member::rules< &my_token::kind >::one< Ts... >;
 
 struct my_state
 {
@@ -52,7 +41,7 @@ struct my_action
 {};
 
 template<>
-struct my_action< my_rule< my_type::a > >
+struct my_action< my_rule< my_kind::a > >
 {
    template< typename ActionInput >
    static void apply( const ActionInput& in, my_state& st )
@@ -63,7 +52,7 @@ struct my_action< my_rule< my_type::a > >
 };
 
 template<>
-struct my_action< my_rule< my_type::b > >
+struct my_action< my_rule< my_kind::b > >
 {
    template< typename ActionInput >
    static void apply( const ActionInput& in, my_state& st )
@@ -74,7 +63,7 @@ struct my_action< my_rule< my_type::b > >
 };
 
 template<>
-struct my_action< my_rule< my_type::c > >
+struct my_action< my_rule< my_kind::c > >
 {
    static void apply0( my_state& st )
    {
@@ -84,7 +73,7 @@ struct my_action< my_rule< my_type::c > >
 };
 
 struct any_token
-   : sor< my_rule< my_type::a >, my_rule< my_type::b >, my_rule< my_type::c > >
+   : sor< my_rule< my_kind::a >, my_rule< my_kind::b >, my_rule< my_kind::c > >
 {};
 
 struct my_grammar
@@ -94,12 +83,12 @@ struct my_grammar
 int main()
 {
    const std::vector< my_token > v{
-      { my_type::a, "A1" },
-      { my_type::b, "B1" },
-      { my_type::c, "C1" },
-      { my_type::c, "C2" },
-      { my_type::a, "A2" },
-      { my_type::b, "B2" }
+      { my_kind::a, "A1" },
+      { my_kind::b, "B1" },
+      { my_kind::c, "C1" },
+      { my_kind::c, "C2" },
+      { my_kind::a, "A2" },
+      { my_kind::b, "B2" }
    };
    my_state st;
    internal::fake_buffer_input< internal::container_input< std::vector< my_token > > > in( v );

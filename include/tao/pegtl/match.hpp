@@ -71,12 +71,20 @@ namespace tao::pegtl
       [[nodiscard]] auto match_control_unwind( ParseInput& in, States&&... st )
       {
 #if defined( __cpp_exceptions )
-         if constexpr( has_unwind< Control< Rule >, void, const ParseInput&, States... > ) {
+         static constexpr bool a = has_unwind< Action< Rule >, void, const ParseInput&, States... >;
+         static constexpr bool c = has_unwind< Control< Rule >, void, const ParseInput&, States... >;
+
+         if constexpr( a || c ) {
             try {
                return match_no_control< Rule, A, M, Action, Control >( in, st... );
             }
             catch( ... ) {
-               Control< Rule >::unwind( static_cast< const ParseInput& >( in ), st... );
+               if constexpr( c ) {
+                  Control< Rule >::unwind( static_cast< const ParseInput& >( in ), st... );
+               }
+               if constexpr( a ) {
+                  Action< Rule >::unwind( static_cast< const ParseInput& >( in ), st... );
+               }
                throw;
             }
          }

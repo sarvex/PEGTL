@@ -7,7 +7,9 @@
 
 #include "pegtl/ascii.hpp"
 #include "pegtl/demangle.hpp"
+#include "pegtl/enums.hpp"
 #include "pegtl/inputs.hpp"
+#include "pegtl/member.hpp"
 #include "pegtl/parse.hpp"
 #include "pegtl/positions.hpp"
 #include "pegtl/rules.hpp"

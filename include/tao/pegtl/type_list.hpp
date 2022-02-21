@@ -23,6 +23,12 @@ namespace tao::pegtl
    template< typename... Ts >
    using type_list_concat = decltype( ( empty_list() + ... + Ts() ) );
 
+   template< typename T >
+   inline constexpr bool is_type_list = false;
+
+   template< typename... Ts >
+   inline constexpr bool is_type_list< type_list< Ts... > > = true;
+
 }  // namespace tao::pegtl
 
 #endif
