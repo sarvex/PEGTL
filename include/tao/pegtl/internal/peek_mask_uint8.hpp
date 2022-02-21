@@ -28,9 +28,9 @@ namespace tao::pegtl::internal
          static_assert( sizeof( peek_t ) == 1 );
 
          if( in.empty() ) {
-            return { 0, 0 };
+            return pair_t();
          }
-         return { static_cast< std::uint8_t >( static_cast< std::uint8_t >( *in.current() ) & Mask ), 1 };
+         return pair_t( static_cast< std::uint8_t >( static_cast< std::uint8_t >( *in.current() ) & Mask ) );
       }
    };
 

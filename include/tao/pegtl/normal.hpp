@@ -16,15 +16,16 @@
 
 #include "internal/action_input.hpp"
 #include "internal/enable_control.hpp"
-#include "internal/has_current_position.hpp"
+#include "internal/extract_position.hpp"
 #include "internal/has_error_message.hpp"
 #include "internal/has_match.hpp"
 
 #if defined( __cpp_exceptions )
 #include "demangle.hpp"
 #else
-#include "internal/dependent_false.hpp"
 #include <exception>
+
+#include "internal/dependent_false.hpp"
 #endif
 
 namespace tao::pegtl
@@ -51,10 +52,10 @@ namespace tao::pegtl
       {
 #if defined( __cpp_exceptions )
          if constexpr( internal::has_error_message< Rule > ) {
-            throw parse_error( Rule::error_message, in.current_position() );
+            throw parse_error( Rule::error_message, internal::extract_position( in ) );
          }
          else {
-            throw parse_error( "parse error matching " + std::string( demangle< Rule >() ), in.current_position() );
+            throw parse_error( "parse error matching " + std::string( demangle< Rule >() ), internal::extract_position( in ) );
          }
 #else
          static_assert( internal::dependent_false< Rule >, "exception support required for normal< Rule >::raise()" );
@@ -68,20 +69,10 @@ namespace tao::pegtl
       {
 #if defined( __cpp_exceptions )
          if constexpr( internal::has_error_message< Rule > ) {
-            if constexpr( internal::has_current_position< Ambience > ) {
-               std::throw_with_nested( parse_error( Rule::error_message, am.current_position() ) );
-            }
-            else {
-               std::throw_with_nested( parse_error( Rule::error_message, am ) );
-            }
+            std::throw_with_nested( parse_error( Rule::error_message, internal::extract_position( am ) ) );
          }
          else {
-            if constexpr( internal::has_current_position< Ambience > ) {
-               std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), am.current_position() ) );
-            }
-            else {
-               std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), am ) );
-            }
+            std::throw_with_nested( parse_error( "parse error matching " + std::string( demangle< Rule >() ), internal::extract_position( am ) ) );
          }
 #else
          static_assert( internal::dependent_false< Rule >, "exception support required for normal< Rule >::raise_nested()" );

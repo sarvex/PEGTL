@@ -24,7 +24,7 @@ namespace tao::pegtl::internal
          if( ( r.data & 0x80 ) == 0 ) {
             return r;
          }
-         return { 0, 0 };
+         return pair_t();
       }
    };
 

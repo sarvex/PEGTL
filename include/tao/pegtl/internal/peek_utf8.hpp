@@ -27,12 +27,12 @@ namespace tao::pegtl::internal
          static_assert( std::is_integral_v< peek_t > );
 
          if( in.empty() ) {
-            return { 0, 0 };
+            return pair_t();
          }
          const char32_t c0 = std::uint8_t( *in.current( offset ) );
 
          if( ( c0 & 0x80 ) == 0 ) {
-            return { c0, 1 };
+            return pair_t( c0 );
          }
          return peek_multi_byte( in, offset, c0 );
       }
@@ -49,7 +49,7 @@ namespace tao::pegtl::internal
                   c0 <<= 6;
                   c0 |= ( c1 & 0x3F );
                   if( c0 >= 0x80 ) {
-                     return { c0, 2 };
+                     return pair_t( c0, 2 );
                   }
                }
             }
@@ -65,7 +65,7 @@ namespace tao::pegtl::internal
                   c0 <<= 6;
                   c0 |= ( c2 & 0x3F );
                   if( c0 >= 0x800 && !( c0 >= 0xD800 && c0 <= 0xDFFF ) ) {
-                     return { c0, 3 };
+                     return pair_t( c0, 3 );
                   }
                }
             }
@@ -84,12 +84,12 @@ namespace tao::pegtl::internal
                   c0 <<= 6;
                   c0 |= ( c3 & 0x3F );
                   if( c0 >= 0x10000 && c0 <= 0x10FFFF ) {
-                     return { c0, 4 };
+                     return pair_t( c0, 4 );
                   }
                }
             }
          }
-         return { 0, 0 };
+         return pair_t();
       }
    };
 

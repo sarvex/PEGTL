@@ -30,17 +30,17 @@ namespace tao::pegtl::internal
       {
          if( const auto r = peek_endian< char16_t, Endian >::peek( in, offset ) ) {
             if( ( r.data < 0xd800 ) || ( r.data > 0xdfff ) ) {
-               return { r.data, r.size };
+               return pair_t( r.data, r.size );
             }
             if( r.data < 0xdc00 ) {
                if( const auto s = peek_endian< char16_t, Endian >::peek( in, r.size + offset ) ) {
                   if( ( s.data >= 0xdc00 ) && ( s.data <= 0xdfff ) ) {
-                     return { ( ( char32_t( r.data & 0x03ff ) << 10 ) | char32_t( s.data & 0x03ff ) ) + 0x10000, std::uint8_t( r.size + s.size ) };
+                     return pair_t( ( ( char32_t( r.data & 0x03ff ) << 10 ) | char32_t( s.data & 0x03ff ) ) + 0x10000, std::uint8_t( r.size + s.size ) );
                   }
                }
             }
          }
-         return { 0, 0 };
+         return pair_t();
       }
    };
 

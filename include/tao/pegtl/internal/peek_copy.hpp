@@ -28,9 +28,9 @@ namespace tao::pegtl::internal
          static_assert( sizeof( peek_t ) == sizeof( data_t ) );
 
          if( in.size( offset + 1 ) > offset ) {
-            return { T( *in.current( offset ) ), 1 };
+            return pair_t( T( *in.current( offset ) ) );
          }
-         return { 0, 0 };
+         return pair_t();
       }
    };
 

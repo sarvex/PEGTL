@@ -28,7 +28,7 @@ namespace tao::pegtl::internal
 
             for( unsigned i = 0; i < Count; ++i ) {
                if( const auto t = Peek::peek( in, done ) ) {
-                  done += t.size;
+                  done += t.size();
                   continue;
                }
                return false;

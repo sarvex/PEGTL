@@ -32,7 +32,7 @@ namespace tao::pegtl::internal
          if( ( r.data <= 0x10ffff ) && !( r.data >= 0xd800 && r.data <= 0xdfff ) ) {
             return r;
          }
-         return { 0, 0 };
+         return pair_t();
       }
    };
 

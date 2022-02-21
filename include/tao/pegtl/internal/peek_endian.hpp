@@ -28,15 +28,15 @@ namespace tao::pegtl::internal
 
          if constexpr( sizeof( peek_t ) == 1 ) {
             if( in.size( sizeof( Data ) + offset ) < sizeof( Data ) + offset ) {
-               return { 0, 0 };
+               return pair_t();
             }
-            return { Endian::template from< Data >( in.current( offset ) ), sizeof( Data ) };
+            return pair_t( Endian::template from< Data >( in.current( offset ) ), sizeof( Data ) );
          }
          else if constexpr( sizeof( peek_t ) == sizeof( Data ) ) {
             if( in.size( 1 + offset ) < 1 + offset ) {
-               return { 0, 0 };
+               return pair_t();
             }
-            return { Endian::template from< Data >( *in.current( offset ) ), 1 };
+            return pair_t( Endian::template from< Data >( *in.current( offset ) ), 1 );
          }
          else {
             static_assert( dependent_false< peek_endian > );

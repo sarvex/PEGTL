@@ -37,8 +37,8 @@ namespace tao::pegtl
             [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
             {
                if( const auto t = Peek::peek( in ) ) {
-                  if( test_one( t.data ) ) {
-                     in.bump( t.size );
+                  if( test_one( t.data() ) ) {
+                     in.template consume< binary_property >( t.size() );
                      return true;
                   }
                }
@@ -64,8 +64,8 @@ namespace tao::pegtl
             [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
             {
                if( const auto t = Peek::peek( in ) ) {
-                  if( test_one( t.data ) ) {
-                     in.bump( t.size );
+                  if( test_one( t.data() ) ) {
+                     in.template consume< binary_property >( t.size() );
                      return true;
                   }
                }

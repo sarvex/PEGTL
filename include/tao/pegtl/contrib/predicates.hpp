@@ -76,8 +76,8 @@ namespace tao::pegtl
          [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( Peek::peek( in ) ) )
          {
             if( const auto t = Peek::peek( in ) ) {
-               if( test_one( t.data ) ) {
-                  in.consume< predicates >( t.size );
+               if( test_one( t.data() ) ) {
+                  in.consume< predicates >( t.size() );
                   return true;
                }
             }
