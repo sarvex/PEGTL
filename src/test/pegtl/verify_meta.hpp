@@ -9,8 +9,6 @@
 
 #include <tao/pegtl/type_list.hpp>
 
-#include <tao/pegtl/contrib/analyze.hpp>
-
 #include "test.hpp"
 
 namespace tao::pegtl
@@ -25,11 +23,11 @@ namespace tao::pegtl
    template< typename Rule >
    void verify_analyze( const unsigned line, const char* file, const bool expect_consume, const bool expect_problems )
    {
-      internal::analyze_cycles< Rule > a( -1 );
+      internal::analyze_cycles< Rule > a( nullptr );
 
       const auto problems = a.problems();
 
-      TAO_PEGTL_TEST_ASSERT( problems == analyze< Rule >( -1 ) );
+      TAO_PEGTL_TEST_ASSERT( problems == analyze< Rule >() );
 
       const bool has_problems = ( problems != 0 );
       const bool does_consume = a.template consumes< Rule >();

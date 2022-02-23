@@ -24,13 +24,13 @@ namespace tao::pegtl
    }
 
 #if defined( __cpp_exceptions )
-   using grammar = seq< sor< try_catch< must< one< 'a' > > >, one< 'F' > >, eof >;
+   using grammar = seq< sor< try_catch_return_false< must< one< 'a' > > >, one< 'F' > >, eof >;
 
    void unit_test()
    {
       const std::string data = "F";
       coverage_result result;
-      memory_input in( data, __FILE__ );
+      memory_input in( data );
       const bool success = coverage< grammar >( in, result );
       std::cout << result;  // To manually see that printing does the right thing, too.
       TAO_PEGTL_TEST_ASSERT( success );
@@ -39,9 +39,9 @@ namespace tao::pegtl
       TAO_PEGTL_TEST_ASSERT( equals< one< 'a' > >( result, coverage_info{ 1, 0, 1, 0, 1 } ) );  // TODO: Should this really be counted as both failure and raise?
       TAO_PEGTL_TEST_ASSERT( equals< one< 'F' > >( result, coverage_info{ 1, 1, 0, 0, 0 } ) );
       TAO_PEGTL_TEST_ASSERT( equals< eof >( result, coverage_info{ 1, 1, 0, 0, 0 } ) );
-      TAO_PEGTL_TEST_ASSERT( equals< try_catch< must< one< 'a' > > > >( result, coverage_info{ 1, 0, 1, 0, 0 } ) );
+      TAO_PEGTL_TEST_ASSERT( equals< try_catch_return_false< must< one< 'a' > > > >( result, coverage_info{ 1, 0, 1, 0, 0 } ) );
       TAO_PEGTL_TEST_ASSERT( equals< must< one< 'a' > > >( result, coverage_info{ 1, 0, 0, 1, 0 } ) );
-      TAO_PEGTL_TEST_ASSERT( equals< sor< try_catch< must< one< 'a' > > >, one< 'F' > > >( result, coverage_info{ 1, 1, 0, 0, 0 } ) );
+      TAO_PEGTL_TEST_ASSERT( equals< sor< try_catch_return_false< must< one< 'a' > > >, one< 'F' > > >( result, coverage_info{ 1, 1, 0, 0, 0 } ) );
    }
 #else
    using grammar = seq< sor< one< 'a' >, one< 'F' > >, eof >;
@@ -50,7 +50,7 @@ namespace tao::pegtl
    {
       const std::string data = "F";
       coverage_result result;
-      memory_input in( data, __FILE__ );
+      memory_input in( data );
       const bool success = coverage< grammar >( in, result );
       std::cout << result;  // To manually see that printing does the right thing, too.
       TAO_PEGTL_TEST_ASSERT( success );

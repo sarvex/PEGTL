@@ -8,10 +8,9 @@
 #include <unicode/uchar.h>
 
 #include "../analyze_traits.hpp"
+#include "../type_list.hpp"
 
-#include "../../type_list.hpp"
-
-#include "../../internal/enable_control.hpp"
+#include "../internal/enable_control.hpp"
 
 namespace tao::pegtl
 {

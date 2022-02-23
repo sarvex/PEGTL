@@ -2,14 +2,14 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_ICU_UTF8_HPP
-#define TAO_PEGTL_CONTRIB_ICU_UTF8_HPP
+#ifndef TAO_PEGTL_ICU_UTF8_HPP
+#define TAO_PEGTL_ICU_UTF8_HPP
 
 #include "internal.hpp"
 
-#include "../../utf8.hpp"
+#include "../utf8.hpp"
 
-#include "../../internal/peek_utf8.hpp"
+#include "../internal/peek_utf8.hpp"
 
 namespace tao::pegtl::utf8::icu
 {

@@ -5,6 +5,7 @@
 #ifndef TAO_PEGTL_HPP
 #define TAO_PEGTL_HPP
 
+#include "pegtl/analyze.hpp"
 #include "pegtl/ascii.hpp"
 #include "pegtl/demangle.hpp"
 #include "pegtl/enums.hpp"
@@ -12,11 +13,13 @@
 #include "pegtl/member.hpp"
 #include "pegtl/parse.hpp"
 #include "pegtl/positions.hpp"
+#include "pegtl/print.hpp"
 #include "pegtl/rules.hpp"
 #include "pegtl/utf8.hpp"
 #include "pegtl/version.hpp"
 #include "pegtl/visit.hpp"
 
+#include "pegtl/add_state.hpp"
 #include "pegtl/change_action.hpp"
 #include "pegtl/change_action_and_state.hpp"
 #include "pegtl/change_action_and_states.hpp"

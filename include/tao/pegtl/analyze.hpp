@@ -2,22 +2,20 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_ANALYZE_HPP
-#define TAO_PEGTL_CONTRIB_ANALYZE_HPP
+#ifndef TAO_PEGTL_ANALYZE_HPP
+#define TAO_PEGTL_ANALYZE_HPP
 
 #include <cassert>
 #include <cstddef>
-#include <iostream>
 #include <map>
+#include <ostream>
 #include <set>
-#include <stdexcept>
 #include <string_view>
 #include <utility>
 #include <vector>
 
-#include "../demangle.hpp"
-
 #include "analyze_traits.hpp"
+#include "demangle.hpp"
 
 #include "internal/set_stack_guard.hpp"
 #include "internal/vector_stack_guard.hpp"
@@ -66,8 +64,8 @@ namespace tao::pegtl
          }
 
       protected:
-         explicit analyze_cycles_impl( const int verbose ) noexcept
-            : m_verbose( verbose ),
+         explicit analyze_cycles_impl( std::ostream* os ) noexcept
+            : m_os( os ),
               m_problems( 0 )
          {}
 
@@ -119,16 +117,16 @@ namespace tao::pegtl
             if( !accum ) {
                ++m_problems;
                // LCOV_EXCL_START
-               if( ( m_verbose >= 0 ) && ( m_trace.front() == entry.first ) ) {
+               if( m_trace.front() == entry.first ) {
                   for( const auto& r : m_trace ) {
                      if( r < entry.first ) {
                         return accum;
                      }
                   }
-                  std::cerr << "WARNING: Possible cycle without progress at rule " << entry.first << std::endl;
-                  if( m_verbose > 0 ) {
+                  if( m_os != nullptr ) {
+                     ( *m_os ) << "WARNING: Possible cycle without progress at rule " << entry.first << std::endl;
                      for( const auto& r : m_trace ) {
-                        std::cerr << "- involved (transformed) rule: " << r << std::endl;
+                        ( *m_os ) << "- involved (transformed) rule: " << r << std::endl;
                      }
                   }
                }
@@ -137,10 +135,8 @@ namespace tao::pegtl
             return accum;
          }
 
-         const int m_verbose;
-
+         std::ostream* m_os;
          std::size_t m_problems;
-
          std::set< std::string_view > m_stack;
          std::vector< std::string_view > m_trace;
          std::map< std::string_view, bool > m_results;
@@ -169,8 +165,8 @@ namespace tao::pegtl
       struct analyze_cycles
          : analyze_cycles_impl
       {
-         explicit analyze_cycles( const int verbose )
-            : analyze_cycles_impl( verbose )
+         explicit analyze_cycles( std::ostream* os )
+            : analyze_cycles_impl( os )
          {
             analyze_insert< Grammar >( m_entries );
          }
@@ -179,9 +175,15 @@ namespace tao::pegtl
    }  // namespace internal
 
    template< typename Grammar >
-   [[nodiscard]] std::size_t analyze( const int verbose = 1 )
+   [[nodiscard]] std::size_t analyze()
    {
-      return internal::analyze_cycles< Grammar >( verbose ).problems();
+      return internal::analyze_cycles< Grammar >( nullptr ).problems();
+   }
+
+   template< typename Grammar >
+   [[nodiscard]] std::size_t analyze( std::ostream& os )
+   {
+      return internal::analyze_cycles< Grammar >( &os ).problems();
    }
 
 }  // namespace tao::pegtl

@@ -7,9 +7,8 @@
 
 #include "../internal/enable_control.hpp"
 
+#include "../analyze_traits.hpp"
 #include "../type_list.hpp"
-
-#include "analyze_traits.hpp"
 
 namespace tao::pegtl
 {

@@ -2,17 +2,17 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_ADD_STATE_HPP
-#define TAO_PEGTL_CONTRIB_ADD_STATE_HPP
+#ifndef TAO_PEGTL_ADD_STATE_HPP
+#define TAO_PEGTL_ADD_STATE_HPP
 
 #include <type_traits>
 
-#include "../apply_mode.hpp"
-#include "../match.hpp"
-#include "../nothing.hpp"
-#include "../rewind_mode.hpp"
+#include "apply_mode.hpp"
+#include "match.hpp"
+#include "nothing.hpp"
+#include "rewind_mode.hpp"
 
-#include "../internal/dependent_false.hpp"
+#include "internal/dependent_false.hpp"
 
 namespace tao::pegtl
 {

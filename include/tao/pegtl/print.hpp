@@ -2,14 +2,14 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_PRINT_HPP
-#define TAO_PEGTL_CONTRIB_PRINT_HPP
+#ifndef TAO_PEGTL_PRINT_HPP
+#define TAO_PEGTL_PRINT_HPP
 
 #include <ostream>
 
-#include "../demangle.hpp"
-#include "../type_list.hpp"
-#include "../visit.hpp"
+#include "demangle.hpp"
+#include "type_list.hpp"
+#include "visit.hpp"
 
 namespace tao::pegtl
 {

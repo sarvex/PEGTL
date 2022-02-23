@@ -16,12 +16,11 @@
 #include <string_view>
 #include <type_traits>
 
+#include "../analyze_traits.hpp"
 #include "../ascii.hpp"
 #include "../parse.hpp"
 #include "../parse_error.hpp"
 #include "../rules.hpp"
-
-#include "analyze_traits.hpp"
 
 namespace tao::pegtl
 {

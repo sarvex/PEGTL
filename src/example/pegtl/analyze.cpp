@@ -2,6 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
+#include <iostream>
+
 #include <tao/pegtl.hpp>
 
 #include <tao/pegtl/contrib/analyze.hpp>
@@ -20,8 +22,8 @@ struct bar
 
 int main()  // NOLINT(bugprone-exception-escape)
 {
-   if( analyze< foo >( 1 ) != 0 ) {
-      std::cerr << "there are problems" << std::endl;
+   if( analyze< foo >( std::cerr ) > 0 ) {
+      std::cerr << "There are problems!" << std::endl;
       return 1;
    }
    return 0;

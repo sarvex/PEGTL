@@ -8,14 +8,13 @@
 #include <cstddef>
 #include <type_traits>
 
+#include "../analyze_traits.hpp"
 #include "../apply_mode.hpp"
 #include "../ascii.hpp"
 #include "../rewind_mode.hpp"
 #include "../rules.hpp"
 
 #include "../internal/type_tags.hpp"
-
-#include "analyze_traits.hpp"
 
 namespace tao::pegtl
 {

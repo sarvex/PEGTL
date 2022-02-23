@@ -8,12 +8,11 @@
 #include <algorithm>
 #include <type_traits>
 
+#include "../analyze_traits.hpp"
 #include "../type_list.hpp"
 
 #include "../internal/enable_control.hpp"
 #include "../internal/opt.hpp"
-
-#include "analyze_traits.hpp"
 
 namespace tao::pegtl
 {

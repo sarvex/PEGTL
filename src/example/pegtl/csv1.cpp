@@ -90,7 +90,7 @@ namespace csv1
 int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
 {
    for( int i = 1; i < argc; ++i ) {
-      pegtl::file_input in( argv[ i ] );
+      pegtl::internal::defaulted_lazy_position_input< pegtl::internal::careless_text_position< std::size_t >, pegtl::internal::line_based_input< pegtl::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
       csv1::result_data data;
       if( !pegtl::parse< pegtl::seq< csv1::file >, csv1::action, csv1::control >( in, data ) ) {
          std::cerr << "parse error" << std::endl;

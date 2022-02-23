@@ -2,16 +2,15 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_ANALYZE_TRAITS_HPP
-#define TAO_PEGTL_CONTRIB_ANALYZE_TRAITS_HPP
+#ifndef TAO_PEGTL_ANALYZE_TRAITS_HPP
+#define TAO_PEGTL_ANALYZE_TRAITS_HPP
 
 #include <type_traits>
 
-#include "../ascii.hpp"
-#include "../rules.hpp"
-#include "../type_list.hpp"
-
+#include "ascii.hpp"
 #include "forward.hpp"
+#include "rules.hpp"
+#include "type_list.hpp"
 
 namespace tao::pegtl
 {
