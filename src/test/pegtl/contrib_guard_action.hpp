@@ -4,7 +4,7 @@
 
 #include "test.hpp"
 
-#include <tao/pegtl/contrib/instantiate.hpp>
+#include <tao/pegtl/contrib/guard_action.hpp>
 
 namespace tao::pegtl
 {
@@ -56,7 +56,7 @@ namespace tao::pegtl
 
    template<>
    struct test_action< sor< alpha, digit > >
-      : instantiate< test_class >
+      : guard_action< test_class >
    {};
 
    void unit_test()

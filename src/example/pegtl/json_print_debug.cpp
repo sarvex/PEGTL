@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include <tao/pegtl/contrib/json.hpp>
-#include <tao/pegtl/contrib/print.hpp>
 
 int main()  // NOLINT(bugprone-exception-escape)
 {

@@ -15,7 +15,6 @@
 #include "../utf8.hpp"
 
 #include "abnf.hpp"
-#include "forward.hpp"
 #include "remove_first_state.hpp"
 #include "uri.hpp"
 

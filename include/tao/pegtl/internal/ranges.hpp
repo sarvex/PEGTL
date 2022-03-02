@@ -5,6 +5,7 @@
 #ifndef TAO_PEGTL_INTERNAL_RANGES_HPP
 #define TAO_PEGTL_INTERNAL_RANGES_HPP
 
+#include <cstddef>
 #include <utility>
 
 #include "enable_control.hpp"

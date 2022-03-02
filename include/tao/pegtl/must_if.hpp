@@ -11,7 +11,9 @@
 
 #include <type_traits>
 
+#include "internal/extract_position.hpp"
 #include "internal/has_error_message.hpp"
+
 #include "normal.hpp"
 
 namespace tao::pegtl
@@ -49,7 +51,7 @@ namespace tao::pegtl
          {
             if constexpr( Errors::template message< Rule > != nullptr ) {
                constexpr const char* p = Errors::template message< Rule >;
-               throw parse_error( p, in );
+               throw parse_error( p, internal::extract_position( in ) );
 #if defined( _MSC_VER )
                ( (void)st, ... );
 #endif

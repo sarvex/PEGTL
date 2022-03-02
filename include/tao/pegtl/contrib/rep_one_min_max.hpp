@@ -26,11 +26,11 @@ namespace tao::pegtl
 
          static_assert( Min <= Max );
 
-         [[nodiscard]] static constexpr bool test_one( const char c ) noexcept
-         {
-            static_assert( ( Min == 1 ) && ( Max == 1 ) );
-            return C == c;
-         }
+         // [[nodiscard]] static constexpr bool test_one( const char c ) noexcept
+         // {
+         //    static_assert( ( Min == 1 ) && ( Max == 1 ) );
+         //    return C == c;
+         // }
 
          template< typename ParseInput >
          [[nodiscard]] static bool match( ParseInput& in )

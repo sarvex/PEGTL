@@ -13,13 +13,11 @@ int main()
 
 #include <iostream>
 
-#include <tao/pegtl/contrib/analyze.hpp>
-
 #include "lua53.hpp"
 
 int main()  // NOLINT(bugprone-exception-escape)
 {
-   if( const auto problems = tao::pegtl::analyze< lua53::grammar >() != 0 ) {
+   if( const auto problems = tao::pegtl::analyze< lua53::grammar >( std::cout ) != 0 ) {
       std::cout << "problems: " << problems << std::endl;
       return 1;
    }

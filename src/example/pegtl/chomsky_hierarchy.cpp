@@ -51,11 +51,11 @@ namespace example
       {
          if( in.size( count ) >= count ) {
             for( std::size_t i = 0; i < count; ++i ) {
-               if( in.peek_char( i ) != C ) {
+               if( *in.current( i ) != C ) {
                   return false;
                }
             }
-            in.bump_in_this_line( count );
+            in.template consume< match_n >( count );
             return true;
          }
          return false;
@@ -109,7 +109,7 @@ namespace example
 int main( int argc, char** argv )
 {
    for( int i = 1; i < argc; ++i ) {
-      pegtl::argv_input in( argv, i );
+      pegtl::internal::fake_buffer_input< pegtl::internal::restartable_input< pegtl::internal::argv_input > > in( argv, i );
       const auto r3 = pegtl::parse< pegtl::seq< example::type_3, pegtl::eof > >( in );
       in.restart();
       const auto r2r = pegtl::parse< pegtl::seq< example::type_2_recursive, pegtl::eof > >( in );

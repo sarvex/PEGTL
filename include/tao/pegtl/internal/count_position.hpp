@@ -29,7 +29,7 @@ namespace tao::pegtl::internal
       {}
 
       template< typename Rule, typename Data >
-      void consumed( const Data* /*unused*/, const std::size_t n ) noexcept
+      void consume( const Data* /*unused*/, const std::size_t n ) noexcept
       {
          count += n;
       }

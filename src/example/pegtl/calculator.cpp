@@ -11,11 +11,6 @@
 
 #include <tao/pegtl.hpp>
 
-// Include the analyze function that checks
-// a grammar for possible infinite cycles.
-
-#include <tao/pegtl/contrib/analyze.hpp>
-
 namespace pegtl = tao::pegtl;
 
 namespace calculator
@@ -25,8 +20,7 @@ namespace calculator
    // number indicates a lower priority.
 
    enum class order : int
-   {
-   };
+   {};
 
    // For each binary operator known to the calculator we need an
    // instance of the following data structure with the priority,
@@ -207,6 +201,7 @@ namespace calculator
    struct infix
    {
       using rule_t = ascii::any::rule_t;
+      using subs_t = empty_list;
 
       template< apply_mode,
                 rewind_mode,
@@ -228,7 +223,7 @@ namespace calculator
       static bool match( ParseInput& in, const operators& b, stacks& s, std::string t )
       {
          if( in.size( t.size() + 1 ) > t.size() ) {
-            t += in.peek_char( t.size() );
+            t += *in.current( t.size() );
             const auto i = b.ops().lower_bound( t );
             if( i != b.ops().end() ) {
                if( match( in, b, s, t ) ) {
@@ -239,7 +234,7 @@ namespace calculator
                   // usually be an associated action: To push the matched operator onto
                   // the operator stack.
                   s.push( i->second );
-                  in.bump( t.size() );
+                  in.template consume< infix >( t.size() );
                   return true;
                }
             }
@@ -337,7 +332,7 @@ int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
 {
    // Check the grammar for some possible issues.
 
-   if( pegtl::analyze< calculator::grammar >() != 0 ) {
+   if( pegtl::analyze< calculator::grammar >( std::cerr ) != 0 ) {
       return 1;
    }
 
@@ -348,7 +343,7 @@ int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
 
    for( int i = 1; i < argc; ++i ) {
       // Parse and process the command-line arguments as calculator expressions...
-      internal::argv_input in( argv, i );
+      pegtl::internal::fake_buffer_input< pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::argv_input > > in( argv, i );
       if( pegtl::parse< calculator::grammar, calculator::action >( in, b, s ) ) {
          // ...and print the respective results to std::cout.
          std::cout << s.finish() << std::endl;

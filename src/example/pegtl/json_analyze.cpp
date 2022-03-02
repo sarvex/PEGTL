@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include <tao/pegtl.hpp>
-#include <tao/pegtl/contrib/analyze.hpp>
 #include <tao/pegtl/contrib/json.hpp>
 
 namespace pegtl = tao::pegtl;
@@ -18,8 +17,8 @@ namespace example
 
 int main()  // NOLINT(bugprone-exception-escape)
 {
-   if( pegtl::analyze< example::grammar >() != 0 ) {
-      std::cerr << "cycles without progress detected!" << std::endl;
+   if( pegtl::analyze< example::grammar >( std::cout ) != 0 ) {
+      std::cout << "cycles without progress detected!" << std::endl;
       return 1;
    }
    return 0;

@@ -6,8 +6,6 @@
 
 #include <tao/pegtl.hpp>
 
-#include <tao/pegtl/contrib/analyze.hpp>
-
 using namespace tao::pegtl;
 
 struct bar;
@@ -22,8 +20,8 @@ struct bar
 
 int main()  // NOLINT(bugprone-exception-escape)
 {
-   if( analyze< foo >( std::cerr ) > 0 ) {
-      std::cerr << "There are problems!" << std::endl;
+   if( analyze< foo >( std::cout ) > 0 ) {
+      std::cout << "There are problems!" << std::endl;
       return 1;
    }
    return 0;

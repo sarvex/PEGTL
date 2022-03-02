@@ -14,14 +14,13 @@ int main()
 #include <iomanip>
 
 #include <tao/pegtl.hpp>
-#include <tao/pegtl/contrib/analyze.hpp>
 #include <tao/pegtl/contrib/proto3.hpp>
 
 int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
 {
    using namespace tao::pegtl;
 
-   if( analyze< proto3::proto >() != 0 ) {
+   if( analyze< proto3::proto >( std::cerr ) != 0 ) {
       return 1;
    }
 

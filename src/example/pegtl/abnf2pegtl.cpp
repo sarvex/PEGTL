@@ -178,11 +178,14 @@ namespace tao::pegtl
             return v.substr( pos );
          }
 
-         void shift( internal::frobnicator& it, int delta )
+         template< typename T >
+         void shift( std::optional< T >& it , int delta )
          {
-            it.data += delta;
-            it.byte += delta;
-            it.column += delta;
+            if( it ) {
+               it->current += delta;
+               it->line += delta;
+               it->count_in_line += delta;
+            }
          }
 
       }  // namespace
@@ -522,7 +525,7 @@ namespace tao::pegtl
                if( !previous->is_type< abnf::grammar::alternation >() ) {
                   auto s = std::make_unique< parse_tree::node >();
                   s->set_type< abnf::grammar::alternation >();
-                  s->source = previous->source;
+                  //                  s->source = previous->source;
                   s->m_begin = previous->m_begin;
                   s->m_end = previous->m_end;
                   s->children.emplace_back( std::move( previous ) );
@@ -630,12 +633,12 @@ namespace tao::pegtl
          nrv.add< grammar::dec_val::value >( []( const node_ptr& n ) { return n->string(); } );
          nrv.add< grammar::bin_val::value >( []( const node_ptr& n ) {
             unsigned long long v = 0;
-            const char* p = n->m_begin.data;
+            const char* p = n->m_begin->current;
             // TODO: Detect overflow
             do {
                v <<= 1;
                v |= ( *p++ & 1 );
-            } while( p != n->m_end.data );
+            } while( p != n->m_end->current );
             std::ostringstream oss;
             oss << v;
             return std::move( oss ).str();
@@ -774,7 +777,7 @@ int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
       return 1;
    }
 
-   file_input in( argv[ 1 ] );
+   internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::careless_text_position< std::size_t >, internal::line_based_input< lf, internal::file_input > > > in( argv[ 1 ] );
 #if defined( __cpp_exceptions )
    try {
       const auto root = parse_tree::parse< abnf::grammar::rulelist, abnf::selector, nothing, abnf::control >( in );
@@ -787,11 +790,12 @@ int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
          std::cout << abnf::to_string( rule ) << '\n';
       }
    }
-   catch( const parse_error& e ) {
-      const auto p = e.positions().front();
-      std::cerr << e.what() << '\n'
-                << in.line_at( p ) << '\n'
-                << std::setw( p.column ) << '^' << '\n';
+   catch( const parse_error_base& e ) {
+      std::cerr << e.what() << std::endl;
+      //      const auto p = e.positions().front();
+      //      std::cerr << e.what() << '\n'
+      //                << in.line_at( p ) << '\n'
+      //                << std::setw( p.column ) << '^' << '\n';
    }
 #else
    if( const auto root = parse_tree::parse< abnf::grammar::rulelist, abnf::selector, nothing, abnf::control >( in ) ) {

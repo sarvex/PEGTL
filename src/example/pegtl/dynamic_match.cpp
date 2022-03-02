@@ -4,13 +4,10 @@
 
 #include <cassert>
 #include <cstring>
-
 #include <iostream>
 #include <string>
 
 #include <tao/pegtl.hpp>
-
-#include <tao/pegtl/contrib/analyze.hpp>
 
 namespace pegtl = tao::pegtl;
 
@@ -40,7 +37,7 @@ namespace dynamic
       {
          if( in.size( id.size() ) >= id.size() ) {
             if( std::memcmp( in.current(), id.data(), id.size() ) == 0 ) {
-               in.bump( id.size() );
+               in.template consume< long_literal_mark >( id.size() );
                return true;
             }
          }
@@ -97,7 +94,7 @@ namespace tao::pegtl
 
 int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
 {
-   if( pegtl::analyze< dynamic::grammar >() != 0 ) {
+   if( pegtl::analyze< dynamic::grammar >( std::cout ) != 0 ) {
       std::cerr << "cycles without progress detected!" << std::endl;
       return 1;
    }

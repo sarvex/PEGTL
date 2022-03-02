@@ -2,8 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef TAO_PEGTL_CONTRIB_INSTANTIATE_HPP
-#define TAO_PEGTL_CONTRIB_INSTANTIATE_HPP
+#ifndef TAO_PEGTL_CONTRIB_GUARD_ACTION_HPP
+#define TAO_PEGTL_CONTRIB_GUARD_ACTION_HPP
 
 #include "../apply_mode.hpp"
 #include "../match.hpp"
@@ -13,7 +13,7 @@
 namespace tao::pegtl
 {
    template< typename T >
-   struct instantiate
+   struct guard_action
       : maybe_nothing
    {
       template< typename Rule,

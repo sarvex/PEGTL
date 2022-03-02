@@ -59,6 +59,11 @@ namespace tao::pegtl
       : analyze_traits< Name, typename seq< Rules... >::rule_t >
    {};
 
+   template< typename Name, typename Peek >
+   struct analyze_traits< Name, internal::any< Peek > >
+      : analyze_any_traits<>
+   {};
+
    template< typename Name, typename... Actions >
    struct analyze_traits< Name, internal::apply< Actions... > >
       : analyze_opt_traits<>
@@ -137,6 +142,11 @@ namespace tao::pegtl
    template< typename Name, typename Cond, typename Then, typename Else >
    struct analyze_traits< Name, internal::if_then_else< Cond, Then, Else > >
       : analyze_traits< Name, typename sor< seq< Cond, Then >, Else >::rule_t >
+   {};
+
+   template< typename Name, typename Rule >
+   struct analyze_traits< Name, internal::invert< Rule > >
+      : analyze_any_traits<>
    {};
 
    template< typename Name, char... Cs >

@@ -13,6 +13,11 @@ namespace tao::pegtl::internal
       failure = false
    };
 
+   [[nodiscard]] constexpr result_on_found invert_on_found( const result_on_found rof ) noexcept
+   {
+      return result_on_found( !bool( rof ) );
+   }
+
 }  // namespace tao::pegtl::internal
 
 #endif

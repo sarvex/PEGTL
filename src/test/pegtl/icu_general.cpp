@@ -6,16 +6,16 @@
 #include "verify_meta.hpp"
 #include "verify_rule.hpp"
 
-//#include <tao/pegtl/contrib/icu/utf8.hpp>
+// #include <tao/pegtl/icu/utf8.hpp>
 
 namespace tao::pegtl
 {
    void unit_test()
    {
-      //      verify_analyze< utf8::icu::alphabetic >( __LINE__, __FILE__, true, false );
+      // verify_analyze< utf8::icu::alphabetic >( __LINE__, __FILE__, true, false );
 
-      //      verify_rule< utf8::icu::alphabetic >( __LINE__, __FILE__, "", result_type::local_failure, 0 );
-      //      verify_rule< utf8::icu::alphabetic >( __LINE__, __FILE__, "a", result_type::success );
+      // verify_rule< utf8::icu::alphabetic >( __LINE__, __FILE__, "", result_type::local_failure, 0 );
+      // verify_rule< utf8::icu::alphabetic >( __LINE__, __FILE__, "a", result_type::success );
    }
 
 }  // namespace tao::pegtl

@@ -45,22 +45,16 @@ namespace tao::pegtl::internal
       : success
    {};
 
-   // template< char C >
-   // struct istring< C >
-   //    : std::conditional_t< is_alpha< C >, one< result_on_found::success, peek_char, C | 0x20, C & ~0x20 >, one< result_on_found::success, peek_char, C > >
-   // {};
+   template< char C >
+   struct istring< C >
+      : std::conditional_t< is_alpha< C >, one< result_on_found::success, peek_char, C | 0x20, C & ~0x20 >, one< result_on_found::success, peek_char, C > >
+   {};
 
    template< char... Cs >
    struct istring
    {
       using rule_t = istring;
       using subs_t = empty_list;
-
-      [[nodiscard]] static constexpr bool test_one( const char c ) noexcept
-      {
-         static_assert( sizeof...( Cs ) == 1 );
-         return one< result_on_found::success, peek_char, Cs... >::test_one( c );
-      }
 
       template< typename ParseInput >
       [[nodiscard]] static bool match( ParseInput& in ) noexcept( noexcept( in.size( 0 ) ) )

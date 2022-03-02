@@ -715,6 +715,8 @@ ASCII rules do not usually rely on other rules.
 * For ASCII letters a-z and A-Z the match is case insensitive.
 * [Meta data] and [implementation] mapping:
   - `ascii::istring<>::rule_t` is `internal::success`
+  - `ascii::istring< C >::rule_t` is `internal::one< result_on_found::success, internal::peek_char, C >` if `C` is not an ASCII letter.
+  - `ascii::istring< C >::rule_t` is `internal::one< result_on_found::success, internal::peek_char, C | 0x20, C & 0x20 >` if `C` is an ASCII letter.
   - `ascii::istring< C... >::rule_t` is `internal::istring< C... >`
 
 ###### `keyword< C... >`

@@ -15,7 +15,6 @@ int main()
 #include <iostream>
 
 #include <tao/pegtl.hpp>
-#include <tao/pegtl/contrib/analyze.hpp>
 
 namespace sexpr
 {
@@ -82,7 +81,7 @@ namespace sexpr
 
 int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
 {
-   if( tao::pegtl::analyze< sexpr::main >() != 0 ) {
+   if( tao::pegtl::analyze< sexpr::main >( std::cerr ) != 0 ) {
       return 1;
    }
    for( int i = 1; i < argc; ++i ) {

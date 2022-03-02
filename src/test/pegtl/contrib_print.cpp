@@ -6,8 +6,6 @@
 
 #include "test.hpp"
 
-#include <tao/pegtl/contrib/print.hpp>
-
 namespace tao::pegtl
 {
    using grammar = seq< alpha, digit >;

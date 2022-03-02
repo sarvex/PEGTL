@@ -78,7 +78,7 @@ namespace tao::pegtl
       template< typename ActionInput >
       static void apply( const ActionInput& in, state_one& state )
       {
-         state.byte_in_line_b += in.input().byte();
+         state.byte_in_line_b += in.current_position().count;
       }
    };
 
@@ -98,14 +98,15 @@ namespace tao::pegtl
       template< typename ActionInput >
       static void apply( const ActionInput& in, state_one& state )
       {
-         state.byte_in_line_a += in.input().byte();
+         state.byte_in_line_a += in.current_position().count;
       }
    };
 
    void unit_test()
    {
       state_one state{ 0, 0 };
-      bool parse_result = parse< grammar_one_a, action_one_a >( memory_input( "aaa" ), state );
+      internal::fake_buffer_input< internal::defaulted_eager_position_input< internal::count_position< unsigned >, internal::memory_input< char > > > in( "aaa" );
+      bool parse_result = parse< grammar_one_a, action_one_a >( in, state );
       TAO_PEGTL_TEST_ASSERT( parse_result );
       TAO_PEGTL_TEST_ASSERT( state.byte_in_line_a == 1 );
       TAO_PEGTL_TEST_ASSERT( state.byte_in_line_b == 2 );
