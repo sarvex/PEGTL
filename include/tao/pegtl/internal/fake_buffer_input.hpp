@@ -6,6 +6,7 @@
 #define TAO_PEGTL_INTERNAL_FAKE_BUFFER_INPUT_HPP
 
 #include <cstddef>
+#include <utility>
 
 #include "input_traits.hpp"
 
@@ -21,12 +22,12 @@ namespace tao::pegtl::internal
 
       using Input::Input;
 
-      [[nodiscard]] std::size_t size( const std::size_t /*unused*/ ) noexcept( noexcept( Input::size() ) )
+      [[nodiscard]] std::size_t size( const std::size_t /*unused*/ ) noexcept( noexcept( std::declval< Input >().size() ) )
       {
          return Input::size();
       }
 
-      [[nodiscard]] std::size_t size( const std::size_t /*unused*/, const std::size_t /*unused*/ ) noexcept( noexcept( Input::size() ) )
+      [[nodiscard]] std::size_t size( const std::size_t /*unused*/, const std::size_t /*unused*/ ) noexcept( noexcept( std::declval< Input >().size() ) )
       {
          return Input::size();
       }

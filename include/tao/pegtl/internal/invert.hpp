@@ -31,7 +31,7 @@ namespace tao::pegtl::internal
       {
          if( const auto t = peek_t::peek( in ) ) {
             if( !Rule::test_one( t.data() ) ) {
-               in.consume< invert >( t.size() );
+               in.template consume< invert >( t.size() );
                return true;
             }
          }
