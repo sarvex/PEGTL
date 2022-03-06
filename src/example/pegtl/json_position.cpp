@@ -60,30 +60,71 @@ int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
       return 1;
    }
    for( int i = 1; i < argc; ++i ) {
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
       {
          pegtl::internal::fake_buffer_input< pegtl::internal::file_input > in( argv[ i ] );
          pegtl::parse< example::grammar, example::action, example::control >( in );
          std::cout << "done: " << in.current_position() << std::endl;
-      } {
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
          pegtl::internal::defaulted_lazy_position_input< pegtl::internal::count_position< unsigned >, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > in( argv[ i ] );
          pegtl::parse< example::grammar, example::action, example::control >( in );
          std::cout << "done: " << in.current_position() << std::endl;
-      } {
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
+         pegtl::internal::defaulted_eager_position_input< pegtl::internal::count_position< unsigned >, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > in( argv[ i ] );
+         pegtl::parse< example::grammar, example::action, example::control >( in );
+         std::cout << "done: " << in.current_position() << std::endl;
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
          pegtl::internal::defaulted_lazy_position_input< pegtl::internal::careless_text_position< unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
          pegtl::parse< example::grammar, example::action, example::control >( in );
          std::cout << "done: " << in.current_position() << std::endl;
-      } {
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
+         pegtl::internal::defaulted_eager_position_input< pegtl::internal::careless_text_position< unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
+         pegtl::parse< example::grammar, example::action, example::control >( in );
+         std::cout << "done: " << in.current_position() << std::endl;
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
          pegtl::internal::defaulted_lazy_position_input< pegtl::internal::paranoid_text_position< pegtl::ascii::lf, unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
          pegtl::parse< example::grammar, example::action, example::control >( in );
          std::cout << "done: " << in.current_position() << std::endl;
-      } {
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
+         pegtl::internal::defaulted_eager_position_input< pegtl::internal::paranoid_text_position< pegtl::ascii::lf, unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
+         pegtl::parse< example::grammar, example::action, example::control >( in );
+         std::cout << "done: " << in.current_position() << std::endl;
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
          pegtl::internal::defaulted_lazy_position_input< pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
          pegtl::parse< example::grammar, example::action, example::control >( in );
          std::cout << "done: " << in.current_position() << std::endl;
-      } {
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
+         pegtl::internal::defaulted_eager_position_input< pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( argv[ i ] );
+         pegtl::parse< example::grammar, example::action, example::control >( in );
+         std::cout << "done: " << in.current_position() << std::endl;
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
          pegtl::internal::initialized_lazy_position_input< pegtl::internal::position_with_source< std::string, pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned > >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( pegtl::internal::position_with_source< std::string, pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned > >( argv[ i ] ), argv[ i ] );
          pegtl::parse< example::grammar, example::action, example::control >( in );
          std::cout << "done: " << in.current_position() << std::endl;
+      }
+      std::cout << "--- " << __LINE__ << " ---" << std::endl;
+      {
+         //         pegtl::internal::initialized_eager_position_input< pegtl::internal::position_with_source< std::string, pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned > >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( pegtl::internal::position_with_source< std::string, pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned > >( argv[ i ] ), argv[ i ] );
+         //         pegtl::parse< example::grammar, example::action, example::control >( in );
+         //         std::cout << "done: " << in.current_position() << std::endl;
       }
    }
    return 0;
