@@ -13,13 +13,13 @@ namespace tao::pegtl::internal
    [[nodiscard]] decltype( auto ) extract_position( const T& t )
    {
       if constexpr( !has_current_position< T > ) {
-         return t;
+         return t;  // Assume t is not an input.
       }
       else if constexpr( !has_current_position< decltype( *t.current() ) > ) {
-         return t.current_position();
+         return t.current_position();  // Assume t is an input of "simple" object (char, enums).
       }
       else {
-         return t.current()->current_position();
+         return t.current()->current_position();  // Assume t is an input of objects that already have a position (tokens).
       }
    }
 
