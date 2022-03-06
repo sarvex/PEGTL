@@ -17,7 +17,11 @@ namespace tao::pegtl
    template< typename Kind, typename String, typename Position >
    struct token
    {
-      token() noexcept = default;  // For resize()
+      using kind_t = Kind;
+      using string_t = String;
+      using position_t = Position;
+
+      token() noexcept = default;  // For std::vector< token >::resize()
 
       template< typename S >
       token( const Kind t, S&& s, const Position& p )
@@ -38,22 +42,6 @@ namespace tao::pegtl
 
    namespace internal
    {
-      template< typename Kind, typename String, typename Position >
-      struct token_state
-      {
-         std::vector< token< Kind, String, Position > > tokens;
-      };
-
-      // template< auto Kind >
-      // struct token_action_impl
-      // {
-      //    template< typename ActionInput, typename State, typename... States >
-      //    static void apply( const ActionInput& in, State& st, States&&... /*unused*/ )
-      //    {
-      //       st.tokens.emplace_back( Kind, in.string(), in.current_position() );
-      //    }
-      // };
-
       template< auto Kind >
       struct token_action_impl
       {
@@ -65,28 +53,28 @@ namespace tao::pegtl
                    template< typename... >
                    class Control,
                    typename ParseInput,
-                   typename State,
+                   typename Token,
                    typename... States >
-         [[nodiscard]] static bool match( ParseInput& in, State&& st, States&&... /*unused*/ )
+         [[nodiscard]] static bool match( ParseInput& in, std::vector< Token >& st, States&&... /*unused*/ )
          {
-            const std::size_t n = st.tokens.size();
+            const std::size_t n = st.size();
             if( !tao::pegtl::match< Rule, A, M, Action, Control >( in, st, n ) ) {
-               st.tokens.resize( n );
+               st.resize( n );
                return false;
             }
             return true;
          }
 
-         template< typename ActionInput, typename State, typename... States >
-         static void apply( const ActionInput& in, State& st, States&&... /*unused*/ )
+         template< typename ActionInput, typename Token, typename... States >
+         static void apply( const ActionInput& in, std::vector< Token >& st, States&&... /*unused*/ )
          {
-            st.tokens.emplace_back( Kind, in.string(), in.current_position() );
+            st.emplace_back( Kind, in.string(), in.current_position() );
          }
 
-         template< typename ParseInput, typename State >
-         static void unwind( const ParseInput& /*unused*/, State& st, const std::size_t n )
+         template< typename ParseInput, typename Token >
+         static void unwind( const ParseInput& /*unused*/, std::vector< Token >& st, const std::size_t n )
          {
-            st.tokens.resize( n );  // TODO: Do we really need this here?
+            st.resize( n );  // TODO: Do we really need this here?
          }
       };
 
@@ -125,22 +113,37 @@ namespace tao::pegtl
 
    }  // namespace internal
 
+   template< typename Rule, typename ParseInput, typename Token >
+   [[nodiscard]] bool tokenize( ParseInput&& in, std::vector< Token >& result )
+   {
+      return parse< Rule, internal::make_token_action< internal::empty_tokenize_traits >::template type >( in, result );
+   };
+
+   template< template< typename...> class Traits, typename Rule, typename ParseInput, typename Token >
+   [[nodiscard]] bool tokenize( ParseInput&& in, std::vector< Token >& result )
+   {
+      return parse< Rule, internal::make_token_action< Traits >::template type >( in, result );
+   }
+
    template< typename Kind, typename Rule, typename ParseInput >
    [[nodiscard]] auto tokenize( ParseInput&& in )
    {
       // TODO: Actually we want text_position_base, not careless_text_position et al.
-      internal::token_state< Kind, std::string, std::decay_t< decltype( in.current_position() ) > > st;
-      (void)parse< Rule, internal::make_token_action< internal::empty_tokenize_traits >::template type >( in, st );  // TODO: Better must< rule >?
-      return std::move( st.tokens );
+      using token_t = token< Kind, std::string, std::decay_t< decltype( in.current_position() ) > >;
+      std::vector< token_t > result;
+      (void)tokenize< must< Rule > >( in, result );
+      return result;
    };
 
    template< template< typename... > class Traits, typename Rule, typename ParseInput >
    [[nodiscard]] auto tokenize( ParseInput&& in )
    {
       // TODO: Actually we want text_position_base, not careless_text_position et al.
-      internal::token_state< typename Traits< void >::token_kind_kind, std::string, std::decay_t< decltype( in.current_position() ) > > st;
-      (void)parse< Rule, internal::make_token_action< Traits >::template type >( in, st );  // TODO: Better must< rule >?
-      return std::move( st.tokens );
+      using kind_t = typename Traits< void >::token_kind_type;
+      using token_t = token< kind_t, std::string, std::decay_t< decltype( in.current_position() ) > >;
+      std::vector< token_t > result;
+      (void)tokenize< Traits, must< Rule > >( in, result );
+      return result;
    };
 
 }  // namespace tao::pegtl

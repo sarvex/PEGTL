@@ -17,7 +17,7 @@ using grammar = tao::pegtl::must< tao::pegtl::list< token, tao::pegtl::space >, 
 template< typename Rule >
 struct traits
 {
-   using token_kind_kind = int;
+   using token_kind_type = int;
 };
 
 template<>

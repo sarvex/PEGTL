@@ -10,6 +10,6 @@ namespace tao::pegtl::internal
    template< typename Input, typename = void >
    struct input_traits;
 
-}  // namespace tao::pegtl
+}  // namespace tao::pegtl::internal
 
 #endif

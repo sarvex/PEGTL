@@ -18,6 +18,8 @@
 #include "internal/paranoid_text_count_position.hpp"
 #include "internal/selected_text_count_position.hpp"
 
+#include "internal/position_with_source.hpp"
+
 namespace tao::pegtl
 {
    using count_position = internal::count_position< std::size_t >;

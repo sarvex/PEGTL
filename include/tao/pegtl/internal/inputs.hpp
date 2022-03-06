@@ -15,6 +15,8 @@
 #include "line_based_input.hpp"
 #include "restartable_input.hpp"
 
+#include "initialized_position_input.hpp"
+
 #include "defaulted_eager_position_input.hpp"
 #include "defaulted_lazy_position_input.hpp"
 #include "initialized_eager_position_input.hpp"
