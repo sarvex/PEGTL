@@ -27,6 +27,26 @@ namespace example
       }
    };
 
+   template<>
+   struct action< pegtl::eol >
+   {
+      template< typename ActionInput >
+      static void apply( const ActionInput& in )
+      {
+         std::cout << " eol: " << in.current_position() << std::endl;
+      }
+   };
+
+   template<>
+   struct action< pegtl::eolf >
+   {
+      template< typename ActionInput >
+      static void apply( const ActionInput& in )
+      {
+         std::cout << "eolf: " << in.current_position() << std::endl;
+      }
+   };
+
    using grammar = pegtl::must< pegtl::json::text, pegtl::eof >;
 
 }  // namespace example
