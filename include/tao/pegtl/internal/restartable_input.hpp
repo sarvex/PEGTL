@@ -16,6 +16,7 @@ namespace tao::pegtl::internal
    {
    public:
       using typename Input::data_t;
+      using typename Input::rewind_position_t;
 
       template< typename... As >
       explicit restartable_input( As&&... as ) noexcept( noexcept( Input( std::forward< As >( as )... ) ) )
@@ -45,6 +46,11 @@ namespace tao::pegtl::internal
       [[nodiscard]] auto previous_position( const data_t* previous ) const noexcept
       {
          return count_position( previous - m_begin );
+      }
+
+      [[nodiscard]] auto previous_position( const rewind_position_t previous ) const noexcept
+      {
+         return previous_position( previous.current );
       }
 
    protected:
