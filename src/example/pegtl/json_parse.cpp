@@ -9,7 +9,6 @@
 #include <tao/pegtl/contrib/input_with_depth.hpp>
 #include <tao/pegtl/contrib/json.hpp>
 #include <tao/pegtl/contrib/limit_depth.hpp>
-#include <tao/pegtl/contrib/trace.hpp>
 
 #include "json_errors.hpp"
 
