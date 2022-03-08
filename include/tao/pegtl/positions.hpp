@@ -19,6 +19,7 @@
 #include "internal/selected_text_count_position.hpp"
 
 #include "internal/position_with_source.hpp"
+#include "internal/source_without_position.hpp"
 
 namespace tao::pegtl
 {

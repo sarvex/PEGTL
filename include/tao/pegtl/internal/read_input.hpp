@@ -9,6 +9,7 @@
 #include <string>
 
 #include "container_input.hpp"
+#include "fake_buffer_input.hpp"
 #include "filesystem.hpp"
 #include "input_traits.hpp"
 #include "memory_input.hpp"
@@ -32,7 +33,7 @@ namespace tao::pegtl::internal
    template<>
    struct input_traits< read_input >
    {
-      using memory_input_t = memory_input< char >;
+      using memory_input_t = fake_buffer_input< memory_input< char > >;
    };
 
 }  // namespace tao::pegtl::internal

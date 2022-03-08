@@ -123,8 +123,9 @@ int main( int argc, char** argv )  // NOLINT(bugprone-exception-escape)
       std::cout << "--- " << __LINE__ << " ---" << std::endl;
       {
          //         pegtl::internal::initialized_eager_position_input< pegtl::internal::position_with_source< std::string, pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned > >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > in( pegtl::internal::position_with_source< std::string, pegtl::internal::selected_text_position< pegtl::ascii::lf, unsigned > >( argv[ i ] ), argv[ i ] );
-         //         pegtl::parse< example::grammar, example::action, example::control >( in );
-         //         std::cout << "done: " << in.current_position() << std::endl;
+         pegtl::internal::input_with_source< std::string, pegtl::internal::defaulted_eager_position_input< pegtl::internal::paranoid_text_position< pegtl::ascii::lf, unsigned >, pegtl::internal::line_based_input< pegtl::ascii::lf, pegtl::internal::fake_buffer_input< pegtl::internal::file_input > > > > in( argv[ i ], argv[ i ] );
+         pegtl::parse< example::grammar, example::action, example::control >( in );
+         std::cout << "done: " << in.current_position() << std::endl;
       }
    }
    return 0;

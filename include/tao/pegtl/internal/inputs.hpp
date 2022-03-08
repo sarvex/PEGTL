@@ -29,6 +29,7 @@
 #include "common_buffer_input.hpp"
 
 #include "fake_buffer_input.hpp"
+#include "input_with_source.hpp"
 
 namespace tao::pegtl::internal
 {

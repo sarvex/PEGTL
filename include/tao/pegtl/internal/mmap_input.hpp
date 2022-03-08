@@ -19,10 +19,22 @@ namespace tao::pegtl::internal
    public:
       using memory_input_t = MemoryInput;
 
+      using typename MemoryInput::data_t;
+
       explicit mmap_input( const filesystem::path& path )
          : mmap_file_base( path ),
            MemoryInput( data.begin(), data.end() )
       {}
+
+      [[nodiscard]] const data_t* begin() const noexcept
+      {
+         return data.data();
+      }
+
+      void restart() noexcept
+      {
+         this->private_set_current( begin() );
+      }
    };
 
    template< typename MemoryInput >

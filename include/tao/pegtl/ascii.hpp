@@ -23,6 +23,7 @@ namespace tao::pegtl
       struct cr_crlf_lf : internal::sor< internal::string< '\r', '\n' >, internal::one< internal::result_on_found::success, internal::peek_char, '\r', '\n' > > {};
       struct cr_lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n', '\r' > {};
       struct crlf : internal::string< '\r', '\n' > {};
+      struct crlf_lf : internal::sor< internal::one< internal::result_on_found::success, internal::peek_char, '\n' >, internal::string< '\r', '\n' > > {};
       struct digit : internal::range< internal::result_on_found::success, internal::peek_char, '0', '9' > {};
       struct esc : internal::one< internal::result_on_found::success, internal::peek_char, char( 27 ) > {};
       struct ellipsis : internal::string< '.', '.', '.' > {};
@@ -32,7 +33,6 @@ namespace tao::pegtl
       template< char... Cs > struct istring : internal::istring< Cs... > {};
       template< char... Cs > struct keyword : internal::seq< internal::string< Cs... >, internal::not_at< internal::identifier_other > > { static_assert( sizeof...( Cs ) > 0 ); };
       struct lf : internal::one< internal::result_on_found::success, internal::peek_char, '\n' > {};
-      struct lf_crlf : internal::sor< internal::one< internal::result_on_found::success, internal::peek_char, '\n' >, internal::string< '\r', '\n' > > {};
       struct lower : internal::range< internal::result_on_found::success, internal::peek_char, 'a', 'z' > {};
       template< unsigned Count > struct many : internal::many< Count, internal::peek_char > {};
       template< char... Cs > struct not_one : internal::one< internal::result_on_found::failure, internal::peek_char, Cs... > {};
