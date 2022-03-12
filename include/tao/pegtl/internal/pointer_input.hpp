@@ -104,6 +104,11 @@ namespace tao::pegtl::internal
          return count_position< std::size_t >( previous - begin() );
       }
 
+      [[nodiscard]] auto previous_position( const rewind_position_t& previous ) const noexcept
+      {
+         return previous_position( previous.current );
+      }
+
       [[nodiscard]] Pointer&& pointer() && noexcept
       {
          return std::move( m_pointer );

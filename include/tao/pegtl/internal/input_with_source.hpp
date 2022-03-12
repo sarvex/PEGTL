@@ -34,14 +34,14 @@ namespace tao::pegtl::internal
          return position_t( source, Input::current_position() );
       }
 
-      [[nodiscard]] position_t previous_position( const data_t* where ) const
+      [[nodiscard]] position_t previous_position( const data_t* previous ) const
       {
-         return position_t( source, Input::previous_position( where ) );
+         return position_t( source, Input::previous_position( previous ) );
       }
 
-      [[nodiscard]] position_t previous_position( const rewind_position_t& saved ) const
+      [[nodiscard]] position_t previous_position( const rewind_position_t& previous ) const
       {
-         return position_t( source, Input::previous_position( saved ) );
+         return position_t( source, Input::previous_position( previous ) );
       }
    };
 

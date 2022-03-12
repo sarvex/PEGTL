@@ -34,16 +34,16 @@ namespace tao::pegtl::internal
          return previous_position( this->current() );
       }
 
-      [[nodiscard]] Position previous_position( const data_t* where ) const  // noexcept( auto )
+      [[nodiscard]] Position previous_position( const data_t* previous ) const  // noexcept( auto )
       {
-         defaulted_eager_position_input< Position, typename input_traits< Input >::memory_input_t >in( this->begin(), where );
+         defaulted_eager_position_input< Position, typename input_traits< Input >::memory_input_t >in( this->begin(), previous );
          (void)normal< typename Position::lazy_rule >::template match< apply_mode::nothing, rewind_mode::dontcare, nothing, normal >( in );
          return std::move( in.private_position() );
       }
 
-      [[nodiscard]] Position previous_position( const rewind_position_t& saved ) const
+      [[nodiscard]] Position previous_position( const rewind_position_t& previous ) const
       {
-         return previous_position( saved.current );
+         return previous_position( previous.current );
       }
    };
 

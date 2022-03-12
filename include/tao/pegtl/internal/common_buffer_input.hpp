@@ -180,6 +180,11 @@ namespace tao::pegtl::internal
          return dummy_position();
       }
 
+      [[nodiscard]] auto previous_position( const rewind_position_t& /*unused*/ ) const noexcept
+      {
+         return dummy_position();
+      }
+
    protected:
       data_t* m_current;
       data_t* m_end;

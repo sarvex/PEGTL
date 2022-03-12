@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "../match.hpp"
 #include "../parse.hpp"
 
 namespace tao::pegtl
@@ -32,11 +33,11 @@ namespace tao::pegtl
 
       Kind kind;
       String data;
-      Position pos;
+      Position position;
 
       [[nodiscard]] const Position& current_position() const noexcept
       {
-         return pos;
+         return position;
       }
    };
 
@@ -88,7 +89,7 @@ namespace tao::pegtl
       struct make_token_action
       {
          template< typename Rule >
-         static auto base()
+         static constexpr auto base() noexcept
          {
             if constexpr( has_token_kind< Traits< Rule > > ) {
                return token_action_impl< Traits< Rule >::token_kind >();

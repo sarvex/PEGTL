@@ -123,7 +123,7 @@ namespace tao::pegtl::internal
          return pointer_position( previous );
       }
 
-      [[nodiscard]] auto previous_position( const rewind_position_t previous ) const noexcept
+      [[nodiscard]] auto previous_position( const rewind_position_t& previous ) const noexcept
       {
          return pointer_position( previous.current );
       }

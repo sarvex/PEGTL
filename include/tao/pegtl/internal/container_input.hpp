@@ -32,17 +32,17 @@ namespace tao::pegtl::internal
          : container_input( in_begin, in_begin + in_size )
       {}
 
-      container_input( Container&& in_data )
+      explicit container_input( Container&& in_data )
          : m_container( std::move( in_data ) ),
            m_current( m_container.data() )
       {}
 
-      container_input( const Container& in_data )
+      explicit container_input( const Container& in_data )
          : m_container( in_data ),
            m_current( m_container.data() )
       {}
 
-      container_input( std::initializer_list< data_t > in_data )
+      explicit container_input( std::initializer_list< data_t > in_data )
          : m_container( in_data ),
            m_current( m_container.data() )
       {}
@@ -114,6 +114,11 @@ namespace tao::pegtl::internal
       [[nodiscard]] auto previous_position( const data_t* previous ) const noexcept
       {
          return count_position< std::size_t >( previous - begin() );
+      }
+
+      [[nodiscard]] auto previous_position( const rewind_position_t& previous ) const noexcept
+      {
+         return previous_position( previous.current );
       }
 
       [[nodiscard]] Container&& container() && noexcept
