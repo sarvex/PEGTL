@@ -134,7 +134,7 @@ namespace tao::pegtl::internal
       }
 
    private:
-      const internal::filesystem::path m_path;
+      const filesystem::path m_path;
       const std::unique_ptr< std::FILE, read_file_close > m_file;
 
       void read_impl( void* buffer, const std::size_t length ) const

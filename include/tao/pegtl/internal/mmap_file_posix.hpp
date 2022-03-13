@@ -25,8 +25,8 @@ namespace tao::pegtl::internal
    struct mmap_file_open
    {
       explicit mmap_file_open( const internal::filesystem::path& path )  // NOLINT(modernize-pass-by-value)
-         : m_path( path ),
-           m_fd( open() )
+         : fd( p_open( path ) ),
+           size( p_size( path ) )
       {}
 
       mmap_file_open( const mmap_file_open& ) = delete;
@@ -34,21 +34,46 @@ namespace tao::pegtl::internal
 
       ~mmap_file_open()
       {
-         ::close( m_fd );
+         ::close( fd );
       }
 
       mmap_file_open& operator=( const mmap_file_open& ) = delete;
       mmap_file_open& operator=( mmap_file_open&& ) = delete;
 
-      [[nodiscard]] std::size_t size() const
+      const int fd;
+      const std::size_t size;
+
+   private:
+      [[nodiscard]] int p_open( const internal::filesystem::path& path ) const
+      {
+         errno = 0;
+         const int fh = ::open( path.c_str(),
+                                O_RDONLY
+#if defined( O_CLOEXEC )
+                                   | O_CLOEXEC
+#endif
+         );
+         if( fh >= 0 ) {
+            return fh;
+         }
+#if defined( __cpp_exceptions )
+         internal::error_code ec( errno, internal::system_category() );
+         throw internal::filesystem::filesystem_error( "open() failed", path, ec );
+#else
+         std::perror( "open() failed" );
+         std::terminate();
+#endif
+      }
+
+      [[nodiscard]] std::size_t p_size( const internal::filesystem::path& path ) const
       {
          struct stat st;
          errno = 0;
-         if( ::fstat( m_fd, &st ) < 0 ) {
+         if( ::fstat( fd, &st ) < 0 ) {
             // LCOV_EXCL_START
 #if defined( __cpp_exceptions )
             internal::error_code ec( errno, internal::system_category() );
-            throw internal::filesystem::filesystem_error( "fstat() failed", m_path, ec );
+            throw internal::filesystem::filesystem_error( "fstat() failed", path, ec );
 #else
             std::perror( "fstat() failed" );
             std::terminate();
@@ -57,49 +82,24 @@ namespace tao::pegtl::internal
          }
          return std::size_t( st.st_size );
       }
-
-      const internal::filesystem::path m_path;
-      const int m_fd;
-
-   private:
-      [[nodiscard]] int open() const
-      {
-         errno = 0;
-         const int fd = ::open( m_path.c_str(),
-                                O_RDONLY
-#if defined( O_CLOEXEC )
-                                   | O_CLOEXEC
-#endif
-         );
-         if( fd >= 0 ) {
-            return fd;
-         }
-#if defined( __cpp_exceptions )
-         internal::error_code ec( errno, internal::system_category() );
-         throw internal::filesystem::filesystem_error( "open() failed", m_path, ec );
-#else
-         std::perror( "open() failed" );
-         std::terminate();
-#endif
-      }
    };
 
    class mmap_file_posix
    {
    public:
       explicit mmap_file_posix( const internal::filesystem::path& path )
-         : mmap_file_posix( mmap_file_open( path ) )
+         : mmap_file_posix( path, mmap_file_open( path ) )
       {}
 
-      explicit mmap_file_posix( const mmap_file_open& reader )
-         : m_size( reader.size() ),
-           m_data( static_cast< const char* >( ::mmap( nullptr, m_size, PROT_READ, MAP_PRIVATE, reader.m_fd, 0 ) ) )
+      mmap_file_posix( const internal::filesystem::path& path, const mmap_file_open& opener )
+         : m_size( opener.size ),
+           m_data( static_cast< const char* >( ::mmap( nullptr, m_size, PROT_READ, MAP_PRIVATE, opener.fd, 0 ) ) )
       {
          if( ( m_size != 0 ) && ( intptr_t( m_data ) == -1 ) ) {
             // LCOV_EXCL_START
 #if defined( __cpp_exceptions )
             internal::error_code ec( errno, internal::system_category() );
-            throw internal::filesystem::filesystem_error( "mmap() failed", reader.m_path, ec );
+            throw internal::filesystem::filesystem_error( "mmap() failed", path, ec );
 #else
             std::perror( "mmap() failed" );
             std::terminate();

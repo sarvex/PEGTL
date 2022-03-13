@@ -161,9 +161,9 @@
 * [`everything`](Rule-Reference.md#everything) <sup>[(atomic rules)](Rule-Reference.md#atomic-rules)</sup>
 * [`extender`](Rule-Reference.md#extender) <sup>[(icu rules)](Rule-Reference.md#icu-rules-for-binary-properties)</sup>
 * [`failure`](Rule-Reference.md#failure) <sup>[(atomic rules)](Rule-Reference.md#atomic-rules)</sup>
-* [`forty_two< C... >`](Rule-Reference.md#forty_two-c-) <sup>[(ascii rules)](Rule-Reference.md#ascii-rules)</sup>
 * [`full_composition_exclusion`](Rule-Reference.md#full_composition_exclusion) <sup>[(icu rules)](Rule-Reference.md#icu-rules-for-binary-properties)</sup>
 * [`general_category< V >`](Rule-Reference.md#general_category-v-) <sup>[(icu rules)](Rule-Reference.md#icu-rules-for-enumerated-properties)</sup>
+* [`graph`](Rule-Reference.md#graph) <sup>[(ascii rules)](Rule-Reference.md#ascii-rules)</sup>
 * [`grapheme_base`](Rule-Reference.md#grapheme_base) <sup>[(icu rules)](Rule-Reference.md#icu-rules-for-binary-properties)</sup>
 * [`grapheme_cluster_break< V >`](Rule-Reference.md#grapheme_cluster_break-v-) <sup>[(icu rules)](Rule-Reference.md#icu-rules-for-enumerated-properties)</sup>
 * [`grapheme_extend`](Rule-Reference.md#grapheme_extend) <sup>[(icu rules)](Rule-Reference.md#icu-rules-for-binary-properties)</sup>

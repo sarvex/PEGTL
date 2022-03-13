@@ -7,19 +7,7 @@
 
 #include <cstddef>
 
-#include "internal/count_position.hpp"
-#include "internal/pointer_position.hpp"
-
-#include "internal/careless_text_position.hpp"
-#include "internal/paranoid_text_position.hpp"
-#include "internal/selected_text_position.hpp"
-
-#include "internal/careless_text_count_position.hpp"
-#include "internal/paranoid_text_count_position.hpp"
-#include "internal/selected_text_count_position.hpp"
-
-#include "internal/position_with_source.hpp"
-#include "internal/source_without_position.hpp"
+#include "internal/positions.hpp"
 
 namespace tao::pegtl
 {

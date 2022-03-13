@@ -681,11 +681,12 @@ ASCII rules do not usually rely on other rules.
 * [Meta data] and [implementation] mapping:
   - `ascii::ellipsis::rule_t` is `internal::string< '.', '.', '.' >`
 
-###### `forty_two< C... >`
+###### `graph`
 
-* [Equivalent] to `rep< 42, one< C... > >`.
+* Matches and consumes any single ASCII character printable that is not a space.
+* [Equivalent] to `range< 33, 126 >`.
 * [Meta data] and [implementation] mapping:
-  - `ascii::forty_two< C >::rule_t` is `internal_rep< 42, internal::one< internal::result_on_found::success, internal::peek_char, C > >`
+  - `ascii::graph::rule_t` is `internal::range< internal::result_on_found::success, internal::peek_char, 33, 126 >`
 
 ###### `identifier_first`
 
@@ -1463,6 +1464,7 @@ Binary rules do not rely on other rules.
 * [`forty_two< C... >`](#forty_two-c-) <sup>[(ascii rules)](#ascii-rules)</sup>
 * [`full_composition_exclusion`](#full_composition_exclusion) <sup>[(icu rules)](#icu-rules-for-binary-properties)</sup>
 * [`general_category< V >`](#general_category-v-) <sup>[(icu rules)](#icu-rules-for-enumerated-properties)</sup>
+* [`graph`](#graph) <sup>[(ascii rules)](#ascii-rules)</sup>
 * [`grapheme_base`](#grapheme_base) <sup>[(icu rules)](#icu-rules-for-binary-properties)</sup>
 * [`grapheme_cluster_break< V >`](#grapheme_cluster_break-v-) <sup>[(icu rules)](#icu-rules-for-enumerated-properties)</sup>
 * [`grapheme_extend`](#grapheme_extend) <sup>[(icu rules)](#icu-rules-for-binary-properties)</sup>
