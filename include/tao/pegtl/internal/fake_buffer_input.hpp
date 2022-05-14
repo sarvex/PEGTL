@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <utility>
 
-#include "input_traits.hpp"
+#include "dependent_false.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -18,7 +18,6 @@ namespace tao::pegtl::internal
    {
    public:
       using typename Input::data_t;
-      // using typename Input::rewind_pointer_t;
 
       using Input::Input;
 
@@ -32,9 +31,6 @@ namespace tao::pegtl::internal
          return Input::size();
       }
 
-      // [[nodiscard]] const data_t* end( const std::size_t amount );
-      // [[nodiscard]] const data_t* end( const std::size_t minimum, const std::size_t maximum );
-
       void require( const std::size_t /*unused*/ ) noexcept
       {}
 
@@ -45,9 +41,9 @@ namespace tao::pegtl::internal
    };
 
    template< typename Input >
-   struct input_traits< fake_buffer_input< Input > >
+   class fake_buffer_input< fake_buffer_input< Input > >
    {
-      using memory_input_t = fake_buffer_input< typename input_traits< Input >::memory_input_t >;
+      static_assert( dependent_false< Input > );
    };
 
 }  // namespace tao::pegtl

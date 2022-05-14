@@ -10,8 +10,9 @@
 
 namespace tao::pegtl::internal
 {
-   struct cstring_reader
+   class cstring_reader
    {
+   public:
       explicit cstring_reader( const char* zero_terminated ) noexcept
          : m_cstring( zero_terminated )
       {
@@ -31,6 +32,7 @@ namespace tao::pegtl::internal
          return i;
       }
 
+   private:
       const char* m_cstring;
    };
 

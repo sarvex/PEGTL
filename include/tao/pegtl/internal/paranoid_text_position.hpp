@@ -20,7 +20,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Eol, typename Size >
-   struct [[nodiscard]] paranoid_text_position
+   struct paranoid_text_position
       : text_position_base< Size >
    {
       using eol_rule = Eol;
@@ -34,7 +34,7 @@ namespace tao::pegtl::internal
       {
          if( n > 0 ) {
             initialized_eager_position_input< careless_text_position< Size >, line_based_input< Eol, fake_buffer_input< memory_input< Data > > > > in( careless_text_position< Size >( this->line, this->count_in_line ), current, n );
-            (void)normal< lazy_rule >::template match< apply_mode::nothing, rewind_mode::dontcare, nothing, normal >( in );
+            (void)normal< lazy_rule >::template match< apply_mode::nothing, rewind_mode::optional, nothing, normal >( in );
             this->line = in.private_position().line;
             this->count_in_line = in.private_position().count_in_line;
          }

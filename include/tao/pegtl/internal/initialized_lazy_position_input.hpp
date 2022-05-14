@@ -12,8 +12,7 @@
 #include "../nothing.hpp"
 #include "../rewind_mode.hpp"
 
-#include "initialized_eager_position_input.hpp"
-#include "input_traits.hpp"
+#include "forward.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -39,6 +38,20 @@ namespace tao::pegtl::internal
            m_position( p )
       {}
 
+      using Input::restart;
+
+      void restart( Position&& p )
+      {
+         Input::restart();
+         m_position = std::move( p );
+      }
+
+      void restart( const Position& p )
+      {
+         Input::restart();
+         m_position = p;
+      }
+
       [[nodiscard]] Position current_position() const  // noexcept( auto )
       {
          return previous_position( this->current() );
@@ -46,8 +59,9 @@ namespace tao::pegtl::internal
 
       [[nodiscard]] Position previous_position( const data_t* previous ) const  // noexcept( auto )
       {
-         initialized_eager_position_input< Position, typename input_traits< Input >::memory_input_t >in( m_position, this->begin(), previous );
-         (void)normal< typename Position::lazy_rule >::template match< apply_mode::nothing, rewind_mode::dontcare, nothing, normal >( in );
+         using input_t = typename input_traits< initialized_lazy_position_input >::lazy_input_scan_t;
+         input_t in( m_position, this->begin(), previous );
+         (void)normal< typename Position::lazy_rule >::template match< apply_mode::nothing, rewind_mode::optional, nothing, normal >( in );
          return std::move( in.private_position() );
       }
 
@@ -58,12 +72,6 @@ namespace tao::pegtl::internal
 
    protected:
       Position m_position;
-   };
-
-   template< typename Position, typename Input >
-   struct input_traits< initialized_lazy_position_input< Position, Input > >
-   {
-      using memory_input_t = typename input_traits< Input >::memory_input_t;
    };
 
 } // namespace tao::pegtl::internal

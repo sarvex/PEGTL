@@ -11,7 +11,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Source, typename Position >
-   struct [[nodiscard]] position_with_source
+   struct position_with_source
       : Position
    {
       Source source;

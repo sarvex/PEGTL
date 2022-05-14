@@ -23,7 +23,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Eol, typename Size >
-   struct [[nodiscard]] selected_text_count_position
+   struct selected_text_count_position
       : text_count_position_base< Size >
    {
       using eol_rule = Eol;
@@ -43,7 +43,7 @@ namespace tao::pegtl::internal
          else if constexpr( std::is_same_v< Rule, eol_unknown_tag > ) {
             if( n > 0 ) {
                initialized_eager_position_input< careless_text_count_position< Size >, line_based_input< Eol, fake_buffer_input< memory_input< Data > > > > in( careless_text_count_position< Size >( this->line, this->count_in_line ), current, n );
-               (void)normal< lazy_rule >::template match< apply_mode::nothing, rewind_mode::dontcare, nothing, normal >( in );
+               (void)normal< lazy_rule >::template match< apply_mode::nothing, rewind_mode::optional, nothing, normal >( in );
                this->line = in.private_position().line;
                this->count_in_line = in.private_position().count_in_line;
                this->count += n;

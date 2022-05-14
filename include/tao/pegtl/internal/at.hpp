@@ -42,7 +42,7 @@ namespace tao::pegtl::internal
       [[nodiscard]] static bool match( ParseInput& in, States&&... st )
       {
          const auto m = in.template make_rewind_guard< rewind_mode::required >();
-         return Control< Rule >::template match< apply_mode::nothing, rewind_mode::active, Action, Control >( in, st... );
+         return Control< Rule >::template match< apply_mode::nothing, rewind_mode::optional, Action, Control >( in, st... );
       }
    };
 

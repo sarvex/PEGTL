@@ -40,7 +40,7 @@ namespace tao::pegtl::internal
    public:
       using data_t = typename ParseInput::data_t;
 
-      static constexpr rewind_mode next_rewind_mode = rewind_mode::active;
+      static constexpr rewind_mode next_rewind_mode = rewind_mode::optional;
 
       explicit rewind_guard( ParseInput* in ) noexcept
          : m_input( in ),

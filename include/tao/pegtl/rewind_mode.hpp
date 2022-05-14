@@ -7,11 +7,10 @@
 
 namespace tao::pegtl
 {
-   enum class rewind_mode : char
+   enum class rewind_mode : bool
    {
-      active,
-      required,
-      dontcare
+      required = true,
+      optional = false
    };
 
 }  // namespace tao::pegtl

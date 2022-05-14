@@ -13,7 +13,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Size >
-   struct [[nodiscard]] count_position
+   struct count_position
    {
       Size count = 0;
 

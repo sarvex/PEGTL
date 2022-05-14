@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <utility>
 
-#include "input_traits.hpp"
+#include "rewind_guard.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -99,12 +99,6 @@ namespace tao::pegtl::internal
    protected:
       Position m_initial;
       Position m_position;
-   };
-
-   template< typename Position, typename Input >
-   struct input_traits< initialized_restartable_eager_position_input< Position, Input > >
-   {
-      using memory_input_t = typename input_traits< Input >::memory_input_t;
    };
 
 }  // namespace tao::pegtl::internal

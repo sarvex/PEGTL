@@ -12,7 +12,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Data >
-   struct [[nodiscard]] pointer_position
+   struct pointer_position
    {
       const Data* current;
 

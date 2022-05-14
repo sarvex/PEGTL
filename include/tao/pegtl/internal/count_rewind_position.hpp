@@ -8,7 +8,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Data, typename Size >
-   struct [[nodiscard]] count_rewind_position
+   struct count_rewind_position
    {
       Size count;
 

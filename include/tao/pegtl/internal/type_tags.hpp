@@ -7,6 +7,9 @@
 
 namespace tao::pegtl::internal
 {
+   struct cherry_pick_tag
+   {};
+
    struct eol_consume_tag
    {};
 

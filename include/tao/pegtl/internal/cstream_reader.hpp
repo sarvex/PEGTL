@@ -17,8 +17,9 @@
 
 namespace tao::pegtl::internal
 {
-   struct cstream_reader
+   class cstream_reader
    {
+   public:
       explicit cstream_reader( std::FILE* s ) noexcept
          : m_cstream( s )
       {
@@ -49,6 +50,7 @@ namespace tao::pegtl::internal
          // LCOV_EXCL_STOP
       }
 
+   private:
       std::FILE* m_cstream;
    };
 

@@ -14,7 +14,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Input >
-   struct [[nodiscard]] input_with_filename
+   struct input_with_filename
       : Input
    {
       filesystem::path source;
@@ -23,7 +23,7 @@ namespace tao::pegtl::internal
       using typename Input::rewind_position_t;
 
       explicit input_with_filename( filesystem::path&& path )
-         : Input( path ),
+         : Input( static_cast< const filesystem::path& >( path ) ),
            source( std::move( path ) )
       {}
 

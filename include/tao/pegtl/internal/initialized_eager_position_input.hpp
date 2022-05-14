@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <utility>
 
-#include "input_traits.hpp"
+#include "rewind_guard.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -34,6 +34,18 @@ namespace tao::pegtl::internal
       {}
 
       void restart() noexcept = delete;
+
+      void restart( Position&& p )
+      {
+         Input::restart();
+         m_position = std::move( p );
+      }
+
+      void restart( const Position& p )
+      {
+         Input::restart();
+         m_position = p;
+      }
 
       template< typename Rule >
       void consume( const std::size_t count )  // noexcept( auto )
@@ -87,12 +99,6 @@ namespace tao::pegtl::internal
 
    protected:
       Position m_position;
-   };
-
-   template< typename Position, typename Input >
-   struct input_traits< initialized_eager_position_input< Position, Input > >
-   {
-      using memory_input_t = typename input_traits< Input >::memory_input_t;
    };
 
 }  // namespace tao::pegtl::internal

@@ -52,7 +52,7 @@ namespace tao::pegtl::internal
                 typename... States >
       [[nodiscard]] static bool match( ParseInput& in, States&&... st )
       {
-         if( !Control< Rule >::template match< A, rewind_mode::dontcare, Action, Control >( in, st... ) ) {
+         if( !Control< Rule >::template match< A, rewind_mode::optional, Action, Control >( in, st... ) ) {
             Control< Rule >::raise( static_cast< const ParseInput& >( in ), st... );
          }
          return true;

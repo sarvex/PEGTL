@@ -193,16 +193,24 @@ namespace tao::pegtl::internal
          }
       }
 
+      mmap_file_win32( mmap_file_win32&& m )
+         : m_size( m.m_size ),
+           m_data( m.m_data )
+      {
+         m.m_data = nullptr;
+      }
+
       mmap_file_win32( const mmap_file_win32& ) = delete;
-      mmap_file_win32( mmap_file_win32&& ) = delete;
 
       ~mmap_file_win32()
       {
-         ::UnmapViewOfFile( LPCVOID( m_data ) );
+         if( m_data ) {
+            ::UnmapViewOfFile( LPCVOID( m_data ) );
+         }
       }
 
-      mmap_file_win32& operator=( const mmap_file_win32& ) = delete;
-      mmap_file_win32& operator=( mmap_file_win32&& ) = delete;
+      void operator=( mmap_file_win32&& ) = delete;
+      void operator=( const mmap_file_win32& ) = delete;
 
       [[nodiscard]] bool empty() const noexcept
       {
@@ -214,27 +222,14 @@ namespace tao::pegtl::internal
          return m_size;
       }
 
-      using iterator = const char*;
-      using const_iterator = const char*;
-
-      [[nodiscard]] iterator data() const noexcept
+      [[nodiscard]] const char* data() const noexcept
       {
          return m_data;
-      }
-
-      [[nodiscard]] iterator begin() const noexcept
-      {
-         return m_data;
-      }
-
-      [[nodiscard]] iterator end() const noexcept
-      {
-         return m_data + m_size;
       }
 
    private:
-      const std::size_t m_size;
-      const char* const m_data;
+      std::size_t m_size;
+      const char* m_data;
    };
 
    using mmap_file_impl = mmap_file_win32;

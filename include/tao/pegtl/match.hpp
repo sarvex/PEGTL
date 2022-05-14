@@ -144,9 +144,9 @@ namespace tao::pegtl
 
          constexpr bool use_guard = has_apply || has_apply0_bool;
 
-         auto m = in.template make_rewind_guard< ( use_guard ? rewind_mode::required : rewind_mode::dontcare ) >();
+         auto m = in.template make_rewind_guard< ( use_guard ? rewind_mode::required : rewind_mode::optional ) >();
          Control< Rule >::start( static_cast< const ParseInput& >( in ), st... );
-         auto result = internal::match_control_unwind< Rule, A, ( use_guard ? rewind_mode::active : M ), Action, Control >( in, st... );
+         auto result = internal::match_control_unwind< Rule, A, ( use_guard ? rewind_mode::optional : M ), Action, Control >( in, st... );
          if( result ) {
             if constexpr( has_apply_void ) {
                Control< Rule >::template apply< Action >( m.saved(), static_cast< const ParseInput& >( in ), st... );

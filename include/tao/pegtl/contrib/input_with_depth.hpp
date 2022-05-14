@@ -7,6 +7,8 @@
 
 #include <cstddef>
 
+#include "../internal/input_traits.hpp"
+
 namespace tao::pegtl
 {
    namespace internal
@@ -59,8 +61,19 @@ namespace tao::pegtl
          return m_depth;
       }
 
+      void private_set_depth( const std::size_t depth ) noexcept
+      {
+         m_depth = depth;
+      }
+
    private:
       std::size_t m_depth = 0;
+   };
+
+   template< typename Input >
+   struct internal::input_traits< input_with_depth< Input > >
+   {
+      using lazy_input_scan_t = typename input_traits< Input >::lazy_input_scan_t;
    };
 
 }  // namespace tao::pegtl

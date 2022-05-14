@@ -16,20 +16,21 @@
 
 namespace tao::pegtl::internal
 {
-   struct istream_reader
+   class istream_reader
    {
+   public:
       explicit istream_reader( std::istream& s ) noexcept
-         : m_istream( s )
+         : m_istream( &s )
       {}
 
       [[nodiscard]] std::size_t operator()( char* buffer, const std::size_t length )
       {
-         m_istream.read( buffer, std::streamsize( length ) );
+         m_istream->read( buffer, std::streamsize( length ) );
 
-         if( const auto r = m_istream.gcount() ) {
+         if( const auto r = m_istream->gcount() ) {
             return std::size_t( r );
          }
-         if( m_istream.eof() ) {
+         if( m_istream->eof() ) {
             return 0;
          }
 #if defined( __cpp_exceptions )
@@ -41,7 +42,8 @@ namespace tao::pegtl::internal
 #endif
       }
 
-      std::istream& m_istream;
+   private:
+      std::istream* m_istream;
    };
 
 }  // namespace tao::pegtl::internal

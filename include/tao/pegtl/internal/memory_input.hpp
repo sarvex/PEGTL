@@ -11,7 +11,6 @@
 #include <string_view>
 #include <type_traits>
 
-#include "input_traits.hpp"
 #include "pointer_position.hpp"
 #include "rewind_guard.hpp"
 
@@ -131,12 +130,6 @@ namespace tao::pegtl::internal
    protected:
       const Data* m_current;
       const Data* m_end;
-   };
-
-   template< typename Data >
-   struct input_traits< memory_input< Data > >
-   {
-      using memory_input_t = memory_input< Data >;
    };
 
 }  // namespace tao::pegtl::internal

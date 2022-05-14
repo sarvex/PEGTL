@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "count_position.hpp"
-#include "input_traits.hpp"
 #include "memory_input.hpp"
 #include "pointer_position.hpp"
 #include "rewind_guard.hpp"
@@ -134,12 +133,6 @@ namespace tao::pegtl::internal
    protected:
       Container m_container;
       const data_t* m_current;
-   };
-
-   template< typename Container >
-   struct input_traits< container_input< Container > >
-   {
-      using memory_input_t = memory_input< typename container_input< Container >::data_t >;
    };
 
 }  // namespace tao::pegtl::internal

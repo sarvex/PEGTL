@@ -14,6 +14,9 @@
 #include "positions.hpp"
 
 #include "internal/inputs.hpp"
+#include "internal/temporary.hpp"
+
+#include "internal/input_traits.hpp"
 
 #include "internal/cstream_reader.hpp"
 #include "internal/cstring_reader.hpp"

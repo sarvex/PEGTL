@@ -5,8 +5,9 @@
 #ifndef TAO_PEGTL_INTERNAL_RESTARTABLE_INPUT_HPP
 #define TAO_PEGTL_INTERNAL_RESTARTABLE_INPUT_HPP
 
+#include <utility>
+
 #include "count_position.hpp"
-#include "input_traits.hpp"
 
 namespace tao::pegtl::internal
 {
@@ -19,7 +20,7 @@ namespace tao::pegtl::internal
       using typename Input::rewind_position_t;
 
       template< typename... As >
-      explicit restartable_input( As&&... as ) noexcept( noexcept( Input( std::forward< As >( as )... ) ) )
+      explicit restartable_input( As&&... as )  // noexcept( auto )
          : Input( std::forward< As >( as )... ),
            m_begin( this->current() )
       {
@@ -55,12 +56,6 @@ namespace tao::pegtl::internal
 
    protected:
       const data_t* m_begin;
-   };
-
-   template< typename Input >
-   struct input_traits< restartable_input< Input > >
-   {
-      using memory_input_t = typename input_traits< Input >::memory_input_t;
    };
 
 }  // namespace tao::pegtl::internal

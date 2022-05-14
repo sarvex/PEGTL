@@ -29,10 +29,10 @@ namespace tao::pegtl::internal
    template< typename Input, typename RewindPosition >
    [[nodiscard]] const char* end_of_line_or_file( const Input& in, const RewindPosition& p ) noexcept
    {
-      using input_t = typename input_traits< Input >::memory_input_t;
+      using input_t = typename input_traits< Input >::lazy_input_scan_t;  // TODO: Better error message with buffer inputs (which don't have lazy_input_scan_t.
       input_t i2( p.current, in.end() );
       using grammar = internal::until< internal::at< internal::eolf > >;
-      (void)normal< grammar >::match< apply_mode::nothing, rewind_mode::dontcare, nothing, normal >( i2 );
+      (void)normal< grammar >::match< apply_mode::nothing, rewind_mode::optional, nothing, normal >( i2 );
       return i2.current();
    }
 

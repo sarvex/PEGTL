@@ -19,7 +19,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Size >
-   struct [[nodiscard]] text_count_position_base
+   struct text_count_position_base
    {
       Size line = 1;
       Size count_in_line = 1;

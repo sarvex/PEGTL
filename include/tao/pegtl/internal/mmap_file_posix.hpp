@@ -108,17 +108,25 @@ namespace tao::pegtl::internal
          }
       }
 
+      mmap_file_posix( mmap_file_posix&& m )
+         : m_size( m.m_size ),
+           m_data( m.m_data )
+      {
+         m.m_data = nullptr;
+      }
+
       mmap_file_posix( const mmap_file_posix& ) = delete;
-      mmap_file_posix( mmap_file_posix&& ) = delete;
 
       ~mmap_file_posix()
       {
-         // Legacy C interface requires pointer-to-mutable but does not write through the pointer.
-         ::munmap( const_cast< char* >( m_data ), m_size );
+         if( m_data ) {
+            // Legacy C interface requires pointer-to-mutable but does not write through the pointer.
+            ::munmap( const_cast< char* >( m_data ), m_size );
+         }
       }
 
-      mmap_file_posix& operator=( const mmap_file_posix& ) = delete;
-      mmap_file_posix& operator=( mmap_file_posix&& ) = delete;
+      void operator=( mmap_file_posix&& ) = delete;
+      void operator=( const mmap_file_posix& ) = delete;
 
       [[nodiscard]] bool empty() const noexcept
       {
@@ -130,27 +138,14 @@ namespace tao::pegtl::internal
          return m_size;
       }
 
-      using iterator = const char*;
-      using const_iterator = const char*;
-
-      [[nodiscard]] iterator data() const noexcept
+      [[nodiscard]] const char* data() const noexcept
       {
          return m_data;
-      }
-
-      [[nodiscard]] iterator begin() const noexcept
-      {
-         return m_data;
-      }
-
-      [[nodiscard]] iterator end() const noexcept
-      {
-         return m_data + m_size;
       }
 
    private:
-      const std::size_t m_size;
-      const char* const m_data;
+      std::size_t m_size;
+      const char* m_data;
    };
 
    using mmap_file_impl = mmap_file_posix;

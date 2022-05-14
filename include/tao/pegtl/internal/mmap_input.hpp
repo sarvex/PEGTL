@@ -6,7 +6,6 @@
 #define TAO_PEGTL_INTERNAL_MMAP_INPUT_HPP
 
 #include "filesystem.hpp"
-#include "input_traits.hpp"
 #include "mmap_file.hpp"
 
 namespace tao::pegtl::internal
@@ -23,7 +22,7 @@ namespace tao::pegtl::internal
 
       explicit mmap_input( const filesystem::path& path )
          : mmap_file_base( path ),
-           MemoryInput( data.begin(), data.end() )
+           MemoryInput( data.data(), data.size() )
       {}
 
       [[nodiscard]] const data_t* begin() const noexcept
@@ -35,12 +34,6 @@ namespace tao::pegtl::internal
       {
          this->private_set_current( begin() );
       }
-   };
-
-   template< typename MemoryInput >
-   struct input_traits< mmap_input< MemoryInput > >
-   {
-      using memory_input_t = MemoryInput;
    };
 
 }  // namespace tao::pegtl::internal

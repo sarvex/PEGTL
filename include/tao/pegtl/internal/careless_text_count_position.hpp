@@ -13,7 +13,7 @@
 namespace tao::pegtl::internal
 {
    template< typename Size >
-   struct [[nodiscard]] careless_text_count_position
+   struct careless_text_count_position
       : text_count_position_base< Size >
    {
       using typename text_count_position_base< Size >::lazy_rule;

@@ -11,7 +11,6 @@
 #include "container_input.hpp"
 #include "fake_buffer_input.hpp"
 #include "filesystem.hpp"
-#include "input_traits.hpp"
 #include "memory_input.hpp"
 #include "read_file.hpp"
 
@@ -28,12 +27,6 @@ namespace tao::pegtl::internal
       read_input( std::FILE* file, const filesystem::path& path )
          : container_input< std::string >( read_file_impl( file, path ).read_string() )
       {}
-   };
-
-   template<>
-   struct input_traits< read_input >
-   {
-      using memory_input_t = fake_buffer_input< memory_input< char > >;
    };
 
 }  // namespace tao::pegtl::internal

@@ -5,10 +5,11 @@
 #ifndef TAO_PEGTL_INTERNAL_LINE_BASED_INPUT_HPP
 #define TAO_PEGTL_INTERNAL_LINE_BASED_INPUT_HPP
 
+#include <utility>
+
 #include "../apply_mode.hpp"
 #include "../rewind_mode.hpp"
 
-#include "input_traits.hpp"
 #include "type_tags.hpp"
 
 namespace tao::pegtl::internal
@@ -40,12 +41,6 @@ namespace tao::pegtl::internal
          }
          return false;
       }
-   };
-
-   template< typename Eol, typename Input >
-   struct input_traits< line_based_input< Eol, Input > >
-   {
-      using memory_input_t = line_based_input< Eol, typename input_traits< Input >::memory_input_t >;
    };
 
 }  // namespace tao::pegtl::internal

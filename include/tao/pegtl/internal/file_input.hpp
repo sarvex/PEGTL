@@ -9,13 +9,12 @@
 
 #if defined( TAO_PEGTL_MMAP_AVAILABLE )
 
-#include "restartable_input.hpp"
 #include "memory_input.hpp"
 #include "mmap_input.hpp"
 
 namespace tao::pegtl::internal
 {
-   using file_input = mmap_input< restartable_input< memory_input< char > > >;
+   using file_input = mmap_input< memory_input< char > >;
 
 }  // namespace tao::pegtl::internal
 

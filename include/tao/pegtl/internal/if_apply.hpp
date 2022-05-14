@@ -33,7 +33,7 @@ namespace tao::pegtl::internal
       {
          if constexpr( ( A == apply_mode::action ) && ( sizeof...( Actions ) != 0 ) ) {
             auto m = in.template make_rewind_guard< rewind_mode::required >();
-            if( Control< Rule >::template match< apply_mode::action, rewind_mode::active, Action, Control >( in, st... ) ) {
+            if( Control< Rule >::template match< apply_mode::action, rewind_mode::optional, Action, Control >( in, st... ) ) {
                const action_input< ParseInput > i2( m.saved(), static_cast< const ParseInput& >( in ) );
                return m( ( apply_single< Actions >::match( i2, st... ) && ... ) );
             }

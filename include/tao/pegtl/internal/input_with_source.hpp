@@ -9,11 +9,12 @@
 #include <utility>
 
 #include "position_with_source.hpp"
+#include "type_tags.hpp"
 
 namespace tao::pegtl::internal
 {
    template< typename Source, typename Input >
-   struct [[nodiscard]] input_with_source
+   struct input_with_source
       : Input
    {
       Source source;
@@ -25,6 +26,12 @@ namespace tao::pegtl::internal
       explicit input_with_source( S&& s, As&&... as )
          : Input( std::forward< As >( as )... ),
            source( std::forward< S >( s ) )
+      {}
+
+      tepmlate< typename T >
+      input_with_source( const cherry_pick_tag& /*unused*/, T&& t )
+         : Input( std::forward< T >( t ) ),
+           source( t.source )
       {}
 
       using position_t = position_with_source< Source, std::decay_t< decltype( std::declval< Input >().current_position() ) > >;
